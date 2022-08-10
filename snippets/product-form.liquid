@@ -303,22 +303,7 @@
           </div>
         {%- endif -%}
 
-       {% if call_in == true %}
-          <div class="form-success hidden">Thank for contacting us. We'll get back to you as soon as possible</div>
-          <button class="btn btn--full uppercase" data-popup-price__form="priceForm">Email For Pricing</button>
-          <div class="modal micromodal-slide" data-modal id="priceForm" aria-hidden="true">
-            <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-              <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
-              <div class="modal__container modal__container--inline"
-                data-modal-content
-                role="dialog"
-                aria-modal="true"
-                aria-label="Email for pricing form">
-                {% render 'email-for-pricing-form' %}
-              </div>
-            </div>
-          </div>
-        {% else %}
+        {% if call_in == false %}
         <div class="product__submit" data-buttons-wrapper data-add-action-wrapper>
           <div data-add-action-errors class="add-action-errors"></div>
 
@@ -378,3 +363,20 @@
 
   </div>
 </product-form>
+
+{% if call_in == true %}
+  <div class="form-success hidden">Thank for contacting us. We'll get back to you as soon as possible</div>
+  <button class="btn btn--full uppercase" data-popup-price__form="priceForm">Email For Pricing</button>
+  <div class="modal micromodal-slide" data-modal id="priceForm" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+      <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
+      <div class="modal__container modal__container--inline"
+        data-modal-content
+        role="dialog"
+        aria-modal="true"
+        aria-label="Email for pricing form">
+        {% render 'email-for-pricing-form' %}
+      </div>
+    </div>
+  </div>
+{% endif %}
