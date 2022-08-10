@@ -1,0 +1,466 @@
+{
+  "sections": {
+    "hero": {
+      "type": "section-hero",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/pexels-pixabay-462119.jpg",
+        "bg_position": "center-center",
+        "height": "use_screen_three_quarters",
+        "overlay_opacity": 25,
+        "overlay_color": "#000000",
+        "kicker": "",
+        "title": "Canada's Source For Fence And Animal Management Solutions",
+        "richtext": "",
+        "text_align": "align--middle-left",
+        "text_color": "text--white",
+        "enable_search": true,
+        "link_text": "",
+        "link": "",
+        "button_color": "btn--primary",
+        "button_style": "btn"
+      }
+    },
+    "16524719937b67d951": {
+      "type": "section-icons",
+      "blocks": {
+        "1652471992894b20ae-0": {
+          "type": "icon_block",
+          "settings": {
+            "icon_name": "icon-basket-return",
+            "icon_color": "#ef7d27",
+            "title": "Design & consultation",
+            "text": "<p>Complimentary assistance with your fence project<\/p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "1652471992894b20ae-1": {
+          "type": "icon_block",
+          "settings": {
+            "icon_name": "icon-shipment-world",
+            "icon_color": "#ef7d27",
+            "title": "Canada wide shipping",
+            "text": "<p>Ship anywhere, rates available at checkout.<\/p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "1652471992894b20ae-2": {
+          "type": "icon_block",
+          "settings": {
+            "icon_name": "icon-animal",
+            "icon_color": "#ef7d27",
+            "title": "Local Knowledge",
+            "text": "<p>Access over a decade of knowledge from our fencing experts.<\/p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "1652471992894b20ae-0",
+        "1652471992894b20ae-1",
+        "1652471992894b20ae-2"
+      ],
+      "settings": {
+        "title": "",
+        "bg": "palette--light bg--accent",
+        "icon_size": "icon--medium",
+        "icon_alignment": "icon--left",
+        "layout": "grid--stacked",
+        "align_text": "text-left"
+      }
+    },
+    "1652301484f99ab6be": {
+      "type": "section-collection-grid",
+      "blocks": {
+        "1652301484755a36ca-0": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "cordless-stapler",
+            "title": "Staplers",
+            "link_text": "View all staplers",
+            "image": "shopify:\/\/shop_images\/Photo_Oct_14_2_34_11_AM_1024x1024_b80e1596-3866-42ff-8034-b3400bea2ee2.webp",
+            "bg_position": "left-center",
+            "button_link": ""
+          }
+        },
+        "1652301484755a36ca-1": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "eid-tag-readers",
+            "title": "Tag Readers",
+            "link_text": "View All Tag Readers",
+            "image": "shopify:\/\/shop_images\/barbed_wire_gripple_2_1024x1024_b54e6f9c-deba-41e0-8533-7ebbd90b5985.jpg",
+            "bg_position": "center-top",
+            "button_link": ""
+          }
+        },
+        "c5c585a1-2a48-4ef6-ad7f-f4fe37d134bc": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "fence-equipment",
+            "title": "Equipment",
+            "link_text": "View all equipment",
+            "image": "shopify:\/\/shop_images\/DSC_3916x500_1024x1024_052dc99d-a9cf-41c3-94ed-6d44aa01f8f3.jpg",
+            "bg_position": "center-center",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "1652301484755a36ca-0",
+        "1652301484755a36ca-1",
+        "c5c585a1-2a48-4ef6-ad7f-f4fe37d134bc"
+      ],
+      "settings": {
+        "title": "",
+        "grid": 3,
+        "bg": "palette--light bg--neutral",
+        "text_color": "text--white",
+        "button_style": "btn",
+        "button_color": "btn--white",
+        "overlay_opacity": 30,
+        "overlay_color": "#000000",
+        "aspect_ratio": 0.7
+      }
+    },
+    "16523033780f3cde1f": {
+      "type": "section-logos",
+      "blocks": {
+        "165230337709aafaf0-0": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Stockade_Black_360dpi_compact_c5574b97-22fb-4c07-91d6-0b1dbac5848a.webp",
+            "link": "shopify:\/\/collections\/stockade"
+          }
+        },
+        "165230337709aafaf0-1": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/EZG_logo_compact_cd4ace08-00c8-423e-b7e4-03149aa3c4e8.webp",
+            "link": "shopify:\/\/collections\/ezg"
+          }
+        },
+        "165230337709aafaf0-2": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/download_compact_2e91a609-3b3e-4989-834f-66f6ddb1dfb7.jpg",
+            "link": "shopify:\/\/collections\/gripple-products"
+          }
+        },
+        "165230337709aafaf0-3": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Gallagher_Logo_Orange_compact_491b450d-a945-487e-9834-80fe8db28df3.webp",
+            "link": "shopify:\/\/collections\/gallagher"
+          }
+        },
+        "165230337709aafaf0-4": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Montana_Post_Driver_Logo_480x480_08376275-b874-4dc0-88a8-91ec9916af56.webp",
+            "link": "shopify:\/\/collections\/montana-post-drivers"
+          }
+        },
+        "f1be4437-7175-4a36-9e98-6375f9414ab9": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/autoguidelogo_compact_6eda4f9d-1ac9-49ca-a317-ffb7fc09e4fb.webp",
+            "link": "shopify:\/\/products\/post-master-vibrating-post-installers"
+          }
+        },
+        "18715ef5-07d6-47d4-8d78-8a938a2ffddb": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/cropped-logo-with-R-1_compact_ac431208-b072-4772-9523-f8b0b908c250.webp",
+            "link": "shopify:\/\/collections\/redi-driver-gas-powered-post-drivers"
+          }
+        },
+        "327b2dec-5071-400a-88ad-e6ad241c0d36": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Serca-Logo-Final-serca_480x480_47d7df04-0f16-4330-9a66-1bbb1cfebd9d.webp",
+            "link": "shopify:\/\/products\/serca-wire-fence-strainer"
+          }
+        },
+        "2a5a81c0-eb88-4049-9b33-bcc138e36ea3": {
+          "type": "logo_image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Logo-Black_small_480x480_83cd76d4-cc95-4646-9a01-941d7c2738af.webp",
+            "link": "shopify:\/\/collections\/lockjawz"
+          }
+        }
+      },
+      "block_order": [
+        "165230337709aafaf0-0",
+        "165230337709aafaf0-1",
+        "165230337709aafaf0-2",
+        "165230337709aafaf0-3",
+        "165230337709aafaf0-4",
+        "f1be4437-7175-4a36-9e98-6375f9414ab9",
+        "18715ef5-07d6-47d4-8d78-8a938a2ffddb",
+        "327b2dec-5071-400a-88ad-e6ad241c0d36",
+        "2a5a81c0-eb88-4049-9b33-bcc138e36ea3"
+      ],
+      "settings": {
+        "title": "Shop By Brand",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "165296744176df5e75": {
+      "type": "section-custom-content",
+      "blocks": {
+        "28f6c8c7-9ba3-493e-86f2-ca7d82b147f1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/G03302-HR4-Screen-Blue_b8281d84-4044-4b1b-b4f3-7753cdad845a.jpg",
+            "bg_position": "center-center",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        },
+        "3fb2600e-0fb0-4576-a180-1a8c7d068260": {
+          "type": "text",
+          "settings": {
+            "kicker": "Animal Management Traceability & Weigh scales",
+            "title": "Weighing and EID",
+            "text": "<p>Here at FenceFast we have a variety of solution to assist your need to build or evolve your perfect weighing, tag reading and data collection system for both an operational improvement and to meet traceability mandates. With FenceFast you'll get expert advice to help plan, deploy and support your livestock management solution from beginning to end.<\/p>",
+            "text_size": 1,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "Learn More",
+            "button_url": "shopify:\/\/pages\/weighing-and-reading",
+            "button_color": "btn--white",
+            "button_style": "btn btn--long uppercase",
+            "text_color": "text--white",
+            "bg_color": "#ef7d27"
+          }
+        }
+      },
+      "block_order": [
+        "28f6c8c7-9ba3-493e-86f2-ca7d82b147f1",
+        "3fb2600e-0fb0-4576-a180-1a8c7d068260"
+      ],
+      "settings": {
+        "height": "use_screen_one_half",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "1652303380d864a225": {
+      "type": "section-collection",
+      "settings": {
+        "title": "Popular Products",
+        "collection": "featured-products",
+        "grid": 5,
+        "rows": 1,
+        "bg": "palette--light bg--neutral",
+        "show_view_all": true
+      }
+    },
+    "16523022093cd948cd": {
+      "type": "section-custom-content",
+      "disabled": true,
+      "blocks": {
+        "2a11f0fa-eebf-4239-b96a-835affb7921e": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Handshake_1024x1024_831e5d78-294d-40b6-9c4d-9bc64b812fb1.webp",
+            "bg_position": "left-center",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        },
+        "40fa1492-c289-41e7-be4d-c20bb063dbc7": {
+          "type": "text",
+          "settings": {
+            "kicker": "",
+            "title": "Our Pledge",
+            "text": "<p>To provide quality fence and animal management systems products in which we have personally tested and are happy to endorse. If we do not use it ourselves, or are not 100% confident in the performance of any solution - we will not recommend it to you the client...<\/p>",
+            "text_size": 1,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "Read More",
+            "button_url": "shopify:\/\/pages\/our-pledge",
+            "button_color": "btn--white",
+            "button_style": "caps--link",
+            "text_color": "text--white",
+            "bg_color": "#252526"
+          }
+        }
+      },
+      "block_order": [
+        "2a11f0fa-eebf-4239-b96a-835affb7921e",
+        "40fa1492-c289-41e7-be4d-c20bb063dbc7"
+      ],
+      "settings": {
+        "height": "use_screen_one_half",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "1652302972f305b631": {
+      "type": "section-custom-content",
+      "disabled": true,
+      "blocks": {
+        "810df43d-2f0e-4ee7-9852-7df5a5a31b05": {
+          "type": "text",
+          "settings": {
+            "kicker": "",
+            "title": "Our Story",
+            "text": "<p>Axle Boris the founder and President of FenceFast Ltd grew up on a cattle ranch in British Columbia’s Northern Interior. After having spent several summers working for his father custom fencing as a youth years later in 1998 he started AB Custom Fencing in the BC interior. Being impressed with how...<\/p>",
+            "text_size": 1,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "Read More",
+            "button_url": "shopify:\/\/pages\/our-story",
+            "button_color": "btn--white",
+            "button_style": "caps--link",
+            "text_color": "text--white",
+            "bg_color": "#252526"
+          }
+        },
+        "f757474d-2640-4deb-b228-4e930c45eb47": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/pexels-photo-732344_1024x1024_36ccbc5d-9e1a-4619-93be-f12cf8a66d08.webp",
+            "bg_position": "center-center",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        }
+      },
+      "block_order": [
+        "810df43d-2f0e-4ee7-9852-7df5a5a31b05",
+        "f757474d-2640-4deb-b228-4e930c45eb47"
+      ],
+      "settings": {
+        "height": "use_screen_one_half",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "1652464526d6ca607d": {
+      "type": "section-custom-content",
+      "blocks": {
+        "3891d1f2-a384-4c3e-a587-8f83b35c2419": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/P4P_logo.jpg",
+            "bg_position": "center-center",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        },
+        "0e8d3989-91a2-45af-ab91-ec56e9cb2c8a": {
+          "type": "text",
+          "settings": {
+            "kicker": "Passion For Pasture",
+            "title": "Certified Pasture Pro",
+            "text": "<p>“<a href=\"https:\/\/fencefast.ca\/pages\/passion-for-pasture-certified-pasture-pro\" title=\"https:\/\/fencefast.ca\/pages\/passion-for-pasture-certified-pasture-pro\">Passion for Pasture<\/a>”— It’s not just a catchy tagline; it’s an entire program created by Gallagher for the benefit of the livestock producer.<\/p><p>FenceFast is proud to be a Gallagher dealer and a certified Passion For Pasture Pro Dealer, specializing in pasture management and rotational grazing solutions. Contact us today!<\/p>",
+            "text_size": 1,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "",
+            "button_url": "",
+            "button_color": "btn--neutral",
+            "button_style": "caps--link",
+            "text_color": "text--white",
+            "bg_color": "#ef7d27"
+          }
+        }
+      },
+      "block_order": [
+        "3891d1f2-a384-4c3e-a587-8f83b35c2419",
+        "0e8d3989-91a2-45af-ab91-ec56e9cb2c8a"
+      ],
+      "settings": {
+        "height": "image-height",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "16524712222321239c": {
+      "type": "section-custom-content",
+      "blocks": {
+        "2acfe97f-3d1c-4709-9f31-66e9d7896e0e": {
+          "type": "newsletter",
+          "settings": {
+            "kicker": "Newsletter",
+            "title": "Stay Up To Date",
+            "text": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.<\/p>",
+            "text_size": 2,
+            "align_text": "text-center",
+            "button_text": "",
+            "button_color": "btn--primary",
+            "button_style": "btn",
+            "text_color": "text--neutral",
+            "bg_color": "#f1f1f1"
+          }
+        }
+      },
+      "block_order": [
+        "2acfe97f-3d1c-4709-9f31-66e9d7896e0e"
+      ],
+      "settings": {
+        "height": "use_screen_one_fifth",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "16524719937b67d951",
+    "1652301484f99ab6be",
+    "16523033780f3cde1f",
+    "165296744176df5e75",
+    "1652303380d864a225",
+    "16523022093cd948cd",
+    "1652302972f305b631",
+    "1652464526d6ca607d",
+    "16524712222321239c"
+  ]
+}

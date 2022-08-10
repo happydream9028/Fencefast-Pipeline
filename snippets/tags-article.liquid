@@ -1,0 +1,12 @@
+<!-- /snippets/tags-article.liquid -->
+{% comment %}
+  This snippet renders a list item with all tags listed out.
+  It is used in article.liquid and blog.liquid.
+  {% render 'tags-article', article: article %}
+{% endcomment %}
+
+{% if article.tags.size > 0 %}
+  {% for tag in article.tags %}
+    <a class="btn--soft btn--primary blog__tag" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %} {% endunless %}
+  {% endfor %}
+{% endif %}

@@ -1,0 +1,44 @@
+<!-- /templates/customers/activate_account.liquid -->
+<div class="full__page__form__wrapper">
+  <div class="wrapper">
+    <div class="grid">
+      <div class="grid__item medium-up--one-half medium-up--push-one-quarter text-center">
+        <div class="full__page__form">
+
+          <h1 class="account__form__title">{{ 'customer.activate_account.title' | t }}</h1>
+          <p>{{ 'customer.activate_account.subtext' | t }}</p>
+
+          {% comment %}
+            This form must use 'activate_customer_password'
+          {% endcomment %}
+          {% form 'activate_customer_password' %}
+
+            {{ form.errors | default_errors }}
+
+            <div class="float__wrapper">
+              <label for="CustomerPassword">{{ 'customer.activate_account.password' | t }}</label>
+              <input type="password" value="" name="customer[password]" id="CustomerPassword" placeholder="{{ 'customer.activate_account.password' | t }}">
+            </div>
+
+            <div class="float__wrapper">
+              <label for="CustomerPasswordConfirmation">{{ 'customer.activate_account.password_confirm' | t }}</label>
+              <input type="password" value="" name="customer[password_confirmation]" id="CustomerPasswordConfirmation" placeholder="{{ 'customer.activate_account.password_confirm' | t }}">
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn--outline uppercase btn--full">
+                {{ 'customer.activate_account.submit' | t }}
+              </button>
+              <div class="form--additional">
+                <button type="submit" class="text-link uppercase" name="decline">
+                  {{ 'customer.activate_account.cancel' | t }}
+                </button>
+              </div>
+            </div>
+          {% endform %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

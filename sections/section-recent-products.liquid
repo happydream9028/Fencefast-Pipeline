@@ -1,0 +1,101 @@
+<!-- /sections/section-recent-products.liquid -->
+{%- assign recently_view_limit = section.settings.product_recently_limit -%}
+{%- assign layout_number = section.settings.grid -%}
+
+{%- if recently_view_limit < layout_number -%}
+  {%- assign recently_view_limit = layout_number -%}
+{%- endif -%}
+
+<div class="section-recent recent__container {{ section.settings.bg }} js" data-section-id="{{ section.id }}" data-section-type="related">
+  <div class="wrapper">
+    <div class="collection-tabs">
+      <div class="recent__container__inner" data-recently-viewed-wrapper>
+        <div class="related__products" data-tabs-holder>
+          <div class="tab__scroll">
+            <div class="tabs tabs--center" data-scrollbar data-scrollbar-slider>
+              <button type="button" class="tab-link tab-link-0 tab-link__recent current" data-tab="0" tabindex="0">
+                {%- if section.settings.product_recently_heading != blank -%}
+                  <h2 class="home__subtitle">
+                    {{ section.settings.product_recently_heading -}}
+                  </h2>
+                {%- endif -%}
+              </button>
+            </div>
+      
+            <button type="button" class="tabs__arrow tabs__arrow--prev is-hidden" data-scrollbar-arrow-prev>
+              <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+            </button>
+      
+            <button type="button" class="tabs__arrow tabs__arrow--next is-hidden" data-scrollbar-arrow-next>
+              <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+            </button>
+          </div>
+      
+          <div class="tab-content tab-content-0 tabs__recently-viewed current" data-tab-index="1">
+            {%- render 'products-recently-viewed', product: product, limit: recently_view_limit, product_recently_minimum: section.settings.product_recently_minimum, number_slides: layout_number -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Recently viewed products",
+  "settings": [
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    },
+    {
+      "type": "text",
+      "id": "product_recently_heading",
+      "label": "Heading",
+      "default": "Recently viewed"
+    },
+    {
+      "type":    "range",
+      "id":      "grid",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "label":   "Product layout",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "product_recently_limit",
+      "min": 1,
+      "max": 9,
+      "step": 1,
+      "label": "Product limit",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "product_recently_minimum",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Display threshold",
+      "info": "Hide section until a minimum of products can be shown.",
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "category": "Collection",
+      "name":"Recently viewed products"
+    }
+  ]
+}
+{% endschema %}

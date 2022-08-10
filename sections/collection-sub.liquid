@@ -1,0 +1,141 @@
+<!-- /sections/collection-sub.liquid -->
+{%- if section.settings.show_subcollection -%}
+<section data-section-id="{{ section.id }}" data-section-type="hero">
+  {%- assign sub_collections = linklists[collection.handle].links -%}
+
+  {%- if sub_collections.size > 0 -%}
+    <div class="subcollections subcollections__grid--{{ sub_collections.size | at_most: 6 }}">
+      <div class="subcollections__inner ">
+        {% for sublink in sub_collections limit: 6 %}
+          {% if sublink.type == 'collection_link' %}
+            {% assign sub_collection = collections[sublink.object.handle] %}
+            <div class="section--image subcollection__item fade-in-child {{ section.settings.text_color }}">
+              <a class="subcollection__link" href="{{ routes.collections_url }}/{{ sub_collection.handle }}">
+                <div class="subcollection__image">
+                  {%- assign image = sub_collection.image -%}
+                  {%- if section.settings.select_image == 'product' or image == blank -%}
+                    {%- assign image = sub_collection.products.first.featured_media.preview_image -%}
+                  {%- endif -%}
+                  {%- render 'image-fill', img_object: image, aspect_ratio: section.settings.aspect_ratio, bg_position: section.settings.bg_position -%}
+                </div>
+                <div class="image-overlay" style="--bg:{{ section.settings.overlay_color }}; opacity:{{ section.settings.overlay_opacity | times: 0.01 }};"></div>
+                <div class="hero__content__wrapper {{ section.settings.text_align }}">
+                  <p class="subcollection__title">{{ sub_collection.title }}</p>
+                </div>
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Subcollections",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_subcollection",
+      "label": "Show subcollections",
+      "default": true,
+      "info": "Create a [navigation list](/admin/menus) without nesting. Use the same name and handle as this collection and link to other collections. [Learn more](https://groupthought.com/link/pipeline/docs/subcollection)"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text--white",
+      "options": [
+        { "value": "text--neutral", "label": "Normal text"},
+        { "value": "text--white", "label": "White"},
+        { "value": "text--primary", "label": "Primary accent"},
+        { "value": "text--secondary", "label": "Secondary accent"},
+        { "value": "text--black", "label": "Black"},
+        { "value": "text--invert--primary", "label": "Primary dark accent"},
+        { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+        { "value": "text--invert", "label": "Inverted text color"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Subcollection text alignment",
+      "default": "align--middle-center",
+      "options": [
+        { "value": "align--top-left", "label": "Top left"},
+        { "value": "align--top-center", "label": "Top center"},
+        { "value": "align--top-right", "label": "Top right"},
+        { "value": "align--middle-left", "label": "Middle left"},
+        { "value": "align--middle-center", "label": "Absolute center"},
+        { "value": "align--middle-right", "label": "Middle right"},
+        { "value": "align--bottom-left", "label": "Bottom left"},
+        { "value": "align--bottom-center", "label": "Bottom center"},
+        { "value": "align--bottom-right", "label": "Bottom right"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "select",
+      "id": "select_image",
+      "label": "Image source",
+      "default": "collection",
+      "options": [
+        {
+          "value": "collection",
+          "label": "Collection image"
+        },
+        {
+          "value": "product",
+          "label": "First product"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Image position",
+      "default": "center-center",
+      "options": [
+        { "label": "Top", "value": "center-top" },
+        { "label": "Right", "value": "right-center" },
+        { "label": "Center", "value": "center-center" },
+        { "label": "Left", "value": "left-center" },
+        { "label": "Bottom", "value": "center-bottom" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio",
+      "min": 0.2,
+      "max": 1.5,
+      "step": 0.1,
+      "unit": ":1",
+      "label": "Image height ratio",
+      "info": "Wide to tall",
+      "default": 0.6
+    },
+    {
+      "type":    "range",
+      "id":      "overlay_opacity",
+      "min":     0,
+      "max":     100,
+      "step":    5,
+      "label":   "Image overlay opacity",
+      "info":    "Increase contrast for legible text.",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,57 @@
+{% comment %} 
+Header block content, used in both mobile header and desktop header. 
+
+Accepts a block, returns the content to render for that block. 
+Collection blocks will render multiple product-grid-item divs.  
+
+Required params:
+* block: the block that should be rednered.  
+
+{% render 'header-block', block: block %} 
+
+{% endcomment %}
+
+{% case block.type %}
+  {% when 'image' %}
+    <div {{ block.shopify_attributes }}>
+      <div class="header__dropdown__image section--image text--white bg--black" data-header-image>
+        {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="link-over-image">{%- endif -%}
+          <div class="hero__content__wrapper align--middle-center">
+            <div class="backdrop--radial">
+              {% unless block.settings.title == '' %}
+                <h2 class="hero__title h4">
+                  {{ block.settings.title | escape }}
+                </h2>
+              {% endunless %}
+              {% unless block.settings.link_text == '' %}
+                <div class="hero__btn btn btn--white btn--small uppercase">
+                  {{ block.settings.link_text | escape }}
+                </div>
+              {% endunless %}
+            </div>
+          </div>
+        {%- if block.settings.link != blank -%}</a>{%- endif -%}
+        {%- render 'image-fill', img_object: block.settings.image, aspect_ratio: block.settings.aspect_ratio, bg_position: block.settings.bg_position -%}
+      </div>
+    </div>
+
+  {% when 'product' %}
+    {% assign product = all_products[block.settings.product] %}
+    <div {{ block.shopify_attributes }}>
+      {% if product.empty? %}
+        {% render 'onboarding-product-grid-item' %}
+      {% else %}
+        {% render 'product-grid-item', product: product %}
+      {% endif %}
+    </div>
+  
+  {% when 'collection' %}
+    {%- assign collection = collections[block.settings.collection] -%}
+    {% for product in collection.products limit: block.settings.limit %}
+      <div {{ block.shopify_attributes }}>
+        {% render 'product-grid-item', product: product %}
+      </div>
+    {% else %}
+      {% render 'onboarding-product-grid-item', limit: block.settings.limit, block: block %}
+    {% endfor %}
+{% endcase %}

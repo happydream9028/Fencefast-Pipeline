@@ -1,0 +1,576 @@
+<!-- /sections/popups.liquid -->
+
+{%- if section.blocks.size > 0 -%}  
+  <div data-section-id="{{ section.id }}" data-section-type="popups">
+    {%- for block in section.blocks -%}
+      {%- assign classes = '' -%}
+
+      {%- assign classes = 'popup ' | append: block.settings.position -%}
+      
+      {%- if block.settings.target_device_enabled -%}
+        {%- if block.settings.target_device == 'mobile' -%}
+          {%- assign classes = classes | append: ' mobile' -%}
+        {%- endif -%}
+      
+        {%- if block.settings.target_device == 'desktop' -%}
+          {%- assign classes = classes | append: ' desktop' -%}
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- assign show_popup = true -%}
+
+      {%- if block.settings.target_url_enabled or block.settings.target_referrer_enabled -%}  
+        {%- assign show_popup = false -%}
+      {%- endif -%}
+
+      {%- if block.settings.target_url_enabled and block.settings.target_url != blank -%}  
+        {%- if block.settings.target_url == request.path -%}
+          {%- assign show_popup = true -%}
+        {%- endif -%}
+      {%- endif -%}
+      
+      {%- if block.settings.target_referrer_enabled and block.settings.target_referrer != blank -%}
+        {%- capture target_referrer_attribute -%}
+          data-target-referrer="{{ block.settings.target_referrer }}"
+        {%- endcapture -%}
+        
+        {%- assign show_popup = true -%}
+      {%- endif -%}
+
+      {%- if block.settings.text_color -%}
+        {%- assign classes = classes | append: ' ' | append: block.settings.text_color -%}
+      {%- endif -%}
+
+      {%- if block.settings.bg -%}
+        {%- assign classes = classes | append: ' ' | append: block.settings.bg -%}
+      {%- endif -%}
+
+      {%- capture block_attributes -%}
+        data-block-id="{{ block.id }}"
+        data-popup-delay="{{ block.settings.trigger }}"
+        data-enable="{{ block.settings.show_cookies_popup }}"
+        data-cookie-name="{{ block.type -}}-{{ forloop.index -}}-{{ section.id -}}"
+        {{ target_referrer_attribute }}
+        {%- if classes != '' -%}
+          class="{{ classes }}"
+        {%- endif -%}
+        {{ block.shopify_attributes }}
+      {%- endcapture -%}
+
+      {%- if request.design_mode -%}
+        {%- assign show_popup = true -%}
+      {%- endif -%}
+
+      {%- if show_popup -%}
+        {%- case block.type -%}
+          {%- when 'text' -%}
+            <div data-promo-text {{ block_attributes }}>
+              <div class="popup__inner {{ block.settings.text_color }}" data-popup-inner>
+                {%- if block.settings.title != blank -%}
+                  <p class="popup__title">{{ block.settings.title | escape }}</p>
+                {%- endif -%}
+
+                {%- if block.settings.text != blank -%}
+                  {{ block.settings.text }}
+                {%- endif -%}
+
+                {%- if block.settings.link_text != blank -%}
+                  <a href="{{ block.settings.link }}" class="standard__cta {{ block.settings.button_style }} {{ block.settings.button_color }}">
+                    {{ block.settings.link_text }}
+                  </a>
+                {%- endif -%}
+
+                <button data-close-modal class="close" title="{{ 'general.accessibility.close' | t }}">
+                  {%- render 'icon-close' -%}
+                </button>
+              </div>
+            </div>
+
+          {%- when 'newsletter' -%}
+            <div data-newsletter {{ block_attributes }}>
+              <div class="popup__inner" data-popup-inner data-newsletter-holder>
+                {%- if block.settings.title != blank -%}
+                  <p class="popup__title">{{ block.settings.title | escape }}</p>
+                {%- endif -%}
+
+                {%- assign form_id = 'newsletter-modal-form-' | append: block.id | append: forloop.index -%}
+                
+                {%- render 'newsletter-form' unique: form_id, show_discount_message: true, success_text: block.settings.success, show_icon: true, content: block.settings.text -%}
+
+                <button data-close-modal class="close" title="{{ 'general.accessibility.close' | t }}">
+                  {%- render 'icon-close' -%}
+                </button>
+              </div>
+            </div>
+
+          {%- when 'cookie' -%}
+            <div data-tracking-consent {{ block_attributes }}>
+
+              <div data-popup-inner class="popup__inner">
+                <p class="popup__title">{{ block.settings.text_title }}</p>
+
+                {{ block.settings.text_body }}
+
+                <button data-confirm-cookies class="standard__cta uppercase {{ block.settings.button_style }} {{ block.settings.button_color }}">{{ block.settings.text_accept }}</button>
+
+                {% if block.settings.text_learn != '' %}
+                  <a href="{{ block.settings.learn_url }}" class="standard__cta caps--link {{ block.settings.button_color }}">{{ block.settings.text_learn }}</a>
+                {% endif %}
+                
+                <button data-close-modal class="close" title="{{ 'general.accessibility.close' | t }}">
+                  {%- render 'icon-close' -%}
+                </button>
+              </div>
+            </div>
+        {%- endcase -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Popups",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Create popups by adding a block."
+    }
+  ],
+  "blocks" : [
+    {
+      "type": "text",
+      "name": "Text popup",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Text block"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use this block to promote a sale or target a specific audience with the filters below.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "text--neutral",
+          "options": [
+            { "value": "text--neutral", "label": "Normal text"},
+            { "value": "text--white", "label": "White"},
+            { "value": "text--primary", "label": "Primary accent"},
+            { "value": "text--secondary", "label": "Secondary accent"},
+            { "value": "text--black", "label": "Black"},
+            { "value": "text--invert--primary", "label": "Primary dark accent"},
+            { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+            { "value": "text--invert", "label": "Inverted text color"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "bg",
+          "label": "Background color",
+          "default": "palette--light bg--neutral",
+          "options": [
+            { "value": "palette--light bg--neutral", "label": "Default"},
+            { "value": "palette--light bg--accent", "label": "Light"},
+            { "value": "palette--dark bg--invert", "label": "Dark"},
+            { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Text",
+          "default": "Learn more"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_color",
+          "label": "Color",
+          "default": "btn--neutral",
+          "options": [
+            { "value": "btn--primary", "label": "Bright accent" },
+            { "value": "btn--secondary", "label": "Secondary accent" },
+            { "value": "btn--neutral", "label": "Text color" },
+            { "value": "btn--black", "label": "Black" },
+            { "value": "btn--white", "label": "White" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "btn--soft uppercase",
+          "options": [
+            { "value": "caps--link", "label": "Capitalized text" },
+            { "value": "btn uppercase", "label": "Solid button" },
+            { "value": "btn--soft uppercase", "label": "Soft button" },
+            { "value": "btn--outline uppercase", "label": "Outlined button" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Popup behavior"
+        },
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "options": [
+            {
+              "value": "popup--left",
+              "label": "Left"
+            },
+            {
+              "value": "popup--right",
+              "label": "Right"
+            },
+            {
+              "value": "popup--center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "trigger",
+          "label": "Delay appearance",
+          "default": "always",
+          "options": [
+            {"value": "always", "label": "Show immediately"},
+            {"value": "delayed", "label": "Show 10 seconds after page load"},
+            {"value": "bottom", "label": "Show after user scrolls to page bottom"},
+            {"value": "idle", "label": "Show after user has been idle for 1 minute"}
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Target page"
+        },
+        {
+          "id": "target_url_enabled",
+          "type": "checkbox",
+          "label": "Limit to specific page"
+        },
+        {
+          "id": "target_url",
+          "type": "url",
+          "label": "Targeted page"
+        },
+        {
+          "type": "header",
+          "content": "Target referrer"
+        },
+        {
+          "id": "target_referrer_enabled",
+          "type": "checkbox",
+          "label": "Limit to specific referrer path"
+        },
+        {
+          "id": "target_referrer",
+          "type": "text",
+          "label": "Targeted referrer"
+        },
+        {
+          "type": "header",
+          "content": "Target device"
+        },
+        {
+          "id": "target_device_enabled",
+          "type": "checkbox",
+          "label": "Limit to desktop or mobile"
+        },
+        {
+          "type": "select",
+          "id": "target_device",
+          "label": "Device ",
+          "default": "mobile",
+          "options": [
+            {"value": "mobile", "label": "Only show on mobile"},
+            {"value": "desktop", "label": "Only show on desktop"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter popup",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Join the club"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Enter your email to save 10% on your next order</p>"
+        },
+        {
+          "type": "textarea",
+          "id": "success",
+          "label": "Success message",
+          "default": "Success! Use code CLUB10 to save 10%",
+          "info": "Include your discount code and a message to be displayed."
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "text--neutral",
+          "options": [
+            { "value": "text--neutral", "label": "Normal text"},
+            { "value": "text--white", "label": "White"},
+            { "value": "text--primary", "label": "Primary accent"},
+            { "value": "text--secondary", "label": "Secondary accent"},
+            { "value": "text--black", "label": "Black"},
+            { "value": "text--invert--primary", "label": "Primary dark accent"},
+            { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+            { "value": "text--invert", "label": "Inverted text color"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "bg",
+          "label": "Background color",
+          "default": "palette--light bg--neutral",
+          "options": [
+            { "value": "palette--light bg--neutral", "label": "Default"},
+            { "value": "palette--light bg--accent", "label": "Light"},
+            { "value": "palette--dark bg--invert", "label": "Dark"},
+            { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Popup behavior"
+        },
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "default": "popup--right",
+          "options": [
+            {
+              "value": "popup--left",
+              "label": "Left"
+            },
+            {
+              "value": "popup--right",
+              "label": "Right"
+            },
+            {
+              "value": "popup--center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "trigger",
+          "label": "Delay appearance",
+          "default": "always",
+          "options": [
+            {"value": "always", "label": "Show immediately"},
+            {"value": "delayed", "label": "Show 10 seconds after page load"},
+            {"value": "bottom", "label": "Show after user scrolls to page bottom"},
+            {"value": "idle", "label": "Show after user has been idle for 1 minute"}
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Target page"
+        },
+        {
+          "id": "target_url_enabled",
+          "type": "checkbox",
+          "label": "Limit to specific page"
+        },
+        {
+          "id": "target_url",
+          "type": "url",
+          "label": "Targeted page"
+        },
+        {
+          "type": "header",
+          "content": "Target referrer"
+        },
+        {
+          "id": "target_referrer_enabled",
+          "type": "checkbox",
+          "label": "Limit to specific referrer path"
+        },
+        {
+          "id": "target_referrer",
+          "type": "text",
+          "label": "Targeted referrer"
+        },
+        {
+          "type": "header",
+          "content": "Target device"
+        },
+        {
+          "id": "target_device_enabled",
+          "type": "checkbox",
+          "label": "Limit to desktop or mobile"
+        },
+        {
+          "type": "select",
+          "id": "target_device",
+          "label": "Device ",
+          "default": "mobile",
+          "options": [
+            {"value": "mobile", "label": "Only show on mobile"},
+            {"value": "desktop", "label": "Only show on desktop"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "cookie",
+      "name": "Cookie consent popup",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_cookies_popup",
+          "label": "Enable cookie tracking popup",
+          "info": "This feature uses the Shopify [consent tracking API](https://help.shopify.com/en/manual/your-account/privacy/cookies) and will not show in all regions.  Customer privacy tracking limits must be enabled in your [online store settings](/admin/online_store/preferences).  [Learn More](https://groupthought.com/link/pipeline/docs/cookies)",
+          "default": true
+        },
+
+
+        {
+          "id": "text_title",
+          "type": "text",
+          "label": "Title",
+          "default": "Are Cookies OK?"
+        },
+        {
+          "id": "text_body",
+          "type": "richtext",
+          "label": "Text",
+          "default": "<p>We use cookies to improve your browsing experience</p>"
+        },
+        {
+          "id": "text_accept",
+          "type": "text",
+          "label": "Accept button",
+          "default": "Accept"
+        },
+        {
+          "id": "text_learn",
+          "type": "text",
+          "label": "Learn more button",
+          "default": "Learn More"
+        },
+        {
+          "id": "learn_url",
+          "type": "url",
+          "label": "Learn more link"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "text--neutral",
+          "options": [
+            { "value": "text--neutral", "label": "Normal text"},
+            { "value": "text--white", "label": "White"},
+            { "value": "text--primary", "label": "Primary accent"},
+            { "value": "text--secondary", "label": "Secondary accent"},
+            { "value": "text--black", "label": "Black"},
+            { "value": "text--invert--primary", "label": "Primary dark accent"},
+            { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+            { "value": "text--invert", "label": "Inverted text color"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_color",
+          "label": "Button color",
+          "default": "btn--neutral",
+          "options": [
+            { "value": "btn--primary", "label": "Bright accent" },
+            { "value": "btn--secondary", "label": "Secondary accent" },
+            { "value": "btn--neutral", "label": "Text color" },
+            { "value": "btn--black", "label": "Black" },
+            { "value": "btn--white", "label": "White" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "btn--soft uppercase",
+          "options": [
+            { "value": "caps--link", "label": "Capitalized text" },
+            { "value": "btn uppercase", "label": "Solid button" },
+            { "value": "btn--soft uppercase", "label": "Soft button" },
+            { "value": "btn--outline uppercase", "label": "Outlined button" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "bg",
+          "label": "Background color",
+          "default": "palette--light bg--neutral",
+          "options": [
+            { "value": "palette--light bg--neutral", "label": "Default"},
+            { "value": "palette--light bg--accent", "label": "Light"},
+            { "value": "palette--dark bg--invert", "label": "Dark"},
+            { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Position",
+          "options": [
+            {
+              "value": "popup--left",
+              "label": "Left"
+            },
+            {
+              "value": "popup--right",
+              "label": "Right"
+            },
+            {
+              "value": "popup--bottom",
+              "label": "Bottom"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

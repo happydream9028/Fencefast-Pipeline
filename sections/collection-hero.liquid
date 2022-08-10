@@ -1,0 +1,183 @@
+{%- liquid
+  assign show_image = false
+  if collection.image and section.settings.show_image
+    assign show_image = true
+  endif
+
+  assign title_below = false
+  if show_image == false or section.settings.show_title_below
+    assign title_below = true
+  endif
+
+  assign description_below = false
+  if show_image == false or section.settings.show_description_below
+    assign description_below = true
+  endif
+-%}
+
+
+<section data-section-id="{{ section.id }}" data-section-type="hero">
+  {% if show_image %}
+    <div class="section--image fade-in-child js-overflow-container {{ section.settings.text_color }}" data-overlay-header>
+      <div class="hero__content__wrapper {{ section.settings.text_align }}">
+        <div class="hero__content js-overflow-content">
+          {%- if section.settings.show_title and section.settings.show_title_below == false -%}
+            <h1 class="hero__title h2">
+              {{ collection.title }}
+            </h1>
+          {%- endif -%}
+          {%- if collection.description.size != blank and section.settings.show_description and section.settings.show_description_below == false -%}
+            <div class="hero__description h5--body rte">
+              {{ collection.description }}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="image-overlay" style="--bg:{{ section.settings.overlay_color }}; opacity:{{ section.settings.overlay_opacity | times: 0.01 }};"></div>
+      {% render 'hero', img_object: collection.image, frame_height_class: section.settings.image_height, bg_position: section.settings.bg_position %}
+    </div>
+  {% endif %}
+
+  {%- if show_image == false or title_below or description_below -%} 
+    <div class="wrapper">
+      <div class="collection__heading {{ section.settings.text_align }}">
+        {%- if title_below and section.settings.show_title -%}
+          <h1 class="h3 standard__heading collection__heading__text">
+            {{ collection.title }}
+          </h1>
+        {%- endif -%}
+        {%- if description_below and section.settings.show_description and collection.description != blank -%}
+          <div class="rte standard__rte collection__heading__text">
+            {{ collection.description }}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Collection title",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+   },
+   {
+     "type": "select",
+     "id": "text_align",
+     "label": "Text alignment",
+     "default": "align--middle-center",
+     "options": [
+       { "value": "align--top-left", "label": "Top left"},
+       { "value": "align--top-center", "label": "Top center"},
+       { "value": "align--top-right", "label": "Top right"},
+       { "value": "align--middle-left", "label": "Middle left"},
+       { "value": "align--middle-center", "label": "Absolute center"},
+       { "value": "align--middle-right", "label": "Middle right"},
+       { "value": "align--bottom-left", "label": "Bottom left"},
+       { "value": "align--bottom-center", "label": "Bottom center"},
+       { "value": "align--bottom-right", "label": "Bottom right"}
+     ]
+   },
+   {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show collection title",
+      "default": true
+   },
+   {
+      "type": "checkbox",
+      "id": "show_title_below",
+      "label": "Title below image",
+      "default": false
+   },
+   {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+   },
+   {
+      "type": "checkbox",
+      "id": "show_description_below",
+      "label": "Description below image",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Feature image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show feature image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Image position",
+      "default": "center-center",
+      "options": [
+        { "label": "Top", "value": "center-top" },
+        { "label": "Right", "value": "right-center" },
+        { "label": "Center", "value": "center-center" },
+        { "label": "Left", "value": "left-center" },
+        { "label": "Bottom", "value": "center-bottom" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image height",
+      "default": "use_screen_one_third",
+      "options": [
+        { "value": "use_screen_full", "label": "Full screen height"},
+        { "value": "use_screen_three_quarters", "label": "Three quarters of screen height"},
+        { "value": "use_screen_two_thirds", "label": "Two thirds of screen height"},
+        { "value": "use_screen_one_half", "label": "One half of screen height"},
+        { "value": "use_screen_one_third", "label": "One third of screen height"},
+        { "value": "use_screen_one_fifth", "label": "One fifth of screen height"},
+        { "value": "use_pixels_800", "label": "800px" },
+        { "value": "use_pixels_650", "label": "650px" },
+        { "value": "use_pixels_500", "label": "500px" },
+        { "value": "use_image", "label": "Image height"}
+      ]
+    },
+    {
+      "type":    "range",
+      "id":      "overlay_opacity",
+      "min":     0,
+      "max":     100,
+      "step":    5,
+      "label":   "Image overlay opacity",
+      "info":    "Increase contrast for legible text.",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text--white",
+      "options": [
+        { "value": "text--neutral", "label": "Normal text"},
+        { "value": "text--white", "label": "White"},
+        { "value": "text--primary", "label": "Primary accent"},
+        { "value": "text--secondary", "label": "Secondary accent"},
+        { "value": "text--black", "label": "Black"},
+        { "value": "text--invert--primary", "label": "Primary dark accent"},
+        { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+        { "value": "text--invert", "label": "Inverted text color"}
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+{%- assign product_tags = product.tags | join: ',' -%}
+{%- assign info_separator = '_info_' -%}
+
+{%- if product_tags contains info_separator -%}
+  {%- assign info_page_handle = product_tags | split: info_separator | last | split: ',' | first -%}
+  {%- assign info_page = pages[info_page_handle] -%}
+  <div class="wrapper">
+    <div class="product-description rte rte--column">
+      {{ info_page.content }}
+    </div>
+  </div>
+{%- endif -%}

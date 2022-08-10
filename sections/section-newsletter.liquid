@@ -1,0 +1,60 @@
+<div class="homepage-newsletter {{ section.settings.bg }}">
+  <div class="wrapper">
+    <div class="one-whole text-center">
+      <div class="newsletter__contain">
+        {% if section.settings.title != '' %}
+          <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+        {% endif %}
+        {% if section.settings.richtext != blank %}
+          <div class="rte rte--column">
+            {{ section.settings.richtext }}
+          </div>
+        {% endif %}
+        {% assign unique =  'section-newsletter' | append: section.id %}
+        {% render 'newsletter-form', unique: unique %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Newsletter"
+    },
+    {
+      "id": "richtext",
+      "type": "richtext",
+      "label": "Subheading",
+      "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

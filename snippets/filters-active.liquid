@@ -1,0 +1,34 @@
+{%- assign filter_count = 0 -%}
+{%- assign collection_sort = collection.sort_by | default: collection.default_sort_by -%}
+{%- capture filter_clears -%}
+  {%- for filter in collection.filters -%}
+    {% if filter.type == "price_range" %}
+      {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+        {%- assign filter_count = filter_count | plus: 1 -%}
+        <a class="active__filters__remove" href="{{ filter.url_to_remove }}" data-filter-update-url>
+          {%- assign min_value = filter.min_value.value | default: 0 -%}
+          {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+          {{ min_value | money_without_trailing_zeros }} - {{ max_value | money_without_trailing_zeros }} X
+        </a>
+      {%- endif -%}
+    {% else %}
+      {%- for filter_value in filter.active_values -%}
+        {%- assign filter_count = filter_count | plus: 1 -%}
+        <a class="active__filters__remove" href="{{ filter_value.url_to_remove }}" data-filter-update-url>
+          {% if filter.type == 'boolean' %}
+            {{ filter.label }} : 
+          {% endif %}
+          {{ filter_value.label }} 
+          <span class="filter__x">X</span>
+        </a>
+      {%- endfor -%}
+    {% endif %}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<div class="collection__active__filters {% unless filter_count > 0 %}is-hidden{% endunless %}" data-active-filters>
+  {%- if filter_count > 1 -%}
+    <a href="{{ collection.url }}?sort_by={{ collection_sort }}" class="active__filters__clear" data-filter-update-url>{{ 'collections.sidebar.all_tags' | t }}</a>
+  {%- endif -%}
+  {{ filter_clears }}
+</div>

@@ -1,0 +1,177 @@
+<!-- /sections/list-collections.liquid -->
+{%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+
+{%- assign grid_item_width = 'one-half' -%}
+{% case section.settings.grid_collection %}
+  {% when 1 %}
+    {%- assign grid_item_width = 'one-whole' -%}
+  {% when 2 %}
+    {%- assign grid_item_width = 'one-half' -%}
+  {% when 3 %}
+    {%- assign grid_item_width = 'medium-up--one-third small-down--one-half' -%}
+  {% when 4 %}
+    {%- assign grid_item_width = 'medium-up--one-quarter small-down--one-half' -%}
+{% endcase %}
+
+<div class="wrapper list__collections"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection-row">
+  <h2 class="home__subtitle">{{ 'collections.general.catalog' | t }}</h2>
+
+  {% if section.settings.style == 'collection' %}
+    <div class="grid grid--uniform">
+  {% endif %}
+
+    {% if section.blocks.size == 0 %}
+      {% for collection in collections %}
+        {% if collection.all_products_count > 0 and collection.handle != 'frontpage' and collection.handle != 'all' %}
+
+          {% if section.settings.style == 'product' %}
+            {% render 'collection-row', collection: collection, product_limit: product_limit, grid: section.settings.grid %}
+          {% else %}
+            {% if collection.image %}
+              {%- assign img_object = collection.image -%}
+            {%- elsif collection.products.first -%}
+              {%- assign img_object = collection.products.first.featured_media.preview_image -%}
+            {%- endif -%}
+            <div class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }} >
+              <div class="collection-grid-item section--image">
+                <a href="{{ collection.url }}" class="link-over-image" aria-label="{{ collection.title | default: block.settings.title | strip_html | escape }}">
+                  <div class="hero__content__wrapper align--middle-center">
+                    <div>
+                      <div class="btn btn--small btn--white uppercase">
+                        {{ collection.title | escape }}
+                      </div>
+                    </div>
+                  </div>
+                </a>
+                {%- render 'image-fill', img_object: img_object, aspect_ratio: section.settings.aspect_ratio -%}
+              </div>
+            </div>
+          {% endif %}
+
+
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% for block in section.blocks %}
+        {%- assign collection = collections[block.settings.collection] -%}
+
+
+        {% if section.settings.style == 'product' %}
+          {% render 'collection-row', collection: collection, product_limit: product_limit, grid: section.settings.grid %}
+        {% else %}
+          {% if collection.image %}
+            {%- assign img_object = collection.image -%}
+          {%- elsif collection.products.first -%}
+            {%- assign img_object = collection.products.first.featured_media.preview_image -%}
+          {%- endif -%}
+          <div class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }} >
+            <div class="collection-grid-item section--image text--white">
+              <a href="{{ collection.url }}" class="link-over-image" aria-label="{{ collection.title | default: block.settings.title | strip_html | escape }}">
+                <div class="hero__content__wrapper align--middle-center">
+                  <div>
+                    <div class="btn btn--small btn--white uppercase">
+                      {{ collection.title | escape }}
+                    </div>
+                  </div>
+                </div>
+              </a>
+              {%- render 'image-fill', img_object: img_object, aspect_ratio: section.settings.aspect_ratio -%}
+            </div>
+          </div>
+        {% endif %}
+
+
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Collections list",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "All of your collections are listed by default. To customize your list, add specific collections."
+    },
+    {
+      "type": "radio",
+      "id": "style",
+      "label": "Display style",
+      "default": "collection",
+      "options": [
+        {
+          "value": "collection",
+          "label": "Collection grid"
+        },
+        {
+          "value": "product",
+          "label": "Product grid"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Collection grid"
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio",
+      "min": 0.3,
+      "max": 1.5,
+      "step": 0.1,
+      "unit": ":1",
+      "label": "Image scaling ratio",
+      "info": "Wide to tall",
+      "default": 1.0
+    },
+    {
+      "type":    "range",
+      "id":      "grid_collection",
+      "min":     1,
+      "max":     4,
+      "step":    1,
+      "label":   "Collections per row",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Product grid"
+    },
+    {
+      "type":    "range",
+      "id":      "grid",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "label":   "Products per row",
+      "default": 4
+    },
+    {
+      "type":    "range",
+      "id":      "rows",
+      "min":     1,
+      "max":     8,
+      "step":    1,
+      "label":   "Number of rows",
+      "default": 1
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

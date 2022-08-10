@@ -1,0 +1,517 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "kicker": "",
+        "show_title": false,
+        "show_content": true,
+        "text_size": 2,
+        "align_text": "text-left",
+        "height": "margin--large",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "hero": {
+      "type": "section-hero",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/G03302-HR4-Screen-Blue_b8281d84-4044-4b1b-b4f3-7753cdad845a.jpg",
+        "bg_position": "center-center",
+        "height": "use_screen_one_fifth",
+        "overlay_opacity": 50,
+        "overlay_color": "#000000",
+        "kicker": "Animal Management",
+        "title": "Weighing & Reading",
+        "richtext": "",
+        "text_align": "align--middle-center",
+        "text_color": "text--white",
+        "enable_search": false,
+        "link_text": "",
+        "link": "",
+        "button_color": "btn--white",
+        "button_style": "btn"
+      }
+    },
+    "16529685106871446a": {
+      "type": "section-richtext",
+      "blocks": {
+        "09f8f86b-08a7-4668-a448-6ed6d6b1a5ac": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-animal",
+            "icon_color": "#4b4b4b"
+          }
+        },
+        "1652968509b0fea52a-2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Here at FenceFast we have a variety of solution to assist your need to build or evolve your perfect weighing, tag reading and data collection system for both an operational improvement and to meet traceability mandates. With FenceFast you'll get expert advice to help plan, deploy and support your livestock management solution from beginning to end.<\/p>",
+            "text_size": 5,
+            "text_columns": 1
+          }
+        }
+      },
+      "block_order": [
+        "09f8f86b-08a7-4668-a448-6ed6d6b1a5ac",
+        "1652968509b0fea52a-2"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-center",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "1652968821656b412c": {
+      "type": "section-custom-content",
+      "blocks": {
+        "ab8a5232-6903-484f-aded-28aebd978aeb": {
+          "type": "video",
+          "settings": {
+            "video_link_bg": "",
+            "object_position": "center-center",
+            "image": "shopify:\/\/shop_images\/Cow_with_Tag.png",
+            "bg_position": "center-center",
+            "video_link": "https:\/\/youtu.be\/z57iXzjadVQ",
+            "popup_text": "",
+            "kicker": "Introducing",
+            "title": "Livestock RFID REaders",
+            "richtext": "<p>Technology to make your life easier.<\/p>",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "overlay_opacity": 15,
+            "overlay_color": "#000000",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "89affc1a-b5ce-451b-a3cf-99ad892bd854": {
+          "type": "text",
+          "settings": {
+            "kicker": "",
+            "title": "What is EID?",
+            "text": "<p>EID tags enable you to accurately, quickly and automatically identify an individual animal, eliminating the need to enter tag numbers manually.<\/p><p>EID also makes it practical to record individual animal performance and other information – such as source, breeding or treatment information.<\/p><p>Using EID with an electronic weigh scale indicator means you can view animal’s full performance history instantly while you’re weighing in the field, which helps you make important management decisions quickly.   <\/p><p>Over time, an animal’s weight history can be tracked, good and bad performers can be identified, and the input of resources managed to ensure profits are maximised.<\/p>",
+            "text_size": 1,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "",
+            "button_url": "",
+            "button_color": "btn--neutral",
+            "button_style": "caps--link",
+            "text_color": "text--neutral",
+            "bg_color": "#f1f1f1"
+          }
+        }
+      },
+      "block_order": [
+        "ab8a5232-6903-484f-aded-28aebd978aeb",
+        "89affc1a-b5ce-451b-a3cf-99ad892bd854"
+      ],
+      "settings": {
+        "height": "use_screen_two_thirds",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "1652969891317badf5": {
+      "type": "section-custom-content",
+      "disabled": true,
+      "blocks": {
+        "f5adc434-134b-443e-9b27-d618d09e1c71": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/pexels-dan-hamill-436796.jpg",
+            "bg_position": "right-center",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        },
+        "e3750dbd-98db-4121-8088-abba868bb228": {
+          "type": "text",
+          "settings": {
+            "kicker": "",
+            "title": "Identify Sick Animals",
+            "text": "<p>It’s not always easy to detect by sight when animals are not performing as well as expected.<\/p><p>Regularly weighing animals will help you track weight gain performance and identify sick or lame animal early.<\/p><p>Weight loss is a simple way to identify individual animals that are not performing well. The animals can then be singled out and treated as recommended by your vet. <\/p><p>The knock-on effect of unidentified poor health can mean your animals take longer to reach their growth targets and negatively affect your feed budget or in the worst case develop into fatal illness and the loss of livestock.<\/p>",
+            "text_size": 2,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "",
+            "button_url": "",
+            "button_color": "btn--neutral",
+            "button_style": "caps--link",
+            "text_color": "text--white",
+            "bg_color": "#ef7d27"
+          }
+        }
+      },
+      "block_order": [
+        "f5adc434-134b-443e-9b27-d618d09e1c71",
+        "e3750dbd-98db-4121-8088-abba868bb228"
+      ],
+      "settings": {
+        "height": "use_screen_two_thirds",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "1652969944373c6537": {
+      "type": "section-custom-content",
+      "blocks": {
+        "8c69e878-b156-43b2-958b-59b0b5d546d7": {
+          "type": "text",
+          "settings": {
+            "kicker": "",
+            "title": "What is EID?",
+            "text": "<p>EID tags enable you to accurately, quickly and automatically identify an individual animal, eliminating the need to enter tag numbers manually.<\/p><p>EID also makes it practical to record individual animal performance and other information – such as source, breeding or treatment information.<\/p><p>Using EID with an electronic weigh scale indicator means you can view animal’s full performance history instantly while you’re weighing in the field, which helps you make important management decisions quickly.   <\/p><p>Over time, an animal’s weight history can be tracked, good and bad performers can be identified, and the input of resources managed to ensure profits are maximised.<\/p>",
+            "text_size": 2,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "",
+            "button_url": "",
+            "button_color": "btn--neutral",
+            "button_style": "caps--link",
+            "text_color": "text--white",
+            "bg_color": "#ef7d27"
+          }
+        },
+        "a4c68898-f6f8-4249-9497-de0de4858991": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/G03302-HR4-Screen-Blue_b8281d84-4044-4b1b-b4f3-7753cdad845a.jpg",
+            "bg_position": "center-center",
+            "overlay_opacity": 15,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        }
+      },
+      "block_order": [
+        "8c69e878-b156-43b2-958b-59b0b5d546d7",
+        "a4c68898-f6f8-4249-9497-de0de4858991"
+      ],
+      "settings": {
+        "height": "use_screen_two_thirds",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "1652970278e229a27b": {
+      "type": "section-richtext",
+      "blocks": {
+        "16529702781b82ae7a-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Benefits Of Using Livestock Tag Reader<\/p>",
+            "text_size": 7
+          }
+        },
+        "16529702781b82ae7a-2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>ACCURACY -  A tag reader allows the user to record information accurately<\/p><p>SAVES TIME - A tag reader can record data in a split second, even if the animal is on the move, saving time in documenting the data and having to stop and catch the animal for manual identification.<\/p><p>CONVENIENCE - A tag reader offers the convenience of having Visual Identification Tags, Electronic Identification Tags, animal history, and health all synced together in one overall place.<\/p><p>FAST - A tag reader can make your record-keeping easier by downloading data into spreadsheet format or, in some cases, the included animal management software. It also can read and record a tag instantaneously.<\/p><p>CONFIDENCE - A tag reader gives the user confidence that the data has been entered correctly without the worry of human errors, unable to see the tag or transcription mistakes visually.<\/p><p>DATA BACK-UP - The data can, and should be, backed up to the cloud or your computer to allow for easy record keeping and backup of your information.  No need to worry about lost books or pieces of paper with record-keeping information.<\/p>",
+            "text_size": 4,
+            "text_columns": 1
+          }
+        }
+      },
+      "block_order": [
+        "16529702781b82ae7a-1",
+        "16529702781b82ae7a-2"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-left",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "1652968696285ef008": {
+      "type": "section-columns",
+      "blocks": {
+        "1652968696c40d3ece-0": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "bg_position": "center-center",
+            "title": "01",
+            "text": "<p>Weighing replaces guesswork with facts, making it a powerful performance measurement tool for farmers. The information provided by weigh scales assists critical decision making about feed, health treatments and herd size management.<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        },
+        "1652968696c40d3ece-1": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "bg_position": "center-center",
+            "title": "02",
+            "text": "<p>On its own, weighing is a valuable addition to your operation. However, with the emergence of EID, an opportunity exists to maximise the potential of the collected weigh data.<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        },
+        "1652968696c40d3ece-2": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": false,
+            "bg_position": "center-center",
+            "title": "03",
+            "text": "<p>Weighing your stock in line with target weights replaces guess work with facts, helping you make better informed decisions around feed, treatment and selling.<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        }
+      },
+      "block_order": [
+        "1652968696c40d3ece-0",
+        "1652968696c40d3ece-1",
+        "1652968696c40d3ece-2"
+      ],
+      "settings": {
+        "title": "Why Weigh your Livestock?",
+        "bg": "palette--dark bg--invert",
+        "align_text": "text-center",
+        "scale_image": false,
+        "aspect_ratio": 1
+      }
+    },
+    "165296922229377d12": {
+      "type": "section-richtext",
+      "blocks": {
+        "1652969222f2c17102-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Benefits Of Weighing<\/p>",
+            "text_size": 7
+          }
+        },
+        "1652969222f2c17102-2": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Ensure livestock are sold at the optimum weight grade <\/strong>– closely manage the weight gains of individual animals or herds and tailor your feed and treatment inputs as required.<\/p><p><strong>Monitor reproductive performance <\/strong>– closely monitoring the weight gain of offspring can help make breeding decisions to maximise reproductive performance.<\/p><p><strong>Minimise treatment waste<\/strong>– more accurately calculate drench\/pour-on dosage based on the requirements of the individual animal to minimise treatment waste while also maximising the health of your livestock.<\/p><p><strong>Identify sick or lame animals early <\/strong>– regular weighing of individual animals means weight loss and other issues that manifest over time are identified quickly.<\/p><p><strong>Verifiable tracking of animal welfare practices <\/strong>– for assessments or audits such as Verified Beef Production Plus (VBP+)<br\/><\/p><p><strong>Record animal health treatment on the spot  <\/strong>– <strong> <\/strong>vaccinations and medication can be easily monitered.<\/p><p><strong>Life data tracking  <\/strong>–  of a herd to assist in birth and death records for age verification and audit purposes.<br\/><\/p><p><strong>Drug with-hold days are monitored<\/strong> <strong> <\/strong>– with ability to issue alerts if an animal is scanned prior to the withdrawal period<\/p>",
+            "text_size": 5,
+            "text_columns": 1
+          }
+        },
+        "1e3e031a-3195-49d4-af40-70835f7b1bd3": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "<p>Weight Gain For Profit<\/p>",
+            "text_size": 7
+          }
+        },
+        "991b1f83-3d8f-4e29-9aab-dcdaddae36c3": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>One of the simplest reasons you should be weighing your livestock is to make sure your animals are consistently gaining weight, so you continue to profit.<\/p><p>Traditionally farmers and ranchers have relied on their years of experience to know when animals are gaining weight and are ready to be sold or slaughtered.<\/p><p>Weighing backs up that experience with facts.<\/p><p>It’s all about input verses output.<\/p><p>The input cost of feed, staff wages, time, health treatments, pasture and equipment maintenance per day versus the weight your animals are putting on per day.<\/p><p>In order to profit your input costs, need to be lower than your output gains.<\/p><p>Regularly weighing your livestock can help you to…<\/p><p>• Ensure animals are continually gaining weight<br\/>• Review the speed which animals are gaining weight each day<br\/>• Identify good performers who might require less feed<br\/>• Identify poor performers which may require medical treatment<\/p><p>All of which will help you to determine the most profitable point to sell or slaughter your livestock.<\/p><p>Regular weighing will help you recognise when your input costs are in danger of becoming greater than your output gains, so you can be continuing to run a successful, profitable business.<\/p>",
+            "text_size": 5,
+            "text_columns": 1
+          }
+        }
+      },
+      "block_order": [
+        "1652969222f2c17102-1",
+        "1652969222f2c17102-2",
+        "1e3e031a-3195-49d4-af40-70835f7b1bd3",
+        "991b1f83-3d8f-4e29-9aab-dcdaddae36c3"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-left",
+        "height": "margin--small",
+        "width": "wrapper",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "165297056354b89452": {
+      "type": "section-richtext",
+      "blocks": {
+        "1652970562e4e0aaea-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>How Does EID Work With Your Weigh System?<\/p>",
+            "text_size": 7
+          }
+        },
+        "1652970562e4e0aaea-2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>With an EID compatible Weigh scale Data collector, EID panel or stick reader, animals can be scanned at the time of weighing.<\/p><p>Individual animal weights and other traits can be recorded against each animal’s unique ID number. Information is stored within the weigh scale Data collector ready for you to view in the yard or back at the office, transferred to your computer, electronic device, or upload to online databases.<\/p>",
+            "text_size": 5,
+            "text_columns": 1
+          }
+        }
+      },
+      "block_order": [
+        "1652970562e4e0aaea-1",
+        "1652970562e4e0aaea-2"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-left",
+        "height": "margin--small",
+        "width": "wrapper",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "16529703706236a4a2": {
+      "type": "section-custom-content",
+      "disabled": true,
+      "blocks": {
+        "e3bd4b57-7aed-45f8-9ea0-3abcd0445bb1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/TTSM-PG5-diagram_cropped.webp",
+            "bg_position": "center-center",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        }
+      },
+      "block_order": [
+        "e3bd4b57-7aed-45f8-9ea0-3abcd0445bb1"
+      ],
+      "settings": {
+        "height": "image-height",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "165297067040c20715": {
+      "type": "section-collection-grid",
+      "blocks": {
+        "16529706698ac11412-0": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "eid-tag-readers",
+            "title": "EID Livestock Tag Readers",
+            "link_text": "View products",
+            "image": "shopify:\/\/shop_images\/G03302-HR4-Screen-Blue_b8281d84-4044-4b1b-b4f3-7753cdad845a.jpg",
+            "bg_position": "center-center",
+            "button_link": ""
+          }
+        },
+        "16529706698ac11412-1": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "weigh-scales-and-data-collectors",
+            "title": "Scale Indicator\/Data Collectors",
+            "link_text": "View products",
+            "image": "shopify:\/\/shop_images\/twr-5-weighscale-hereford-crush4_1024x1024_b35cc10b-0f35-4cbd-b7e3-746cf64a9599.jpg",
+            "bg_position": "center-center",
+            "button_link": ""
+          }
+        },
+        "34c3388a-1935-41c5-b82f-ee9ba0011d47": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "weighing-only-systems",
+            "title": "Weighing Only Systems",
+            "link_text": "View products",
+            "image": "shopify:\/\/shop_images\/9800E942-38C8-4492-B8B3029200CEA1C7-500Wx500H_1024x1024_0955d11f-1345-4d8f-9574-277237c9422d.webp",
+            "bg_position": "center-center",
+            "button_link": ""
+          }
+        },
+        "998f8646-0b84-4687-8549-3f9e9278c618": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "loadbars-and-accessories",
+            "title": "Load Bars & Load Cells",
+            "link_text": "View products",
+            "image": "shopify:\/\/shop_images\/G05420-heavy-duty-weigh-feet-right-angle_1024x1024_83865058-1a7d-4c11-8bd6-815ddec0faac.jpg",
+            "bg_position": "center-center",
+            "button_link": ""
+          }
+        },
+        "2024a0f8-e1a6-4a85-b4e8-61dd48102d8b": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "platforms",
+            "title": "Platforms & Crates",
+            "link_text": "View products",
+            "bg_position": "center-center",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "16529706698ac11412-0",
+        "16529706698ac11412-1",
+        "34c3388a-1935-41c5-b82f-ee9ba0011d47",
+        "998f8646-0b84-4687-8549-3f9e9278c618",
+        "2024a0f8-e1a6-4a85-b4e8-61dd48102d8b"
+      ],
+      "settings": {
+        "title": "Shop Weighing and Reading",
+        "grid": 3,
+        "bg": "palette--light bg--accent",
+        "text_color": "text--white",
+        "button_style": "btn",
+        "button_color": "btn--white",
+        "overlay_opacity": 50,
+        "overlay_color": "#000000",
+        "aspect_ratio": 0.7
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hero",
+    "16529685106871446a",
+    "1652968821656b412c",
+    "1652969891317badf5",
+    "1652969944373c6537",
+    "1652970278e229a27b",
+    "1652968696285ef008",
+    "165296922229377d12",
+    "165297056354b89452",
+    "16529703706236a4a2",
+    "165297067040c20715"
+  ]
+}

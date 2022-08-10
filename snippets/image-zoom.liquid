@@ -1,0 +1,32 @@
+{% comment %}
+  * An image zoom modal.  Requires JS hooks.
+
+  *  image {object}- The Image we will use
+
+  {% render 'image-zoom', image: image,  unique: block.id %}
+{% endcomment %}
+
+<a class="zoom__trigger"
+  data-image-zoom
+  data-popup-{{ unique }}="zoom-{{ unique }}"
+  data-unique="{{ unique }}"
+  aria-label="{{ 'general.accessibility.zoom' | t }}">
+  {% render 'icon-zoom' %}
+  <span class="visually-hidden">{{ 'general.accessibility.zoom' | t }}</span>
+</a>
+
+<div class="modal micromodal-slide" id="zoom-{{ unique }}" data-modal aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
+    <div class="modal__container modal__container--zoom"
+      data-modal-content
+      role="dialog"
+      aria-modal="true">
+      <div class="zoom--images">
+        <img class="zoom__img"
+          data-src="{{ image | img_url: 'master' }}"
+          alt="{{ image.alt | strip_html | escape }}"/>
+      </div>
+    </div>
+  </div>
+</div>

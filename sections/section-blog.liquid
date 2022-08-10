@@ -1,0 +1,147 @@
+<!-- /sections/section-blog.liquid -->
+
+{%- assign blog = blogs[section.settings.homepage_blog] -%}
+{%- assign post_count = section.settings.homepage_blog_count -%}
+
+{% case post_count %}
+  {% when 1 %}
+    {% assign blog_grid = 'medium-up--one-half medium-up--push-one-quarter' %}
+  {% when 2 %}
+    {% assign blog_grid = 'medium-up--one-half' %}
+  {% when 3 %}
+    {% assign blog_grid = 'medium-up--one-third' %}
+{% endcase %}
+
+<div class="homepage-blog section-{{ section.id }} {{ section.settings.bg }}">
+  <div class="wrapper">
+      {% unless section.settings.title == '' %}
+        <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+      {% endunless %}
+      <div class="grid grid--uniform">
+        {% unless blog == blank or blog.empty? %}
+          {% for article in blog.articles limit: post_count %}
+            <div class="grid__item {{ blog_grid }}">
+              {% render 'article-grid-item', article: article, aspect_ratio: section.settings.aspect_ratio, color: section.settings.color, overlay_color: section.settings.overlay_color %}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% for i in (1..post_count) %}
+            <div class="grid__item {{ blog_grid }}">
+              <div class="blog__link">
+                <div class="blog__article article__card">
+                  <div class="rte blog__article__content">
+                    <h2 class="h3 blog__article__title">{{ 'home_page.onboarding.blog_title' | t }}</h2>
+                    <p>{{ 'home_page.onboarding.blog_excerpt' | t }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endunless %}
+      </div>
+
+      {% if section.settings.show_view_all %}
+        <div class="text-center">
+          <a href="{{ blog.url }}" class="{{ section.settings.button_style }} homepage-blog__btn">
+            {{ 'collections.general.view_all' | t }}
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% schema %}
+{
+  "name": "Blog posts",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "News"
+    },
+    {
+      "type": "blog",
+      "id": "homepage_blog",
+      "label": "Blog"
+    },
+    {
+      "type":    "range",
+      "id":      "homepage_blog_count",
+      "min":     1,
+      "max":     3,
+      "step":    1,
+      "label":   "Number of posts to display",
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "Text color",
+      "default": "text--white",
+      "options": [
+        { "value": "text--neutral", "label": "Normal text"},
+        { "value": "text--white", "label": "White"},
+        { "value": "text--primary", "label": "Primary accent"},
+        { "value": "text--secondary", "label": "Secondary accent"},
+        { "value": "text--black", "label": "Black"},
+        { "value": "text--invert--primary", "label": "Primary dark accent"},
+        { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+        { "value": "text--invert", "label": "Inverted text color"}
+      ]
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio",
+      "min": 0.5,
+      "max": 1.5,
+      "step": 0.1,
+      "unit": ":1",
+      "label": "Image scaling ratio",
+      "info": "Wide to tall",
+      "default": 0.7
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn--outline uppercase",
+      "options": [
+        { "value": "caps--link", "label": "Capitalized text" },
+        { "value": "btn uppercase", "label": "Solid button" },
+        { "value": "btn--soft uppercase", "label": "Soft button" },
+        { "value": "btn--outline uppercase", "label": "Outlined button" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

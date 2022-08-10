@@ -1,0 +1,591 @@
+{
+  "sections": {
+    "hero": {
+      "type": "section-hero",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/pexels-will-kirk-4488405.jpg",
+        "bg_position": "center-center",
+        "height": "use_screen_one_fifth",
+        "overlay_opacity": 50,
+        "overlay_color": "#000000",
+        "kicker": "",
+        "title": "Frequently Asked Questions",
+        "richtext": "",
+        "text_align": "align--middle-center",
+        "text_color": "text--white",
+        "enable_search": false,
+        "link_text": "",
+        "link": "",
+        "button_color": "btn--white",
+        "button_style": "btn"
+      }
+    },
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "kicker": "",
+        "show_title": false,
+        "show_content": true,
+        "text_size": 2,
+        "align_text": "text-left",
+        "height": "margin--medium",
+        "width": "wrapper--narrow",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "1652907027680825fb": {
+      "type": "section-richtext",
+      "blocks": {
+        "f570d844-a8ba-4d93-87aa-add13704988e": {
+          "type": "button",
+          "settings": {
+            "button_text": "General",
+            "button_url": "#faqs-general",
+            "button_size": "btn--medium",
+            "button_style": "btn uppercase",
+            "button_color": "btn--primary"
+          }
+        },
+        "16529070274c05ac6d-3": {
+          "type": "button",
+          "settings": {
+            "button_text": "Shipping",
+            "button_url": "#faqs-shipping",
+            "button_size": "btn--medium",
+            "button_style": "btn uppercase",
+            "button_color": "btn--primary"
+          }
+        },
+        "d23db901-af9d-44e5-a2fb-ef44ae3657a1": {
+          "type": "button",
+          "settings": {
+            "button_text": "Sheep\/Goats",
+            "button_url": "#faqs-sheep-goats",
+            "button_size": "btn--medium",
+            "button_style": "btn uppercase",
+            "button_color": "btn--primary"
+          }
+        },
+        "ef4f7a05-2514-4af1-a7d4-cc71a2b99056": {
+          "type": "button",
+          "settings": {
+            "button_text": "Poultry",
+            "button_url": "#faqs-poultry",
+            "button_size": "btn--medium",
+            "button_style": "btn uppercase",
+            "button_color": "btn--primary"
+          }
+        },
+        "d9085e42-7c04-47d7-836a-9ffe50365d5e": {
+          "type": "button",
+          "settings": {
+            "button_text": "Energizers",
+            "button_url": "#faqs-energizers",
+            "button_size": "btn--medium",
+            "button_style": "btn uppercase",
+            "button_color": "btn--primary"
+          }
+        },
+        "3eff0cf4-67ee-4d70-8efc-f3c0698ffaa7": {
+          "type": "button",
+          "settings": {
+            "button_text": "Traceability",
+            "button_url": "#faqs-traceability",
+            "button_size": "btn--medium",
+            "button_style": "btn uppercase",
+            "button_color": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "f570d844-a8ba-4d93-87aa-add13704988e",
+        "16529070274c05ac6d-3",
+        "d23db901-af9d-44e5-a2fb-ef44ae3657a1",
+        "ef4f7a05-2514-4af1-a7d4-cc71a2b99056",
+        "d9085e42-7c04-47d7-836a-9ffe50365d5e",
+        "3eff0cf4-67ee-4d70-8efc-f3c0698ffaa7"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-center",
+        "height": "margin--small",
+        "width": "wrapper",
+        "bg": "palette--dark bg--invert"
+      }
+    },
+    "165290695068261aab": {
+      "type": "section-richtext",
+      "blocks": {
+        "16529069509e7c06de-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>General FAQs<\/p>",
+            "text_size": 8
+          }
+        }
+      },
+      "block_order": [
+        "16529069509e7c06de-1"
+      ],
+      "settings": {
+        "anchor": "faqs-general",
+        "align_text": "text-center",
+        "height": "margin--small",
+        "width": "wrapper",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "165290699827ce334e": {
+      "type": "section-faq",
+      "blocks": {
+        "1652906998d92d4180-1": {
+          "type": "text",
+          "settings": {
+            "title": "Where can I find you?",
+            "content": "<p>FenceFast is an e-commerce business with an online store.  We do offer a local pickup option for Kinistino Saskatchewan.<\/p>"
+          }
+        },
+        "1652906998d92d4180-2": {
+          "type": "text",
+          "settings": {
+            "title": "Are you located in my local city?",
+            "content": "<p>FenceFast is an e-commerce business with an online store.  We do offer a local pickup option for Kinistino Saskatchewan.<\/p>"
+          }
+        },
+        "1652906998d92d4180-0": {
+          "type": "text",
+          "settings": {
+            "title": "I am interested in placing an order and wonder what the shipping will cost be?",
+            "content": "<p>To determine shipping costs, create an account, add the items you want to your cart and select check out.  You do not need to process payment to see the shipping options and cost.  Remember that $1,000 orders, before applicable taxes, ship free!<\/p>"
+          }
+        },
+        "17f9844f-8b15-4973-8616-7d6584f8f311": {
+          "type": "text",
+          "settings": {
+            "title": "What is the email for paying with etransfer?",
+            "content": "<p>info@fencefast.ca<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "1652906998d92d4180-1",
+        "1652906998d92d4180-2",
+        "1652906998d92d4180-0",
+        "17f9844f-8b15-4973-8616-7d6584f8f311"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "text-left",
+        "text_size": 1,
+        "height": "margin--small",
+        "width": "wrapper--full",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "16530991559be9fe60": {
+      "type": "section-richtext",
+      "blocks": {
+        "1653099155a144271f-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Shipping FAQS<\/p>",
+            "text_size": 8
+          }
+        }
+      },
+      "block_order": [
+        "1653099155a144271f-1"
+      ],
+      "settings": {
+        "anchor": "faqs-shipping",
+        "align_text": "text-center",
+        "height": "margin--medium",
+        "width": "wrapper--full",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "165309898365d4d0a7": {
+      "type": "section-faq",
+      "blocks": {
+        "1653098983588ebfe4-0": {
+          "type": "text",
+          "settings": {
+            "title": "Do you offer free shipping?",
+            "content": "<p>Orders over $1,000,  before applicable taxes, ship free!<\/p>"
+          }
+        },
+        "1653098983588ebfe4-1": {
+          "type": "text",
+          "settings": {
+            "title": "If I ordered these, how long would it take to receive them?",
+            "content": "<p>Our warehouse is located in Kinistino SK.  Canada Post is able to provide 4-6 business days delivery to many areas in the country.  Courier service is often quicker.<\/p>"
+          }
+        },
+        "1653098983588ebfe4-2": {
+          "type": "text",
+          "settings": {
+            "title": "I used to be able to select Langley for pickup, can you help me select Langley pickup.",
+            "content": "<p>Sorry, we no longer offer local pickup for Langley as we have relocated our warehouse to Kinistino Saskatchewan. <\/p>"
+          }
+        },
+        "730c5dc4-c88f-4e77-a354-cd7c6007317b": {
+          "type": "text",
+          "settings": {
+            "title": "I want to buy from your store in my city, can you help me locate the store nearest me?",
+            "content": "<p>FenceFast is an e-commerce business with an online store.  We do offer a local pickup option for Kinistino Saskatchewan.<\/p>"
+          }
+        },
+        "17e6be9a-18b7-459f-8b0d-89c758b50a03": {
+          "type": "text",
+          "settings": {
+            "title": "I am interested in placing an order and wonder what the shipping will cost be?",
+            "content": "<p>To determine shipping costs, create an account, add the items you want to your cart and select check out.  You do not need to process payment to see the shipping options and cost.  Remember that $1,000 orders, before applicable taxes, ship free!<\/p>"
+          }
+        },
+        "540184ef-e4a6-4918-9635-0e191be88ba2": {
+          "type": "text",
+          "settings": {
+            "title": "Frequently asked question",
+            "content": "<p>Share details about your shipping policies, item returns, or customer service.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "1653098983588ebfe4-0",
+        "1653098983588ebfe4-1",
+        "1653098983588ebfe4-2",
+        "730c5dc4-c88f-4e77-a354-cd7c6007317b",
+        "17e6be9a-18b7-459f-8b0d-89c758b50a03",
+        "540184ef-e4a6-4918-9635-0e191be88ba2"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "text-left",
+        "text_size": 1,
+        "height": "margin--medium",
+        "width": "wrapper--full",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "1653148871981f46ec": {
+      "type": "section-richtext",
+      "blocks": {
+        "16531488718cb08082-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Sheep\/Goats FAQ<\/p>",
+            "text_size": 8
+          }
+        }
+      },
+      "block_order": [
+        "16531488718cb08082-1"
+      ],
+      "settings": {
+        "anchor": "faqs-sheep-goats",
+        "align_text": "text-center",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "16531489276f776d8d": {
+      "type": "section-faq",
+      "blocks": {
+        "16531489270810629b-0": {
+          "type": "text",
+          "settings": {
+            "title": "Do I need positive\/negative netting for my sheep and goats?",
+            "content": "<p>The majority of the netting we sell is designed for an all positive powered system. This means when the animal touches it the energizer passes from the fence to the animal and across the soil to the ground rod which completes the circuit to the energizer.<\/p>"
+          }
+        },
+        "16531489270810629b-1": {
+          "type": "text",
+          "settings": {
+            "title": "When do I need a positive\/negative fence?",
+            "content": "<p>Pos\/Neg fencing is generally reserved for areas of very dry or poor earth soil grounding conditions.<\/p>"
+          }
+        },
+        "16531489270810629b-2": {
+          "type": "text",
+          "settings": {
+            "title": "I have rocky and gravel ground.  Will electric fence work on this type of soil?",
+            "content": "<p>Dry, gravel, sandy, rock soil types can be poor conductors of electricity which may to allow the animal standing on them to complete the circuit back to the energizer thus not delivering a shock. If you have green grass conditions you generally do not require a pos\/neg system as well pos\/neg systems are harder to maintain as if the pos contacts the neg it wire it will create a dead short and no longer be able to deliver an effective shock. <\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "16531489270810629b-0",
+        "16531489270810629b-1",
+        "16531489270810629b-2"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "text-left",
+        "text_size": 1,
+        "height": "margin--medium",
+        "width": "wrapper--full",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "165290689548601eed": {
+      "type": "section-richtext",
+      "blocks": {
+        "1652906894d8ada582-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Poultry FAQs<\/p>",
+            "text_size": 8
+          }
+        }
+      },
+      "block_order": [
+        "1652906894d8ada582-1"
+      ],
+      "settings": {
+        "anchor": "faqs-poultry",
+        "align_text": "text-center",
+        "height": "margin--small",
+        "width": "wrapper",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "faq": {
+      "type": "section-faq",
+      "blocks": {
+        "faq-0": {
+          "type": "text",
+          "settings": {
+            "title": "Why would I want to use temporary electric netting for?",
+            "content": "<p>Ideal for containing all types of poultry in large or small areas and keeping predators out. It is easy to move around so birds can be given new pasture, which reduces parasites and worming requirements of other livestock and gives pastures time to recover.<\/p>"
+          }
+        },
+        "faq-1": {
+          "type": "text",
+          "settings": {
+            "title": "What size of energizer would I need?",
+            "content": "<p>To power your portable electric poultry netting we recommend no less than a 1 joule energizer or a 3 joule energizer if you have tall grass or predator issues. A Multi Power energizer is the best value for output however a self contained solar energizer is a very portable option for summer season only use here in Canada. <\/p>"
+          }
+        },
+        "faq-2": {
+          "type": "text",
+          "settings": {
+            "title": "Does poultry netting need to be a circle to work?  Do the beginning and end posts need to touch to create a closed circuit to make the netting electrified?",
+            "content": "<p>The netting can be in any shape, and the conductive wires are what carry the power along the length of the netting.<\/p>"
+          }
+        },
+        "f1207f8b-d7f2-40ba-aabd-264ad65319cd": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "When do I need a positive\/negative fence?",
+            "content": "<p>Pos\/Neg fencing is generally reserved for areas of very dry or poor earth soil grounding conditions.<\/p>"
+          }
+        },
+        "81163fcd-3d85-4865-8748-27952ff99045": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "I have rocky and gravel ground.  Will electric fence work on this type of soil?",
+            "content": "<p>Dry, gravel, sandy, rock soil types can be poor conductors of electricity which may to allow the animal standing on them to complete the circuit back to the energizer thus not delivering a shock. If you have green grass conditions you generally do not require a pos\/neg system as well pos\/neg systems are harder to maintain as if the pos contacts the neg it wire it will create a dead short and no longer be able to deliver an effective shock. <\/p>"
+          }
+        },
+        "204bf52a-17db-4703-811d-6e1d541299cf": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "Frequently asked question",
+            "content": "<p>Share details about your shipping policies, item returns, or customer service.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq-0",
+        "faq-1",
+        "faq-2",
+        "f1207f8b-d7f2-40ba-aabd-264ad65319cd",
+        "81163fcd-3d85-4865-8748-27952ff99045",
+        "204bf52a-17db-4703-811d-6e1d541299cf"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "text-left",
+        "text_size": 1,
+        "height": "margin--small",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "16531490271740fd18": {
+      "type": "section-richtext",
+      "blocks": {
+        "165314902794b985c1-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Energizer FAQS<\/p>",
+            "text_size": 8
+          }
+        }
+      },
+      "block_order": [
+        "165314902794b985c1-1"
+      ],
+      "settings": {
+        "anchor": "faqs-energizers",
+        "align_text": "text-center",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "1653149063deb11311": {
+      "type": "section-faq",
+      "blocks": {
+        "165314906310ae9446-0": {
+          "type": "text",
+          "settings": {
+            "title": "Do I need a charge controller for my Gallagher MBS energizer?",
+            "content": "<p>Gallagher solar panels are plug and play, meaning they have a built in charge controller and no extra product purchase is necessary.  If you are using another solar panel system, you would need to use a charge controller.  It is recommended to use a solar charge controller as they prevent batteries from being overcharged and prevent batteries from discharging through the solar panel at night.<\/p>"
+          }
+        },
+        "165314906310ae9446-1": {
+          "type": "text",
+          "settings": {
+            "title": "Can the sun energizer battery be charged with a generator?",
+            "content": "<p>The Multi-Power Energizers offer flexibility in power options; they can be used with an external 12V deep cycle battery, plugged into 110V or connected to a solar panel to recharge the battery.<\/p>"
+          }
+        },
+        "165314906310ae9446-2": {
+          "type": "text",
+          "settings": {
+            "title": "Is a solar charge controller necessary?",
+            "content": "<p>Solar charge controllers are a vital part of a solar panel system.  The charge controllers prevent batteries from being overcharged and prevent the batteries from discharging through the solar panel at night.  It is important to note that Gallagher solar panels are plug and play, meaning they have a built-in charge controller, and no extra product purchase is necessary.<\/p>"
+          }
+        },
+        "78d9ffe7-d189-4685-8865-0b89406de872": {
+          "type": "text",
+          "settings": {
+            "title": "Can I connect a solar panel directly to a battery without a charge controller?",
+            "content": "<p>A solar panel can be connected directly to a 12V deep cycle battery, but if it's more than 5 watts, it must be monitored. If the solar panel is rated higher than 5 watts, it must be connected through a solar charge controller to prevent overcharging.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "165314906310ae9446-0",
+        "165314906310ae9446-1",
+        "165314906310ae9446-2",
+        "78d9ffe7-d189-4685-8865-0b89406de872"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "text-left",
+        "text_size": 1,
+        "height": "margin--medium",
+        "width": "wrapper--full",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "165348647644d21b72": {
+      "type": "section-richtext",
+      "blocks": {
+        "1653486476267a266a-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Traceability FAQS<\/p>",
+            "text_size": 8
+          }
+        }
+      },
+      "block_order": [
+        "1653486476267a266a-1"
+      ],
+      "settings": {
+        "anchor": "faqs-traceability",
+        "align_text": "text-center",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "16534865180f78e6b7": {
+      "type": "section-faq",
+      "blocks": {
+        "165348651868d50083-0": {
+          "type": "text",
+          "settings": {
+            "title": "Are there different types of tag readers?",
+            "content": "<p>There are portable tag readers and there are fixed panel readers to go in your chute. <\/p>"
+          }
+        },
+        "165348651868d50083-1": {
+          "type": "text",
+          "settings": {
+            "title": "Can I \"mother up\" my calves on the tag readers?",
+            "content": "<p>Yes. On the Gallagher HR5, you are able to tag the calf to its dam on the reader to go back on. This will help you with manangement decisions in the future. <\/p>"
+          }
+        },
+        "165348651868d50083-2": {
+          "type": "text",
+          "settings": {
+            "title": "Do I have to pay for the software on my computer?",
+            "content": "<p>There is a free version of the Gallagher APS software. To use the professional version there is a fee per year. <\/p>"
+          }
+        },
+        "3900f31c-550b-4c60-84e1-149ce1dd525b": {
+          "type": "text",
+          "settings": {
+            "title": "What brands of tag readers do you stock?",
+            "content": "<p>Gallagher, Tru-Test, Allflex<\/p>"
+          }
+        },
+        "d29d95a8-c860-4ecb-9dfe-f6be7355ef83": {
+          "type": "text",
+          "settings": {
+            "title": "What does RFID and EID mean?",
+            "content": "<p>RFID (Radio Frequency Identification) and EID (Electronic Identification). <\/p><p>Each EID tag contains an integrated circuit and coil antenna which transmits the data to the RFID reader via radio waves.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "165348651868d50083-0",
+        "165348651868d50083-1",
+        "165348651868d50083-2",
+        "3900f31c-550b-4c60-84e1-149ce1dd525b",
+        "d29d95a8-c860-4ecb-9dfe-f6be7355ef83"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "text-left",
+        "text_size": 1,
+        "height": "margin--medium",
+        "width": "wrapper--full",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--accent"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "main",
+    "1652907027680825fb",
+    "165290695068261aab",
+    "165290699827ce334e",
+    "16530991559be9fe60",
+    "165309898365d4d0a7",
+    "1653148871981f46ec",
+    "16531489276f776d8d",
+    "165290689548601eed",
+    "faq",
+    "16531490271740fd18",
+    "1653149063deb11311",
+    "165348647644d21b72",
+    "16534865180f78e6b7"
+  ]
+}

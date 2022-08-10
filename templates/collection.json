@@ -1,0 +1,82 @@
+{
+  "sections": {
+    "subcollections": {
+      "type": "collection-sub",
+      "disabled": true,
+      "settings": {
+        "show_subcollection": true,
+        "text_color": "text--white",
+        "text_align": "align--middle-center",
+        "select_image": "collection",
+        "bg_position": "center-center",
+        "aspect_ratio": 0.6,
+        "overlay_opacity": 20,
+        "overlay_color": "#000000"
+      }
+    },
+    "165948254718cacb41": {
+      "type": "section-richtext",
+      "blocks": {
+        "1659482547ddbfd78e-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>{{ collection.title }}<\/p>",
+            "text_size": 8
+          }
+        }
+      },
+      "block_order": [
+        "1659482547ddbfd78e-1"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-left",
+        "height": "margin--small",
+        "width": "wrapper",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "main": {
+      "type": "collection",
+      "blocks": {
+        "filters": {
+          "type": "filters",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "filters"
+      ],
+      "settings": {
+        "product_limit": 36,
+        "grid_setting_large": 3,
+        "grid_setting_small": "2",
+        "enable_layout_toggle": true,
+        "collection_sorting": true,
+        "hide_sidebar": false
+      }
+    },
+    "hero": {
+      "type": "collection-hero",
+      "settings": {
+        "text_align": "align--middle-center",
+        "show_title": true,
+        "show_title_below": false,
+        "show_description": true,
+        "show_description_below": false,
+        "show_image": true,
+        "bg_position": "center-center",
+        "image_height": "use_screen_one_third",
+        "overlay_opacity": 20,
+        "overlay_color": "#000000",
+        "text_color": "text--white"
+      }
+    }
+  },
+  "order": [
+    "subcollections",
+    "165948254718cacb41",
+    "main",
+    "hero"
+  ]
+}

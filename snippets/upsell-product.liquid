@@ -1,0 +1,144 @@
+{%- if upsell_product -%}
+  {%- assign upsell_error = false -%}
+
+  {%- assign upsell_variant = upsell_product.selected_or_first_available_variant -%}
+  
+  {%- if upsell_product.title == '' or upsell_variant == nil -%}
+    {%- assign upsell_error = true -%}
+  {%- endif -%}
+
+  {%- if request.design_mode -%}
+    {%- assign upsell_error = false -%}
+  {%- endif -%}
+  
+  {%- unless upsell_error -%}
+    {%- if request.design_mode and upsell_product.title == '' or upsell_variant == nil -%}
+      {%- assign upsell_error = true -%}
+    {%- endif -%}
+
+    <upsell-product>
+      <div class="upsell__holder" data-upsell-holder="{{ upsell_product.id }}" data-add-action-wrapper>
+        <h2 class="upsell__holder__title">{{ 'products.general.upsell_title' | t }}</h2>
+      
+        <div class="upsell">
+          <div class="upsell__image">
+            {%- assign upsell_image = upsell_product.featured_media.preview_image -%}
+            {%- if upsell_error -%}
+              <div class="upsell__image__inner" style="background-color: var(--bg-accent);"></div>
+            {%- elsif upsell_image -%}
+              <a href="{{ upsell_product.url }}">
+                <img class="upsell__image__inner" 
+                  loading="lazy" 
+                  alt="{{ upsell_image.alt | default: upsell_product.title | strip_html | escape }}" 
+                  src="{{ upsell_image.src | img_url: '180x180', crop: 'center' }}"
+                  width="90"
+                  height="90">
+              </a>
+            {%- else -%}
+              <a href="{{ upsell_product.url }}">
+                <div class="upsell__image__inner" style="background-color: var(--bg-accent);"></div>
+              </a>
+            {%- endif -%}
+          </div>
+      
+          <div class="upsell__content">
+            {%- if upsell_error -%}
+              <h3 class="upsell__title">{{ 'products.general.upsell_error_title' | t }}</h3>
+              <p class="small">{{ 'products.general.upsell_error_info' | t }}</p> 
+            {%- else -%}  
+              <a href="{{ upsell_product.url }}">
+                <h3 class="upsell__title">{{ upsell_product.title | strip_html }}</h3>
+      
+                {%- unless upsell_product.has_only_default_variant -%}
+                  <p class="upsell__variant-title">{{ upsell_variant.title | replace: '/', '<span>&nbsp;</span>' }}</p> 
+                {%- endunless -%}
+      
+                <p class="upsell__price {% if upsell_variant.compare_at_price > upsell_variant.price %} sale{% endif %}">
+                  <span class="new-price">{{ upsell_variant.price | money }}</span>  
+                  
+                  {%- if upsell_variant.compare_at_price > upsell_variant.price -%}
+                    <span class="old-price">{{ upsell_variant.compare_at_price | money }}</span>
+                  {%- endif -%}
+                  
+                  {%- if upsell_variant.unit_price -%}
+                    {%- capture unit_price_separator -%}
+                      <span aria-hidden="true">/</span>
+                      <span class="visually-hidden">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+                    {%- endcapture -%}
+      
+                    {%- capture unit_price_base_unit -%}
+                      {%- if upsell_variant.unit_price_measurement.reference_value != 1 -%}
+                        {{ upsell_variant.unit_price_measurement.reference_value }}
+                      {%- endif -%}
+                      {{ upsell_variant.unit_price_measurement.reference_unit }}
+                    {%- endcapture -%}
+                    
+                  <br />
+    
+                  <span class="visually-hidden visually-hidden--inline">{{ 'products.product.unit_price_label' | t }}</span>
+    
+                  <span class="unit">{{ upsell_variant.unit_price | money }}{{ unit_price_separator }}{{ unit_price_base_unit }}</span>
+                {% endif -%}
+                </p>  
+              </a>
+
+              {%- if upsell_product.has_only_default_variant -%}
+                {%- form 'product', upsell_product -%}
+                  <input type="hidden" name="id" value="{{ upsell_variant.id }}">
+                  
+                  <button 
+                    data-add-to-cart
+                    {% if show_form %} 
+                      type="submit" name="add"
+                    {% else %}
+                      data-add-to-cart-variant="{{ upsell_variant.id }}" 
+                    {% endif %} 
+                    class="upsell__btn uppercase btn--soft btn--small btn--primary
+                    {% unless upsell_variant.available %} is-hidden {% endunless %}"> 
+                    <span class="btn-state-ready">{{ 'products.general.upsell_add_to_cart' | t }}</span>
+
+                    <span class="btn-state-loading">
+                      <svg height="18" width="18" class="svg-loader">
+                        <circle r="7" cx="9" cy="9" />
+                        <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
+                      </svg>
+                    </span>
+
+                    <span class="btn-state-complete">&nbsp;</span>
+                  </button>
+
+                  <p class="upsell__out-of-stock {% if upsell_variant.available %} is-hidden{% endif %}">{{ 'products.general.upsell_out_of_stock' | t }}</p>
+                {%- endform -%}
+              {%- endif -%}
+
+              {%- unless upsell_product.has_only_default_variant -%}
+                <button 
+                  data-popup-{{ upsell_product.id }}="{{ upsell_product.handle }}"
+                  class="upsell__btn uppercase btn btn--small btn--primary"
+                  type="button"> 
+                  <span class="btn-state-ready">{{ 'products.general.upsell_add_to_cart' | t }}</span>
+                </button>
+              {%- endunless -%}
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div data-add-action-errors class="add-action-errors">&nbsp;</div>
+
+        {%- unless upsell_product.has_only_default_variant -%}
+          <script data-upsell-modal-template type="text/x-template">
+            <div class="upsell__modal" data-upsell-modal id="{{ upsell_product.id }}" aria-hidden="true">
+              <div class="upsell__modal__overlay" data-micromodal-close tabindex="-1"></div>
+
+              <div class="upsell__modal__content" role="dialog" aria-modal="true">
+                <button type="button" data-micromodal-close class="upsell__modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
+
+                <div class="upsell__modal__inner" data-product-upsell-ajax></div>
+              </div>
+            </div>
+          </script>
+        {%- endunless -%}
+      </div>
+    </upsell-product>
+  {%- endunless -%}
+{%- endif -%}

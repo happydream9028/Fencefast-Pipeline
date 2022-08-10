@@ -1,0 +1,283 @@
+<!-- /templates/gift_card.liquid -->
+{% layout none %}
+<!doctype html>
+{% capture rtl_codes %},ar,arc,ckb,dv,fa,ha,he,khw,ks,ps,sd,ur,uz_AF,yi,{% endcapture %}
+{% assign is_code_separator = request.locale.iso_code | append: ',' | prepend: ',' %}
+{% assign is_rtl =  nil %}
+{% if rtl_codes contains is_code_separator %}
+  {% assign is_rtl =  true %}
+{% endif %}
+<html class="template-giftcard no-js" lang="{{ request.locale.iso_code }}" {% if is_rtl %} dir="rtl"{% endif %}>
+{%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+{%- assign formatted_initial_value_stripped = formatted_initial_value | strip_html -%}
+{%- assign title_override = 'gift_cards.issued.title' | t: value: formatted_initial_value_stripped, shop: shop.name -%}
+{%- assign default_description = 'gift_cards.issued.subtext' | t -%}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="{{ settings.color_secondary }}">
+  {%- if canonical_url != blank -%}
+    <link rel="canonical" href="{{ canonical_url }}">
+  {%- endif -%}
+
+  <!-- ======================= Pipeline Theme V6.2.1 ========================= -->
+
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://monorail-edge.shopifysvc.com" crossorigin>
+
+
+  <link rel="preload" href="{{ 'lazysizes.js' | asset_url }}" as="script">
+  <link rel="preload" href="{{ 'vendor.js' | asset_url }}" as="script">
+  <link rel="preload" href="{{ 'theme.js' | asset_url }}" as="script">
+  <link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style">
+
+  {% if product.featured_media.preview_image %}
+    {%- assign media = product.featured_media -%}
+    <link rel="preload" as="image" 
+      href="{{ media.preview_image | img_url: '550' }}" 
+      srcset="{%- if media.preview_image.width >= 550 -%}{{ media.preview_image | img_url: '550x' }} 550w,{%- endif -%}
+              {%- if media.preview_image.width >= 1100 -%}{{ media.preview_image | img_url: '1100x' }} 1100w,{%- endif -%}
+              {%- if media.preview_image.width >= 1680 -%}{{ media.preview_image | img_url: '1680x' }} 1680w,{%- endif -%}
+              {%- if media.preview_image.width >= 2048 -%}{{ media.preview_image | img_url: '2048x' }} 2048w,{%- endif -%}
+              {%- if media.preview_image.width >= 4096 -%}{{ media.preview_image | img_url: '4096x' }} 4096w
+              {%- else -%}{{ media.preview_image | img_url: 'master' }} {{ media.preview_image.width | append: 'w' }}{%- endif -%}"
+      sizes="(min-width: 768px), 50vw, 
+             100vw">
+  {% endif %}
+
+  {%- if settings.favicon != blank -%}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {%- else -%}
+    <link rel="shortcut icon" href="data:;base64,iVBORw0KGgo=">
+  {%- endif -%}
+
+  <!-- Title and description ================================================ -->
+  {% capture seo_title %}
+    {%- assign title_content = page_title -%}
+    {% if title_override %}
+      {%- assign title_content = title_override -%}
+    {% endif %}
+    {{ title_content }}
+    {%- if current_tags -%}
+      {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}
+    {%- endif -%}
+    {%- if current_page != 1 -%}
+      &ndash; {{ 'general.meta.page' | t: page: current_page }}
+    {%- endif -%}
+    {%- assign title_downcase = title_content | downcase | strip -%}
+    {%- assign name_downcase = shop.name | downcase | strip -%}
+    {%- unless title_downcase contains name_downcase -%}
+      &ndash; {{ shop.name }}
+    {%- endunless -%}
+  {% endcapture %}
+  <title>
+    {{ seo_title }}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% elsif default_description %}
+    <meta name="description" content="{{ default_description | escape }}">
+  {%- endif -%}
+
+  {%- render 'social-meta-tags' -%}
+
+  <!-- CSS ================================================================== -->
+  
+  {{ 'font-settings.css' | asset_url | stylesheet_tag }}
+
+  {% render 'css-variables' %}
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    let root = '{{ routes.root_url }}';
+    if (root[root.length - 1] !== '/') {
+      root = `${root}/`;
+    }
+    var theme = {
+      routes: {
+        root_url: root,
+        cart: '{{ routes.cart_url }}',
+        cart_add_url: '{{ routes.cart_add_url }}',
+        product_recommendations_url: '{{ routes.product_recommendations_url }}',
+        account_addresses_url: '{{ routes.account_addresses_url }}'
+      },
+      assets: {
+        photoswipe: '{{ "photoswipe.js" | asset_url }}',
+        smoothscroll: '{{ "smoothscroll.js" | asset_url }}',
+        swatches: '{{ "swatches.json" | asset_url }}',
+        noImage: '{{ "nil" | img_url: "master" }}',
+        base: '{{ "nil.jpg" | asset_url | split: "nil.jpg" | first }}'
+      },
+      strings: {
+        swatchesKey: {{ 'general.swatches.color' | t | json }},     
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        estimateShipping: {{ 'cart.shipping.estimate_shipping' | t | json }},
+        noShippingAvailable: {{ 'cart.shipping.no_shipping_available' | t | json }},
+        free: {{ 'cart.shipping.free' | t | json }},
+        from: {{ 'products.general.from' | t | json }},
+        preOrder: {{ 'products.product.pre_order' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        sale: {{ 'products.product.sale' | t | json }},
+        subscription: {{ 'products.product.subscription' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }},
+        unitPrice: {{ 'products.product.unit_price_label' | t | json }},
+        unitPriceSeparator: {{ 'general.accessibility.unit_price_separator' | t | json }},        
+        stockout: {{ 'cart.general.stockout' | t | json }},
+        products: {{ 'products.general.products' | t | json }},
+        pages: {{ 'general.page.pages' | t | json }},
+        collections: {{ 'collections.sidebar.collections' | t | json }},
+        resultsFor: {{ 'general.search.results_for' | t | json }},
+        noResultsFor: {{ 'general.search.no_results_for' | t | json }},
+        articles: {{ 'blogs.article.articles' | t | json }}
+      },
+      settings: {
+        badge_sale_type: {{ settings.badge_sale_type | json }},
+        search_products: {{ settings.search_products | json }},
+        search_collections: {{ settings.search_collections | json }},
+        search_pages: {{ settings.search_pages | json }},
+        search_articles: {{ settings.search_articles | json }},
+        animate_hover: {{ settings.animations_hover_enable | json }},
+        animate_scroll: {{ settings.animations_scroll_enable | json }}
+      },
+      info: {
+        name: 'pipeline'
+      },
+      moneyFormat: {{ shop.money_format | json }},
+      version: '6.2.1'
+    }
+    let windowInnerHeight = window.innerHeight;
+    document.documentElement.style.setProperty('--full-screen', `${windowInnerHeight}px`);
+    document.documentElement.style.setProperty('--three-quarters', `${windowInnerHeight * 0.75}px`);
+    document.documentElement.style.setProperty('--two-thirds', `${windowInnerHeight * 0.66}px`);
+    document.documentElement.style.setProperty('--one-half', `${windowInnerHeight * 0.5}px`);
+    document.documentElement.style.setProperty('--one-third', `${windowInnerHeight * 0.33}px`);
+    document.documentElement.style.setProperty('--one-fifth', `${windowInnerHeight * 0.2}px`);
+
+    window.lazySizesConfig = window.lazySizesConfig || {};
+    window.lazySizesConfig.loadHidden = false;
+  </script>
+
+  {%- if request.page_type contains 'customers/' -%}
+    <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script>
+  {%- endif -%}
+
+  <!-- Theme Javascript ============================================================== -->
+  <script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>
+  <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+
+  <script>
+    (function () {
+      function onPageShowEvents() {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(initCartEvent)
+        } else {
+          initCartEvent()
+        }
+        function initCartEvent(){
+          document.documentElement.dispatchEvent(new CustomEvent('theme:cart:init', {
+            bubbles: true
+          }));
+        }
+      };
+      window.onpageshow = onPageShowEvents;
+    })();
+  </script>
+
+  <script type="text/javascript">
+    if (window.MSInputMethodContext && document.documentMode) {
+      var scripts = document.getElementsByTagName('script')[0];
+      var polyfill = document.createElement("script");
+      polyfill.defer = true;
+      polyfill.src = "{{ 'ie11.js' | asset_url }}";
+
+      scripts.parentNode.insertBefore(polyfill, scripts);
+    }
+  </script>
+
+  <!-- Shopify app scripts =========================================================== -->
+  {{ content_for_header }}
+</head>
+
+<body id="{{ page_title | handle }}">
+
+  <div class="wrapper">
+
+    {% section 'gift-card' %}
+
+    <main class="giftcard main-content" id="MainContent" role="main">
+      <div class="giftcard__border{% if gift_card.expired or gift_card.enabled != true %} disabled{% endif %}">
+        <div class="giftcard__content">
+
+          <div class="giftcard__header">
+            <h1 class="h4 giftcard__title">{{ 'gift_cards.issued.subtext' | t }}</h1>
+            {% unless gift_card.enabled %}
+              <span class="giftcard__tag">{{ 'gift_cards.issued.disabled' | t }}</span>
+            {% endunless %}
+            {% assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" %}
+            {% if gift_card.expired and gift_card.enabled %}
+               <span class="giftcard__tag">{{ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date }}</span>
+            {% endif %}
+            {% if gift_card.expired != true and gift_card.expires_on and gift_card.enabled %}
+              <span class="giftcard__tag giftcard__tag--active">{{ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date }}</span>
+            {% endif %}
+          </div>
+
+          <div class="giftcard__wrap">
+            <img src="{{ 'gift-card/card.jpg' | shopify_asset_url }}" alt="Gift card illustration">
+
+            {% assign initial_value_size = formatted_initial_value | size %}
+            <div class="h1 giftcard__amount{% if initial_value_size > 6 %} giftcard__amount--medium{% endif %}">
+              {% if gift_card.balance != gift_card.initial_value %}
+                <span class="tooltip">
+                  <span class="tooltip__label money">{{ gift_card.balance | money }}</span>
+                </span>
+              {% endif %}
+              <strong>{{ formatted_initial_value }}</strong>
+            </div>
+
+            {% assign code_size = gift_card.code | format_code | size %}
+            <div class="giftcard__code{% if code_size <= 25 %} giftcard__code--large{% elsif code_size > 25 and code_size <= 30 %} giftcard__code--medium{% else %} giftcard__code--small{% endif %}">
+              <div class="giftcard__code__inner">
+                <strong class="giftcard__code__text" id="GiftCardDigits">{{ gift_card.code | format_code }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <p class="giftcard__instructions">
+            {{ 'gift_cards.issued.redeem' | t }}
+          </p>
+
+          <div id="QrCode" class="giftcard-qr" data-identifier="{{ gift_card.qr_identifier }}"></div>
+
+          <div class="giftcard__actions">
+            <a href="{{ shop.url }}" class="btn btn--primary btn--large uppercase" target="_blank">{{ 'gift_cards.issued.shop_link' | t }}</a>
+            <a href="#" class="action-link" onclick="window.print();">
+              <i class="action-link__print"></i>{{ 'gift_cards.issued.print' | t }}
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <footer class="giftcard__footer" role="contentinfo">
+       {% if gift_card.pass_url %}
+        <a class="add-to-apple-wallet" href="{{ gift_card.pass_url }}">
+          <img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}">
+        </a>
+      {% endif %}
+    </footer>
+
+  </div>
+
+  <!-- QR Code Script ============================================================== -->
+  <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer="defer"></script>
+
+</body>
+</html>

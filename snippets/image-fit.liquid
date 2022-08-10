@@ -1,0 +1,48 @@
+{% comment %}
+  * An uncropped image that fits into the center of the container using an img tag
+  * container height is defined by the optional aspect ratio.  If aspect ratio is false or nil
+  * the image will use natural height and will not be cropped.
+
+  * img_object {object} - image object (not an image url)
+  * aspect_ratio {float} - desired aspect ratio in the format {ratio}:1
+
+  {% render 'image-fit', img_object: section.settings.image.src, aspect_ratio: section.settings.aspect_ratio %}
+  {% render 'image-fit', img_object: section.settings.image.src, aspect_ratio: false %}
+{% endcomment %}
+
+{%- assign default_image = 'blank.svg' | asset_url -%}
+{%- assign image = img_object | default: default_image -%}
+{%- assign image_x_1 = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+{%- if aspect_ratio -%}
+  {%- assign multiplier = aspect_ratio -%}
+  {%- assign ratio = image.aspect_ratio -%}
+  {%- assign inverse_ratio = 1 | divided_by: ratio -%}
+
+  {%- assign top_offset =  1 | divided_by: ratio | times: 100 | divided_by: 2 -%}
+  {%- assign top_offset_subtractor =  multiplier | times: 100 | divided_by: 2 -%}
+
+  {%- capture auto_height -%}
+    {%- if inverse_ratio > multiplier -%}
+      style="width:{{ ratio | times: multiplier | times: 100 }}%; margin: 0 auto;"
+    {%- else -%}
+      style="padding:{{ top_offset_subtractor | minus: top_offset }}% 0;"
+    {%- endif -%}
+  {%- endcapture -%}
+{%- endif -%}
+
+<div {{ auto_height }}>
+  <div class="lazy-image" data-wipe-background
+    style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100 }}%;
+           background-image:  url('{{ image | img_url: '1x1' }}');">
+    <img class="lazyload fade-in"
+      alt="{{ image.alt }}"
+      data-src="{{ image_x_1 }}"
+      data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048, 2450, 2700, 3000, 3350, 3750, 4100, 4480]"
+      data-aspectratio="{{ image.aspect_ratio }}"
+      data-sizes="auto"/>
+  </div>
+</div>
+<noscript>
+  <img src="{{ image | img_url: '720x' }}" alt="{{ image.alt }}" class="responsive-wide-image"/>
+</noscript>

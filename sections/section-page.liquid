@@ -1,0 +1,105 @@
+<!-- /sections/section-page.liquid -->
+
+{% if section.settings.home_page_content != blank or page.empty? %}
+  {% assign page = pages[section.settings.home_page_content] %}
+  <div class="homepage-page {{ section.settings.text_color }} {{ section.settings.bg }}">
+    <div class="{{ section.settings.width }}">
+      <div class="text__standard {{ section.settings.align_text }}">
+        {% if section.settings.home_page_show_title %}
+          <h2 class="standard__kicker kicker__line">{{ page.title | escape }}</h2>
+        {% endif %}
+        {% assign font_size_class = section.settings.text_size | plus: 1 | prepend: 'font--' %}
+        <div class="rte standard__rte {{ font_size_class }}">
+          {{ page.content }}
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="text-center">{{ 'home_page.onboarding.no_content' | t }}</div>
+{% endif %}
+
+
+
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    {
+      "id": "home_page_content",
+      "type": "page",
+      "label": "Page"
+    },
+    {
+      "type": "checkbox",
+      "id": "home_page_show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type":  "range",
+      "id":    "text_size",
+      "label": "Text size",
+      "min":    1,
+      "max":    5,
+      "step":   1,
+      "default":2
+    },
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "Text alignment",
+      "default": "text-left",
+      "options": [
+        { "value": "text-left","label": "Left" },
+        { "value": "text-center","label": "Centered" },
+        { "value": "text-right","label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper",
+      "options": [
+        { "value": "wrapper--narrow", "label": "Narrow" },
+        { "value": "wrapper", "label": "Wide" },
+        { "value": "wrapper--full", "label": "Full width" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text--neutral",
+      "options": [
+        { "value": "text--neutral", "label": "Normal text"},
+        { "value": "text--white", "label": "White"},
+        { "value": "text--primary", "label": "Primary accent"},
+        { "value": "text--secondary", "label": "Secondary accent"},
+        { "value": "text--black", "label": "Black"},
+        { "value": "text--invert--primary", "label": "Primary dark accent"},
+        { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+        { "value": "text--invert", "label": "Inverted text color"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Page",
+    "category": "Text"
+  }]
+}
+{% endschema %}

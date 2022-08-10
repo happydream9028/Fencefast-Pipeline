@@ -1,0 +1,189 @@
+<!-- /sections/related.liquid -->
+
+{%- assign has_related_products = section.settings.related_products_enable -%}
+{%- assign has_recently_products = section.settings.show_recently_viewed -%}
+
+{%- if has_related_products and product.collections.size < 1 -%}
+  {% assign has_related_products = false %}
+{%- endif -%}
+
+{%- assign related_limit = section.settings.limit -%}
+{%- assign recently_view_limit = section.settings.product_recently_limit -%}
+{%- assign layout_number_related = section.settings.grid -%}
+{%- assign layout_number_recently = section.settings.grid -%}
+
+{%- if related_limit < layout_number_related -%}
+  {%- assign layout_number_related = related_limit -%}
+{%- endif -%}
+
+{%- if recently_view_limit < layout_number_recently -%}
+  {%- assign layout_number_recently = recently_view_limit -%}
+{%- endif -%}
+
+{% if has_related_products or has_recently_products %}
+  <div class="section-related js {{ section.settings.bg }}" data-section-id="{{ section.id }}" data-section-type="related">
+    <div class="wrapper">
+      <div class="collection-tabs">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="home__subtitle">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+      
+        {%- if has_related_products and has_recently_products != true -%}
+          <div class="related__products" data-tabs-holder>    
+            <div class="tab-content tab-content-0 current tabs__recommendation" data-tab-index="0">
+              <div data-related-section data-limit="{{ related_limit }}" data-layout="{{ layout_number_related }}" data-product-id="{{ product.id }}">
+                {%- render 'products-recommendation', product: product, limit: related_limit, number_slides: layout_number_related -%}
+              </div>
+            </div>
+      
+            <div class="tab-content tab-content-1 tabs__recently-viewed hide" data-tab-index="1" data-recently-viewed-tab></div>
+          </div>
+      
+        {%- elsif has_recently_products and has_related_products != true -%}
+          <div class="related__products" data-tabs-holder>    
+            <div class="tab-content tab-content-1 tabs__recently-viewed current" data-tab-index="1" data-recently-viewed-tab>
+              {%- render 'products-recently-viewed', product: product, limit: recently_view_limit, product_recently_minimum: section.settings.product_recently_minimum, number_slides: layout_number_recently -%}
+            </div>
+          </div>
+      
+        {%- elsif has_related_products and has_recently_products -%}
+          <div class="related__products" data-tabs-holder>
+            <div class="tab__scroll" data-tabs-holder-scroll>
+              <div class="tabs tabs--center tabs--pill" data-scrollbar data-scrollbar-slider>
+                {%- if section.settings.product_recommendations_heading != blank and section.settings.product_recommendations_heading != '' -%}
+                  <button type="button" class="tab-link tab-link-0 current" data-tab="0" tabindex="0">
+                    <span class="recent__title">
+                      {{ section.settings.product_recommendations_heading -}}
+                    </span>
+                  </button>
+                {%- endif -%}
+        
+                {%- if section.settings.product_recently_heading != blank and section.settings.product_recently_heading != '' -%}
+                  <button type="button" class="tab-link tab-link-1 tab-link__recent hide" data-tab="1" tabindex="0" data-recent-link-tab>
+                    <span class="recent__title">
+                      {{ section.settings.product_recently_heading -}}
+                    </span>
+                  </button>
+                {%- endif -%}
+              </div>
+      
+              <button type="button" class="tabs__arrow tabs__arrow--prev is-hidden" data-scrollbar-arrow-prev>
+                <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+              </button>
+        
+              <button type="button" class="tabs__arrow tabs__arrow--next is-hidden" data-scrollbar-arrow-next>
+                <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+              </button>
+            </div>
+      
+            <div class="tab-content tab-content-0 current tabs__recommendation" data-tab-index="0">
+              <div data-related-section data-limit="{{ related_limit }}" data-layout="{{ layout_number_related }}" data-product-id="{{ product.id }}">
+                {%- render 'products-recommendation', product: product, limit: related_limit, number_slides: layout_number_related -%}
+              </div>
+            </div>
+      
+            <div class="tab-content tab-content-1 tabs__recently-viewed" data-tab-index="1" data-recently-viewed-tab>
+              {%- render 'products-recently-viewed', product: product, limit: recently_view_limit, product_recently_minimum: section.settings.product_recently_minimum, number_slides: layout_number_recently -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You might also like"
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    },
+    {
+      "type":    "range",
+      "id":      "grid",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "label":   "Product layout",
+      "default": 3
+    },
+    {
+      "type": "header",
+      "content": "Related products"
+    },
+    {
+      "type": "checkbox",
+      "id": "related_products_enable",
+      "label": "Show related products",
+      "info": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)",
+      "default": true
+    },
+    {
+      "type":    "range",
+      "id":      "limit",
+      "min":     1,
+      "max":     8,
+      "step":    1,
+      "label":   "Product limit",
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "product_recommendations_heading",
+      "label": "Heading",
+      "default": "Related products"
+    },
+    {
+      "type": "header",
+      "content": "Recently viewed products"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_recently_viewed",
+      "label": "Enable recently viewed products",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "product_recently_limit",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Product limit",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "product_recently_minimum",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Display threshold",
+      "info": "Hide section until a minimum of products can be shown.",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "product_recently_heading",
+      "label": "Heading",
+      "default": "Recently viewed"
+    }
+  ]
+}
+{% endschema %}

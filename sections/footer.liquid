@@ -1,0 +1,378 @@
+<footer class="site-footer-wrapper"
+  role="contentinfo"
+  data-section-id="{{ section.id }}"
+  data-section-type="footer">
+  {% if section.settings.footer_image %}
+    <style>
+      .main-content .shopify-section:last-child .brick--margin,
+      .main-content .shopify-section:last-child .wrapper--brick {
+        margin-bottom: 0;
+        padding-bottom: calc(var(--outer) + var(--footer-logo) / 2);
+      }
+    </style>
+    <div class="footer-logo-wrapper">
+      <a href="{{ routes.root_url }}" class="footer-logo" data-footer-logo>
+        <img src="{{ section.settings.footer_image | img_url: 'x200' }}" 
+          width="{{ section.settings.footer_image.width }}"
+          height="{{ section.settings.footer_image.height }}"
+          alt="{{ section.settings.footer_image.alt | default: shop.name | strip_html | escape }}"/>
+      </a>
+    </div>
+  {% endif %}
+  <div class="wrapper site-footer">
+    <div class="grid grid--uniform" data-accordion-group>
+
+      {% case section.blocks.size %}
+        {% when 1 %}
+          {% assign footer_column_width = 'medium-up--one-half medium-up--push-one-quarter' %}
+        {% when 2 %}
+          {% assign footer_column_width = 'medium-up--one-half' %}
+        {% when 3 %}
+          {% assign footer_column_width = 'medium-up--one-third' %}
+        {% when 4 %}
+          {% assign footer_column_width = 'medium-up--one-quarter' %}
+      {% endcase %}
+
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'linklist' %}
+            {% assign linklist = linklists[block.settings.linklist] %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-haspopup="true" 
+                aria-expanded="true">
+                  {{ linklist.title }}
+                  {% render 'icon-arrow-medium-right' %}
+              </p>
+              <ul class="footer-quicklinks" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">
+                {% for link in linklist.links %}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+
+          {% when 'page' %}
+            {% assign page = pages[block.settings.page] %}
+            {% if page == blank or page.empty? %}
+              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+                <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                  data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-haspopup="true" 
+                  aria-expanded="true">
+                    {{ shop.name }}
+                    {% render 'icon-arrow-medium-right' %}
+                </p>
+
+                <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ 'home_page.onboarding.no_content' | t }}</div>
+              </div>
+            {% else %}
+              <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+                <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                  data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                  aria-haspopup="true" 
+                  aria-expanded="true">
+                    {{ page.title | escape }}
+                    {% render 'icon-arrow-medium-right' %}
+                </p>
+
+                <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ page.content }}</div>
+              </div>
+            {% endif %}
+
+          {% when 'text' %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-haspopup="true" 
+                aria-expanded="true">
+                  {{ block.settings.title | escape }}
+                  {% render 'icon-arrow-medium-right' %}
+              </p>
+              <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">{{ block.settings.text }}</div>
+            </div>
+
+          {% when 'newsletter' %}
+            <div class="grid__item {{ footer_column_width }} footer__block" {{ block.shopify_attributes }}>
+              <p class="uppercase footer__title {{ block.settings.accordion_default }}"
+                data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+                aria-haspopup="true" 
+                aria-expanded="true">
+                  {{ 'layout.footer.newsletter_title' | t }}
+                  {% render 'icon-arrow-medium-right' %}
+              </p>
+              <div class="rte rte--column" data-accordion-body data-accordion-body-mobile id="accordion-{{ block.id }}-{{ forloop.index }}">
+                {{ block.settings.richtext }}
+                
+                {% render 'newsletter-form' unique: 'footer-newsletter' %}
+              </div>
+            </div>
+
+          {% else %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+
+    <div class="grid footer-secondary-wrapper">
+      <div class="footer-selects">
+        {%- form 'localization', class: 'popout--footer', id: 'localization-form-footer' -%}
+          {%- if section.settings.show_locale_selector and shop.published_locales.size > 1 -%}
+            {%- render 'select-locale', form: form, unique: 'localization-form-footer', wrapper_class: 'footer__select' -%}
+          {%- endif -%}
+          {%- if section.settings.show_currency_selector and shop.enabled_currencies.size > 1 -%}
+              {%- render 'select-currency', form: form, unique: 'localization-form-footer', select_type: section.settings.currency_select_type, wrapper_class: 'footer__select' -%}
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+
+
+      <ul class="footer-secondary inline-list">
+          <li>&copy; {{ shop.name | link_to: routes.root_url }} {{ 'now' | date: "%Y" }}</li>
+        {% for link in linklists[section.settings.footer_secondary_linklist].links %}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+
+
+        <!-- Remove the following line to delete 'Powered by Shopify' from your footer -->
+          <li data-powered-link>{{ powered_by_link }}</li>
+        <!-- Do not delete below this line -->
+
+
+      </ul>
+
+      {% if section.settings.footer_social_enable %}
+        <ul class="footer-social social-icons grid__item inline-list">
+          {%- assign social_accounts = 'Facebook, Twitter, Tiktok, Pinterest, Instagram, Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium, ' | split: ', ' -%}
+          {%- for social in social_accounts -%}
+            {%- assign social_handle = social | handleize -%}
+            {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+
+            {%- if settings[social_link] != blank -%}
+              <li>
+                <a href="{{ settings[social_link] }}" title="{{ social }}" target="_blank">
+                  {% render 'social-icon' handle: social_handle %}
+                  <span class="visually-hidden">{{ social }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {% for custom_social_icon_idx in (1..3) %}
+            {% capture custom_social_icon_capture %}custom_social_icon_{{ custom_social_icon_idx }}{% endcapture %}
+            {% capture custom_social_link_capture %}custom_social_link_{{ custom_social_icon_idx }}{% endcapture %}
+            {%- assign custom_social_icon = settings[custom_social_icon_capture] -%}
+            {%- assign custom_social_icon_downcase = custom_social_icon | downcase -%}
+            {%- assign custom_social_link = settings[custom_social_link_capture] -%}
+            {%- if custom_social_icon != blank and custom_social_link != blank and custom_social_icon_downcase contains '.png' -%}
+              {%- assign custom_social_icon_title = custom_social_icon.alt | default: custom_social_link -%}
+              <li>
+                <a href="{{ custom_social_link }}" title="{{ custom_social_icon_title }}" target="_blank">
+                  <img 
+                    loading="lazy" 
+                    alt="{{ custom_social_icon_title | strip_html | escape }}" 
+                    src="{{ custom_social_icon | img_url: '100x100' }}"
+                    width="20"
+                    height="20">
+                  <span class="visually-hidden">{{ custom_social_icon_title }}</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if section.settings.footer_payment_enable %}
+        {% unless shop.enabled_payment_types == empty %}
+        <ul class="footer-payment payment-icons inline-list">
+          {% for type in shop.enabled_payment_types %}
+          <li>
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+            <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endunless %}
+      {% endif %}
+
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "label": "Footer logo",
+      "type": "image_picker",
+      "id": "footer_image",
+      "info": "400 x 200px .png"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_secondary_linklist",
+      "label": "Link List",
+      "info": "This menu won't show dropdown items"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_payment_enable",
+      "label": "Show payment types"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_social_enable",
+      "label": "Show social icons"
+    },
+    {
+      "type": "header",
+      "content": "language selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_locale_selector",
+      "label": "Show language selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Currency selector",
+      "info": "To add a currency, go to your [payment settings.](/admin/settings/payments)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_currency_selector",
+      "label": "Show currency selector",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "currency_select_type",
+      "label": "Type",
+      "default": "country",
+      "options": [
+        {
+          "value": "country",
+          "label": "Country"
+        },
+        {
+          "value": "currency",
+          "label": "Currency"
+        }
+      ]
+    }
+  ],
+  "blocks" : [
+    {
+      "type": "linklist",
+      "name": "Link list",
+      "settings": [
+        {
+           "type": "link_list",
+           "id": "linklist",
+           "label": "Link list",
+           "default": "main-menu",
+           "info": "This menu won't show dropdown items"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Subscribers are under 'Accepts Marketing' in your [customer admin](/admin/customers)."
+        },
+        {
+          "id": "richtext",
+          "type": "richtext",
+          "label": "Newsletter description",
+          "default": "<p>Join to get special offers, free giveaways, and once-in-a-lifetime deals.</p>"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Text column"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share store details, promotions, or brand content with your customers.</p>"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Page",
+      "settings": [
+        {
+          "id": "page",
+          "type": "page",
+          "label": "Page"
+        },
+        {
+          "type": "select",
+          "id": "accordion_default",
+          "label": "Mobile accordion",
+          "default": "",
+          "options": [
+            { "value": "accordion-is-open", "label": "Open by default"},
+            { "value": "", "label": "Closed by default"}
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

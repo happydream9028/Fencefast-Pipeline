@@ -1,0 +1,225 @@
+<!-- /sections/section-columns.liquid -->
+
+<div class="homepage-columns {{ section.settings.bg }}" data-section-id="{{ section.id }}" data-section-type="section-columns">
+  <div class="wrapper">
+    {% if section.settings.title != blank %}
+      <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+    <div class="grid {% unless section.blocks.size == 5 %}grid--uniform{% endunless %}">
+      {%- assign grid_item_width = 'medium-up--one-third small--one-third' -%}
+      {% case section.blocks.size %}
+        {% when 1 %}
+          {%- assign grid_item_width = 'medium-up--one-half small--one-half' -%}
+        {% when 2 %}
+          {%- assign grid_item_width = 'medium-up--one-half small--one-half' -%}
+        {% when 4 %}
+          {%- assign grid_item_width = 'medium-up--one-quarter small--one-half' -%}
+      {% endcase %}
+      {% for block in section.blocks %}
+        {% if section.blocks.size == 5 and forloop.index < 3 %}
+          {%- assign column_width = 'medium-up--one-half small--one-half' -%}
+        {% else %}
+          {%- assign column_width = grid_item_width -%}
+        {% endif %}
+        {%- if section.blocks.size == 5 and forloop.index == 3 -%}<div class="clearfix"></div>{%- endif -%}
+        <div class="index__column grid__item {{ column_width }} {{ section.settings.align_text }}" {{ block.shopify_attributes }}>
+          {% if block.settings.enable_image %}
+            <div class="lazy-image column__image">
+              {%- if section.settings.scale_image -%}
+                {%- render 'image-fill', img_object: block.settings.image, aspect_ratio: section.settings.aspect_ratio, bg_position: block.settings.bg_position -%}
+              {%- else -%}
+                {%- render 'image-fill', img_object: block.settings.image -%}
+              {%- endif -%}
+              {% comment %}
+                If there is a video add a play button over the image
+                If there is a non video link and no button label just
+                link the image to the link destination
+              {% endcomment %}
+              {%- if block.settings.enable_video -%}
+                {%- render 'video-popup', video: block.settings.video_link, unique: block.id -%}
+              {%- elsif block.settings.button_label == blank and block.settings.button_link != blank -%}
+                <a class="link-over-image" href="{{ block.settings.button_link }}" aria-label="{{ block.settings.title | strip_html | escape }}"></a>
+              {%- endif -%}
+            </div>
+            <noscript>
+              <img src="{{ block.settings.image | img_url: '540x' }}" alt="{{ block.settings.image.alt | default: block.settings.title | strip_html | escape }}"/>
+            </noscript>
+          {% endif %}
+          {% if block.settings.title != blank %}
+            <h3 class="home--uppercase">{{ block.settings.title | escape }}</h3>
+          {% endif %}
+          {% if block.settings.text != blank %}
+            <div class="rte rte--column">{{ block.settings.text }}</div>
+          {% endif %}
+          {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+            <a href="{{ block.settings.button_link }}" class="text-link uppercase">
+              {{ block.settings.button_label | escape }}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.blocks.size == 0 %}
+      <div class="text-center">{{ 'home_page.onboarding.no_content' | t }}</div>
+    {% endif %}
+  </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Text columns with images",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Text columns with images"
+      },
+      {
+        "type": "select",
+        "id": "bg",
+        "label": "Background color",
+        "default": "palette--light bg--neutral",
+        "options": [
+          { "value": "palette--light bg--neutral", "label": "Default"},
+          { "value": "palette--light bg--accent", "label": "Light"},
+          { "value": "palette--dark bg--invert", "label": "Dark"},
+          { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+        ]
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "text-center",
+        "options": [
+          {
+            "value": "text-left",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Centered"
+          },
+          { 
+            "value": "text-right",
+            "label": "Right" 
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "type": "checkbox",
+        "id": "scale_image",
+        "label": "Scale images",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "aspect_ratio",
+        "min": 0.5,
+        "max": 1.5,
+        "step": 0.1,
+        "unit": ":1",
+        "label": "Image scaling ratio",
+        "info": "Wide to tall",
+        "default": 1
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text_block",
+        "name": "Column",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_image",
+            "label": "Show image",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "bg_position",
+            "label": "Position",
+            "default": "center-center",
+            "options": [
+              { "label": "Top", "value": "center-top" },
+              { "label": "Right", "value": "right-center" },
+              { "label": "Center", "value": "center-center" },
+              { "label": "Left", "value": "left-center" },
+              { "label": "Bottom", "value": "center-bottom" }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Feature images or videos"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Add a video popup link to show a play button.  Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label",
+            "info": "Leave blank to link from image"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+          },
+          {
+            "type": "header",
+            "content": "Video Popup"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_video",
+            "label": "Show video",
+            "default": false
+          },
+          {
+            "type": "video_url",
+            "id": "video_link",
+            "label": "Video link",
+            "accept": ["youtube", "vimeo"],
+            "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "info": "Video links from YouTube or Vimeo accepted."
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Text columns with images",
+        "category": "Text",
+        "blocks": [
+          {
+            "type": "text_block"
+          },
+          {
+            "type": "text_block"
+          },
+          {
+            "type": "text_block"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

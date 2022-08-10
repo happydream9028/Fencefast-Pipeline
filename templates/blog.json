@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "feature": {
+      "type": "section-custom-content",
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {
+            "link_text": ""
+          }
+        },
+        "article": {
+          "type": "article",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "image",
+        "article"
+      ],
+      "settings": {
+        "padding": true,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "main": {
+      "type": "blog",
+      "settings": {}
+    }
+  },
+  "order": [
+    "feature",
+    "main"
+  ]
+}

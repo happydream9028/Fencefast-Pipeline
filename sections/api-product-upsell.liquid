@@ -1,0 +1,17 @@
+<div data-api-content>
+  <div class="upsell__modal__body">
+    {%- render 'product-title-price', product: product, block: block, section: section -%}
+    
+    {%- if product.media.size > 0 -%}  
+      <div class="upsell__modal__images" data-product-slideshow>
+        {% for media in product.media %}
+          {% render 'media', media: media, section: section %}
+        {% endfor %}
+      </div>
+    {%- endif -%}
+  </div>
+  
+  <div class="upsell__form">
+    {%- render 'product-form', product: product, block: block, section: section, enable_popup_trigger: true, option_buttons: true -%}
+  </div>
+</div>

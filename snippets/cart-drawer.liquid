@@ -1,0 +1,194 @@
+{% comment %}
+  * The AJAX cart drawer called by layouts/cart.drawer.liquid
+  * cart {object} - the cart
+  {% render 'cart-drawer', cart: cart %}
+{% endcomment %}
+
+{%- liquid
+  assign hide_quantity = 'quantity--hide'
+  if settings.cart_show_quantity
+    assign hide_quantity = ''
+  endif
+
+  assign pop_style = 'drawer--right'
+  if settings.cart_style == 'pop'
+    assign pop_style = 'drawer--pop'
+  endif
+-%}
+
+<nav class="drawer cart__drawer {{ pop_style }} {{ hide_quantity }} {{ settings.cart_color_bg }}" 
+  data-drawer="drawer-cart"
+  aria-label="{{ 'layout.cart.title' | t }}" 
+  id="drawer-cart">
+  <div class="drawer__content">
+    <div class="drawer__top">
+
+      <div class="drawer__top__left">
+        <p class="cart__drawer__title">{{ 'layout.cart.title' | t }}</p>
+      </div>
+
+      <button class="drawer__button drawer__close"
+        data-drawer-toggle="drawer-cart"  
+        aria-label="{{ 'general.accessibility.close' | t }}">
+        {% render 'icon-close' %}
+      </button>
+    </div>
+    <div class="drawer__body" data-drawer-scrolls>
+      
+      {% if settings.cart_custom_message_enable and settings.cart_custom_message_text != blank %}  
+        <div class="cart__message cart__message--custom cart--hidden" data-cart-bar>
+          {{ settings.cart_custom_message_text }}
+        </div>
+      {% endif %}
+
+      {% assign free_shipping_text = block.settings.message | default: settings.message %}
+{% assign is_enable = false %}
+{% assign show_wheel = true %}
+
+{% if block.settings.show_wheel == false %}
+  {% assign show_wheel = false %}
+{% endif %}
+
+{% if block.settings.message != blank %}
+  {% assign is_enable = true %}
+{% endif %}
+
+{% if settings.show_free_shipping_message and settings.free_shipping_limit != blank and free_shipping_text != blank %}
+  {% assign is_enable = true %}
+{% endif %}
+
+{% if is_enable %}
+  {% assign limit = settings.free_shipping_limit | plus: 0 %}
+  {% assign limit_currency = limit | times: 100 %}
+  {% assign subtotal_without_currency = cart.total_price | plus: 0 | divided_by: 100 %}
+
+  {% capture left_to_spend %}
+    <span data-left-to-spend>{{ limit_currency | minus: cart.total_price | money_without_trailing_zeros }}</span>
+  {% endcapture %}
+
+  {% assign free_shipping_message = free_shipping_text | replace: '||amount||', left_to_spend %}
+  {% assign qualified_shipping_message = 'cart.general.qualified_shipping_message' | t %}
+  {% assign class_message = '' %}
+
+  {% if subtotal_without_currency >= limit %}
+    {% if qualified_shipping_message != blank %}
+      {% assign class_message = 'is-success' %}
+    {% else %}
+      {% assign class_message = 'is-hidden' %}
+    {% endif %}
+  {% elsif subtotal_without_currency == 0 %}
+    {% comment %} {% assign class_message = 'is-hidden' %} {% endcomment %}
+  {% endif %}
+
+  <p class="cart__message {{ class_message }}" data-cart-message="{% if qualified_shipping_message != blank %}true{% else %}false{% endif %}" data-limit="{{ limit }}">
+    {% if show_wheel %}  
+      {% assign percent = limit | minus: subtotal_without_currency | times: 100 | divided_by: limit %}
+      {% assign percent = 100 | minus: percent %}
+
+      {% if percent > 100 %}
+        {% assign percent = 100 %}
+      {% endif %}
+
+      <small class="cart__graph">
+        {% for i in (1..6) %}
+          <small class="cart__graph-dot cart__graph-dot--{{ i }}"></small>
+        {% endfor %}
+        {%- assign stroke_dashoffset = '87.96459430051421' -%}
+        {%- if settings.cart_style == 'compatible' -%}
+          {%- assign math_pi = 3.14159265359 -%}
+          {%- assign stroke_circumference = 28 | times: math_pi -%}
+          {%- assign stroke_calculate = percent | times: stroke_circumference -%}
+          {%- assign stroke_calculate = stroke_calculate | divided_by: 100 | divided_by: 2 -%}
+          {%- assign stroke_dashoffset = stroke_circumference | minus: stroke_calculate -%}
+        {%- endif -%}
+        
+        <svg height="18" width="18">
+          <circle r="7" cx="9" cy="9" />
+          <circle class="cart__graph-progress" stroke-dasharray="87.96459430051421 87.96459430051421" style="stroke-dashoffset: {{ stroke_dashoffset }}" data-cart-progress data-percent="{{ percent }}" r="7" cx="9" cy="9" />
+        </svg>
+      </small>
+    {% endif %}
+
+    {% if qualified_shipping_message != blank %}
+      <span class="cart__message-success">{{ qualified_shipping_message }}</span>
+    {% endif %}
+
+    <span class="cart__message-default">
+      {{ free_shipping_message }}
+    </span>
+  </p>
+{% endif %}
+      
+      <div class="errors" data-form-errors style="display: none;"></div>
+
+      {% comment %}Shown if cart is empty{% endcomment %}
+      <div class="cart--hidden" data-cart-empty >
+        {% render 'cart-empty' %}
+      </div>
+
+      {% comment %}Shown if cart has contents{% endcomment %}
+      <div data-cart-form data-cart-loading>
+        <div data-line-items>
+          <div class="cart__items cart__items--blankstate">
+            <div class="cart__items__row">
+              <div class="item--loadbar"></div>
+              <div class="cart__items__grid">
+                <div class="cart__items__image">
+                  <span class="cart__items__img empty-content"></span>
+                </div>
+                <div class="cart__items__title empty-content"></div>
+                <div class="cart__items__price empty-content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="drawer__bottom cart--hidden" data-cart-bottom data-accordion-group>
+      {%- if settings.cart_notes_enable -%}
+        <div class="drawer__bottom__notes drawer__accordion">
+          <button class="accordion__title"
+            data-accordion-trigger="accordion-cart-notes"
+            aria-controls="accordion-{{ key }}"
+            aria-haspopup="true" 
+            aria-expanded="false">
+            {{ 'cart.general.note' | t }}
+          </button>
+          <div class="accordion__body drawer__accordion__body" 
+            data-accordion-body
+            id="accordion-cart-notes">
+            <label class="visually-hidden" for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
+            <textarea name="note" placeholder="{{ 'cart.general.note' | t }}" class="drawer__notes__input input-full" id="CartSpecialInstructions" data-cart-note>{{ cart.note }}</textarea>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- if settings.cart_shipping_enable -%}
+        {% render 'cart-shipping' %}
+      {%- endif -%}
+
+      <p class="drawer__bottom__meta small"><em>{{ 'cart.general.shipping_at_checkout' | t }}</em></p>
+
+      <div class="drawer__footer__subtotal" data-cart-subtotal>
+        {% render 'cart-subtotal' %}
+      </div>
+
+      <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
+        <button type="submit" name="checkout" class="btn btn--primary btn--large btn--full uppercase checkout__button" role="button">
+          {{ 'cart.general.checkout' | t }} • <span data-cart-final>{{ cart.total_price | money }}</span>
+        </button>
+      </form>
+      {% if additional_checkout_buttons and settings.cart_show_additional_buttons %}
+        <div class="drawer__checkout__additional">
+          <div class="additional-checkout-buttons additional-checkout-buttons--vertical">
+            {{ content_for_additional_checkout_buttons }}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <span class="drawer__underlay" data-drawer-underlay>
+    <span class="drawer__underlay__fill"></span>
+    <span class="drawer__underlay__blur"></span>
+  </span>
+</nav>

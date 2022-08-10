@@ -1,0 +1,29 @@
+<ul class="blog-sidebar-menu">
+  {% for link in linklists[sidebar_menu].links %}
+  <li {% if link.active %} class="active"{% endif %}>
+    <button class="sidebar__heading accordion-is-open" data-blog-filter-trigger>
+      <span>{{ link.title }}</span>
+
+      {%- unless link.levels == 0 -%}
+        <span class="sidebar__heading-chevron">
+          {% render 'icon-arrow-medium-right' %}
+          <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+          <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+        </span>
+      {%- endunless -%}
+    </button>
+    <ul class="sidebar__navigation__list" data-accordion-body id="accordion-{{ section.id }}">
+      {% for link in link.links %}
+      <li class="{% if link.active %} active{% endif %}">
+        <a class="sidebar__heading" href="{{ link.url }}">{{ link.title }}</a>
+        <ul>
+          {% for link in link.links %}
+          <li class="uppercase{% if link.active %} active{% endif %}"><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>

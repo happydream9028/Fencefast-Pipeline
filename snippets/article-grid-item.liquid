@@ -1,0 +1,22 @@
+{% comment %}
+  * An article block that fills the container with an image with overlayed title
+  {% render 'article-grid-item', article: article, aspect_ratio: 0.7, color: section.settings.color, overlay_color: section.settings.overlay_color %}
+{% endcomment %}
+<div class="article__card section--image {{ color | default: 'text--white' }}">
+
+  <a href="{{ article.url }}" class="link-over-image"  aria-label="{{ article.title | strip_html | escape }}">
+    <div class="hero__content__wrapper align--bottom-left">
+      <div class="article__card__title">
+        <h3 class="h4 mb0">{{ article.title }}</h3>
+      </div>
+    </div>
+  </a>
+  {% if article.image %}
+    <div class="image-overlay--bottom" style="--bg:{{ overlay_color | default: '#000' }}; --opacity: 0.45;"></div>
+    {%- render 'image-fill', img_object: article.image, aspect_ratio: aspect_ratio -%}
+  {% else %}
+    <div class="image__fill"     
+        style="padding-top: {{ aspect_ratio | times: 100 }}%;
+               background: var(--muted);"></div>
+  {% endif %}
+</div>

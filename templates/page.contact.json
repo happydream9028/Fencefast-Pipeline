@@ -1,0 +1,170 @@
+{
+  "sections": {
+    "hero": {
+      "type": "section-hero",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/56_3_columns_MPM062010bison_in_field_on_farm.jpg",
+        "bg_position": "center-center",
+        "height": "use_screen_one_fifth",
+        "overlay_opacity": 50,
+        "overlay_color": "#000000",
+        "kicker": "",
+        "title": "Contact",
+        "richtext": "",
+        "text_align": "align--middle-center",
+        "text_color": "text--white",
+        "enable_search": false,
+        "link_text": "",
+        "link": "",
+        "button_color": "btn--white",
+        "button_style": "btn"
+      }
+    },
+    "faq": {
+      "type": "section-faq",
+      "blocks": {
+        "faq-0": {
+          "type": "text",
+          "settings": {
+            "title": "When will my order ship?",
+            "content": "<p>Standard product orders usually ship within 24 to 72 hours (you will be informed if otherwise) if all items in the order are available. Many of our equipment solution products are made to order so allow 3-6 weeks for delivery. If you have a special requirement, let us know and we will certainly try our best to accommodate your needs. If items are backordered, a follow-up email will be sent to you with an estimated time of delivery.<\/p>"
+          }
+        },
+        "faq-1": {
+          "type": "text",
+          "settings": {
+            "title": "What shipping methods are available?",
+            "content": "<p>Standard ground shipping is our main mode of transport; most deliveries are shipped by Canada Post or Canpar Courier. In some circumstances, your order will be shipped by common carrier due to weight, size, and destination of the items ordered.<\/p>"
+          }
+        },
+        "faq-2": {
+          "type": "text",
+          "settings": {
+            "title": "Can I pickup my order locally?",
+            "content": "<p>Yes we offer local pickup at our Kinistino, SK warehouse by <strong>appointment only<\/strong>. Please use the local pickup option at checkout so shipping charges will not apply and then select your date and time for appointment. If you have any questions you can email us at info@fencefast.ca<\/p>"
+          }
+        },
+        "faq-3": {
+          "type": "text",
+          "settings": {
+            "title": "What are the shipping rates?",
+            "content": "<p>Shipping rates are determined by weight, size, and destination. We try to source the best rate for you.<\/p>"
+          }
+        },
+        "5e2dcfda-9b2c-41cf-9a5a-e0e067ef78a4": {
+          "type": "text",
+          "settings": {
+            "title": "How do I track my package?",
+            "content": "<p>Once your package has been shipped, a tracking number will be provided on your shipping confirmation email. Orders shipped by Canada Post or Canpar courier can be tracked via the delivery provider's website. Please note that after your order has been shipped, it may take 24 to 48 hours for the courier to update the tracking information. To track a common carrier shipment, please call our customer service team at 1-877-383-3623 Monday to Friday from 9am to 4pm PST.<\/p>"
+          }
+        },
+        "67503726-9ca9-41de-babf-2eca17373b00": {
+          "type": "text",
+          "settings": {
+            "title": "Can I refuse a package if it is damaged?",
+            "content": "<p>Yes. However, if you have already accepted the package, please call us at 1-877-383-3623 within 48 hours of delivery to ensure a prompt exchange. If you have not written on the bill of lading that there are damages, then we will not be able to exchange or return your product.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq-0",
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "5e2dcfda-9b2c-41cf-9a5a-e0e067ef78a4",
+        "67503726-9ca9-41de-babf-2eca17373b00"
+      ],
+      "settings": {
+        "title": "Frequently Asked Questions",
+        "align_text": "text-left",
+        "text_size": 1,
+        "height": "margin--small",
+        "width": "wrapper--narrow",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "165826066340118c2b": {
+      "type": "section-richtext",
+      "blocks": {
+        "1658260663c1ab20c1-3": {
+          "type": "button",
+          "settings": {
+            "button_text": "Read Our Full FAQ's",
+            "button_url": "shopify:\/\/pages\/frequently-asked-questions",
+            "button_size": "btn--long",
+            "button_style": "btn uppercase",
+            "button_color": "btn--primary"
+          }
+        }
+      },
+      "block_order": [
+        "1658260663c1ab20c1-3"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-center",
+        "height": "margin--small",
+        "width": "wrapper--narrow",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "main": {
+      "type": "page",
+      "settings": {
+        "kicker": "",
+        "show_title": false,
+        "show_content": true,
+        "text_size": 2,
+        "align_text": "text-left",
+        "height": "margin--small",
+        "width": "wrapper--narrow",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "contact": {
+      "type": "section-contact",
+      "blocks": {
+        "name": {
+          "type": "text",
+          "settings": {
+            "title": "Full Name"
+          }
+        },
+        "email": {
+          "type": "email",
+          "settings": {
+            "title": "Email"
+          }
+        },
+        "message": {
+          "type": "body",
+          "settings": {
+            "title": "Message"
+          }
+        }
+      },
+      "block_order": [
+        "name",
+        "email",
+        "message"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "text-left",
+        "height": "margin--medium",
+        "width": "wrapper--narrow",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "faq",
+    "165826066340118c2b",
+    "main",
+    "contact"
+  ]
+}

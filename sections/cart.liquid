@@ -1,0 +1,196 @@
+<!-- /sections/cart.liquid -->
+{%- liquid
+  assign hide_quantity = 'quantity--hide'
+  if settings.cart_show_quantity
+    assign hide_quantity = ''
+  endif
+  
+  assign ajax_disable = false
+  assign no_ajax_class = ''
+  if settings.cart_style == 'compatible'
+    assign ajax_disable = true
+    assign no_ajax_class = 'no--ajax'
+  endif
+
+  assign full_init = ''
+  assign empty_init = 'cart--hidden'
+  if cart.item_count == 0
+    assign empty_init = ''
+    assign full_init = 'cart--hidden'
+  endif
+-%}
+
+<div class="cart__template {{ no_ajax_class }} {{ hide_quantity }}"  data-section-id="{{ section.id }}" data-section-type="cart" data-ajax-disable="{{ ajax_disable }}">
+  {% comment %} Cart is empty {% endcomment %}
+  <div class="{{ empty_init }}" data-cart-empty>
+    {% render 'cart-empty' %}
+  </div>
+  {% comment %} Cart is full {% endcomment %}
+  <div class="wrapper pt2 pb4 {{ full_init }}" data-cart-form data-cart-loading>
+    <form action="{{ routes.cart_url }}" method="post" novalidate class="cart">
+      <h3 class="h3--body">{{ 'cart.general.title' | t }}</h3>
+      <div class="errors" data-form-errors style="display: none;"></div>
+      <div class="cart__items__grid cart__heading__wrapper">
+        <div class="cart__heading__back">
+          <a href="{{ settings.cart_continue_browsing | default: routes.all_products_collection_url }}" class="cart__heading cart__return">
+            {% render 'icon-arrow-long-left' %}
+            &nbsp;
+            {{ 'cart.general.continue_browsing' | t }}
+          </a>
+        </div>
+        <div class="cart__items__price">
+          <p class="cart__heading">{{ 'cart.label.price' | t }}</p>
+        </div>
+        <div class="cart__items__quantity">
+          <p class="cart__heading">{{ 'cart.label.quantity' | t }}</p>
+        </div>
+        <div class="cart__items__total">
+          <p class="cart__heading">{{ 'cart.label.total' | t }}</p>
+        </div>
+      </div>
+      <div class="template__cart__body">
+        <div class="errors" data-form-errors style="display: none;"></div>
+        <div data-cart-form>
+            {% comment %}
+              The following snippet is refreshed via ajax with
+              cart.items.liquid when the quantity is adjusted.
+            {% endcomment %}
+            <div data-line-items>
+            {% render 'cart-line-items' %}
+            </div>
+        </div>
+
+        <div class="template__cart__footer" data-cart-bottom>
+
+          <div class="cart__footer__notes">
+            {%- if settings.cart_notes_enable -%}
+              <label class="cart__notes__label" for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
+              <textarea name="note" class="input-full" id="CartSpecialInstructions" data-cart-note>{{ cart.note }}</textarea>
+            {%- endif -%}
+          </div>
+          <div class="cart__footer__shipping">
+            {%- if settings.cart_shipping_enable -%}
+              {% render 'cart-shipping' %}
+            {%- endif -%}
+          </div>
+          <div class="cart__footer__total">
+            
+            <div class="cart__page__shipping">
+              {% assign free_shipping_text = block.settings.message | default: settings.message %}
+{% assign is_enable = false %}
+{% assign show_wheel = true %}
+
+{% if block.settings.show_wheel == false %}
+  {% assign show_wheel = false %}
+{% endif %}
+
+{% if block.settings.message != blank %}
+  {% assign is_enable = true %}
+{% endif %}
+
+{% if settings.show_free_shipping_message and settings.free_shipping_limit != blank and free_shipping_text != blank %}
+  {% assign is_enable = true %}
+{% endif %}
+
+{% if is_enable %}
+  {% assign limit = settings.free_shipping_limit | plus: 0 %}
+  {% assign limit_currency = limit | times: 100 %}
+  {% assign subtotal_without_currency = cart.total_price | plus: 0 | divided_by: 100 %}
+
+  {% capture left_to_spend %}
+    <span data-left-to-spend>{{ limit_currency | minus: cart.total_price | money_without_trailing_zeros }}</span>
+  {% endcapture %}
+
+  {% assign free_shipping_message = free_shipping_text | replace: '||amount||', left_to_spend %}
+  {% assign qualified_shipping_message = 'cart.general.qualified_shipping_message' | t %}
+  {% assign class_message = '' %}
+
+  {% if subtotal_without_currency >= limit %}
+    {% if qualified_shipping_message != blank %}
+      {% assign class_message = 'is-success' %}
+    {% else %}
+      {% assign class_message = 'is-hidden' %}
+    {% endif %}
+  {% elsif subtotal_without_currency == 0 %}
+    {% comment %} {% assign class_message = 'is-hidden' %} {% endcomment %}
+  {% endif %}
+
+  <p class="cart__message {{ class_message }}" data-cart-message="{% if qualified_shipping_message != blank %}true{% else %}false{% endif %}" data-limit="{{ limit }}">
+    {% if show_wheel %}  
+      {% assign percent = limit | minus: subtotal_without_currency | times: 100 | divided_by: limit %}
+      {% assign percent = 100 | minus: percent %}
+
+      {% if percent > 100 %}
+        {% assign percent = 100 %}
+      {% endif %}
+
+      <small class="cart__graph">
+        {% for i in (1..6) %}
+          <small class="cart__graph-dot cart__graph-dot--{{ i }}"></small>
+        {% endfor %}
+        {%- assign stroke_dashoffset = '87.96459430051421' -%}
+        {%- if settings.cart_style == 'compatible' -%}
+          {%- assign math_pi = 3.14159265359 -%}
+          {%- assign stroke_circumference = 28 | times: math_pi -%}
+          {%- assign stroke_calculate = percent | times: stroke_circumference -%}
+          {%- assign stroke_calculate = stroke_calculate | divided_by: 100 | divided_by: 2 -%}
+          {%- assign stroke_dashoffset = stroke_circumference | minus: stroke_calculate -%}
+        {%- endif -%}
+        
+        <svg height="18" width="18">
+          <circle r="7" cx="9" cy="9" />
+          <circle class="cart__graph-progress" stroke-dasharray="87.96459430051421 87.96459430051421" style="stroke-dashoffset: {{ stroke_dashoffset }}" data-cart-progress data-percent="{{ percent }}" r="7" cx="9" cy="9" />
+        </svg>
+      </small>
+    {% endif %}
+
+    {% if qualified_shipping_message != blank %}
+      <span class="cart__message-success">{{ qualified_shipping_message }}</span>
+    {% endif %}
+
+    <span class="cart__message-default">
+      {{ free_shipping_message }}
+    </span>
+  </p>
+{% endif %}
+            </div>
+            
+            <div class="page__footer__subtotal" data-cart-subtotal>
+              {% render 'cart-subtotal' %}
+            </div>
+
+            <p>
+              <span class="cart__footer__label">{{ 'cart.general.subtotal' | t }}</span>
+              <span class="cart__footer__value" data-cart-final>{{ cart.total_price | money }}</span>
+            </p>
+            <p class="cart__footer__small">{{ 'cart.general.shipping_at_checkout' | t }}</p>
+          </div>
+
+
+          <div class="cart__footer__checkout">
+            <button type="submit" name="checkout" class="btn btn--primary btn--large uppercase checkout__button">
+              {{ 'cart.general.checkout' | t }}
+            </button>
+          </div>
+
+          <div class="cart__footer__update">
+            <span class="cart__update" data-update-button>
+              <span class="cart__update__icon">{% render 'icon-sync' %}</span>
+              <button type="submit" name="update" class="text-link">
+                {{ 'cart.general.update' | t }}
+              </button>
+            </span>
+          </div>
+
+          {% if additional_checkout_buttons and settings.cart_show_additional_buttons %}
+            <div class="cart__footer__additional">
+              <div class="additional-checkout-buttons">
+                {{ content_for_additional_checkout_buttons }}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

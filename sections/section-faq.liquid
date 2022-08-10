@@ -1,0 +1,162 @@
+<!-- /sections/page-faq.liquid-->
+
+<section class="section-faq {{ section.settings.text_color }} {{ section.settings.height }} {{ section.settings.bg }}" data-section-id="{{ section.id }}" data-section-type="page-faq">
+  <div class="{{ section.settings.width }}">
+    <div class="text__standard {{ section.settings.align_text }}" data-accordion-group>
+      {% if section.settings.title != blank %}
+        <p class="standard__kicker">
+          {{ section.settings.title }}
+        </p>
+      {% endif %}
+      {% for block in section.blocks %}
+        {% if block.settings.content != blank %}
+          <div class="accordion__wrapper">
+            <button class="accordion__title"
+              data-accordion-trigger="accordion-{{ block.id }}"
+              aria-controls="accordion-{{ block.id }}"
+              aria-haspopup="true" 
+              aria-expanded="false">
+              {{ block.settings.title }}
+            </button>
+            {% assign font_size_class = section.settings.text_size | plus: 1 | prepend: 'font--' %}
+            <div class="accordion__body rte {{ font_size_class }}" 
+              data-accordion-body
+              id="accordion-{{ block.id }}">
+                <span {{ block.shopify_attributes }}></span>
+                {{ block.settings.content }}
+            </div>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="homepage-page__content rte">
+          {{ 'home_page.onboarding.no_content' | t }}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Accordion group",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "select",
+      "id": "align_text",
+      "label": "Title alignment",
+      "default": "text-left",
+      "options": [
+        { "value": "text-left","label": "Left" },
+        { "value": "text-center","label": "Centered" },
+        { "value": "text-right","label": "Right" }
+      ]
+    },
+    {
+      "type":  "range",
+      "id":    "text_size",
+      "label": "Text size",
+      "min":    1,
+      "max":    5,
+      "step":   1,
+      "default":1
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "default": "margin--medium",
+      "options": [
+        { "value": "margin--large", "label": "Large" },
+        { "value": "margin--medium", "label": "Medium" },
+        { "value": "margin--small", "label": "Small" },
+        { "value": "margin--zero", "label": "Natural" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper--narrow",
+      "options": [
+        { "value": "wrapper--narrow", "label": "Narrow" },
+        { "value": "wrapper", "label": "Wide" },
+        { "value": "wrapper--full", "label": "Full width" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text--neutral",
+      "options": [
+        { "value": "text--neutral", "label": "Normal text"},
+        { "value": "text--white", "label": "White"},
+        { "value": "text--primary", "label": "Primary accent"},
+        { "value": "text--secondary", "label": "Secondary accent"},
+        { "value": "text--black", "label": "Black"},
+        { "value": "text--invert--primary", "label": "Primary dark accent"},
+        { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+        { "value": "text--invert", "label": "Inverted text color"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Frequently asked question"
+        },
+        {
+          "id": "content",
+          "type": "richtext",
+          "label": "Text",
+          "default": "<p>Share details about your shipping policies, item returns, or customer service.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Accordion group",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "text"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

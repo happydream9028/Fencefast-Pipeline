@@ -1,0 +1,15 @@
+<!-- /snippets/products-recommendation.liquid -->
+{%- if recommendations.performed -%}
+  {%- if recommendations.products_count > 0 -%}
+    <div class="flickity-grid" data-slider data-grid-large="{{ number_slides | default: 4 }}">
+      <!-- /snippets/product-grid-item.liquid -->
+      {% for product in recommendations.products %}
+        <div class="product-grid-slide">
+          {% render 'product-grid-item', product: product %}
+        </div>
+      {% endfor %}
+    </div>
+  {%- endif -%}
+{%- else -%}
+  <div class="related__placeholder"></div>
+{%- endif -%}

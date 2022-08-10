@@ -1,0 +1,144 @@
+
+{%- for block in section.blocks -%}
+  {%- assign featured_collection = collections[block.settings.collection] -%}
+  {%- assign featured_collection_title = block.settings.title | default: featured_collection.title | default: 'Collection' -%}
+
+  {%- capture tabs_navigation -%}
+    {{ tabs_navigation }}
+    <button type="button" class="tab-link tab-link-{{ forloop.index0 }}"
+      data-focus-element
+      data-tab="{{ forloop.index0 }}"
+      data-block-id="{{ block.id }}"
+      tabindex="0"
+      {{ block.shopify_attributes }}>
+      <span>{{ featured_collection_title }}</span>
+    </button>
+  {%- endcapture -%}
+
+  {%- capture tabs -%}
+    {{ tabs }}
+    <div class="tab-content tab-content-{{ forloop.index0 }}">
+      <div class="flickity-grid" data-slider data-grid-large="{{ section.settings.grid }}">
+        <!-- /snippets/product-grid-item.liquid -->
+        {% for product in featured_collection.products limit: section.settings.limit %}
+          <div class="product-grid-slide">
+            {% render 'product-grid-item', product: product %}
+          </div>
+        {% else %}
+          {% render 'onboarding-product-grid-item', limit: section.settings.limit, wrap: 'product-grid-slide' %}
+        {% endfor %}
+      </div>
+    </div>
+  {%- endcapture -%}
+{%- endfor -%}
+
+
+<div class="homepage-collection-tabs {{ section.settings.bg }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection-tabs">
+  <div class="wrapper" data-tabs-holder>
+    <div class="collection-tabs">
+      {% if section.settings.title != blank %}
+        <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+      {% endif %}
+      <div class="tab__scroll">
+        <div class="tabs tabs--center tabs--pill" data-scrollbar data-scrollbar-slider>
+          {{ tabs_navigation }}
+        </div>
+  
+        <button type="button" class="tabs__arrow tabs__arrow--prev tabs-collections__arrow tabs-collections__arrow--prev is-hidden" data-scrollbar-arrow-prev>
+          <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+        </button>
+  
+        <button type="button" class="tabs__arrow tabs__arrow--next tabs-collections__arrow tabs-collections__arrow--next is-hidden" data-scrollbar-arrow-next>
+          <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+        </button>
+      </div>
+  
+      {{ tabs }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Tab collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Tab collections"
+    },
+    {
+      "type":    "range",
+      "id":      "grid",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "default": 3,
+      "label":   "Products per row"
+    },
+    {
+      "type":    "range",
+      "id":      "limit",
+      "min":     1,
+      "max":     20,
+      "step":    1,
+      "default": 6,
+      "label":   "Product limit",
+      "info": "Loading a large number of products can affect page speed"
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Tab collections",
+      "settings": [
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        },
+        {
+          "label": "Tab heading",
+          "id": "title",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Collection",
+      "name": "Tab collections",
+      "blocks": [
+        {
+          "type": "collection",
+          "settings": {
+            "title": "First collection"
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "title": "Second collection"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

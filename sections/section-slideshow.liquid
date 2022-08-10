@@ -1,0 +1,296 @@
+<!-- /sections/section-slideshow.liquid -->
+
+{%- assign scroll_class = '' -%}
+{% if section.settings.height == 'use_screen_full' %}
+  {%- assign scroll_class = 'has-scroll-arrow' -%}
+{%- endif -%}
+
+<div class="homepage-slideshow" data-section-id="{{ section.id }}" data-section-type="slideshow">
+  {% if section.blocks.size > 0 %}
+    <div class="slideshow__wrapper flickity-badge-dots {{ scroll_class }}" 
+      data-slideshow-wrapper
+      data-slideshow-autoplay="{{ section.settings.autoplay }}"
+      data-slideshow-slides="{{ section.blocks.size }}"
+      data-slideshow-speed="{{ section.settings.autoplay_speed | times: 1000 }}">
+      {% for block in section.blocks %}
+        <div class="slideshow__slide js-overflow-container section--image {{ block.settings.text_color }}"
+          data-overlay-header
+          id="aos-{{ block.id }}"
+          data-slideshow-index="{{ forloop.index0 }}"
+          {{ block.shopify_attributes }}>
+          <div class="hero__content__wrapper {{ block.settings.text_align }}">
+            <div class="hero__content js-overflow-content">
+              {% unless block.settings.kicker == '' %}
+                <p class="hero__kicker"
+                  data-aos="hero"
+                  data-aos-order="1">
+                  {{ block.settings.kicker | escape }}
+                </p>
+              {% endunless %}
+              {% unless block.settings.title == '' %}
+                <h1 class="hero__title h2"
+                  data-aos="hero"
+                  data-aos-order="2">
+                  {{ block.settings.title | escape }}
+                </h1>
+              {% endunless %}
+              {% unless block.settings.richtext == '' %}
+                <div class="hero__description h5--body"
+                  data-aos="hero"
+                  data-aos-order="3">
+                  {{ block.settings.richtext }}
+                </div>
+              {% endunless %}
+              {% unless block.settings.link_text == '' %}
+                <a class="{{ block.settings.button_color }} {{ block.settings.button_style }} hero__btn btn--long uppercase" 
+                  href="{{ block.settings.link }}"
+                  data-aos="hero"
+                  data-aos-order="4">
+                  {{ block.settings.link_text | escape }}
+                </a>
+              {% endunless %}
+            </div>
+            <div data-slide-custom-prev class="custom-prev-next-button previous"></div>
+            <div data-slide-custom-next class="custom-prev-next-button next"></div>
+          </div>
+
+          <div class="image-overlay" style="--bg:{{ block.settings.overlay_color }}; opacity:{{ block.settings.overlay_opacity | times: 0.01 }};"></div>
+
+          {%- assign desktop_image_modifier = '' -%}
+          {%- assign mobile_image = '' -%}
+          {%- if block.settings.mobile_image != blank -%}
+            {%- assign desktop_image_modifier = 'desktop' -%}
+            
+            {%- capture mobile_image -%}
+              {% render 'hero', img_object: block.settings.mobile_image, frame_height_class: section.settings.height, bg_position: block.settings.bg_position, modifier: 'mobile' %}
+            {%- endcapture -%}
+          {%- endif -%}
+
+          {% render 'hero', img_object: block.settings.image, frame_height_class: section.settings.height, bg_position: block.settings.bg_position, modifier: desktop_image_modifier %}
+
+          {{ mobile_image }}
+
+          {% if block.settings.link_text == '' and block.settings.link %}
+            <a class="link-over-image" href="{{ block.settings.link }}" aria-label="{{ block.settings.title | strip_html | escape }}"></a>
+          {% endif %}
+
+          {% if section.settings.height == 'use_screen_full' %}
+            <div class="scroll_icon_wrap">
+              <button data-scroll-down class="scroll_link bloop" aria-label="{{ 'general.accessibility.scroll' | t }}">
+                <span class="scroll_icon">{% render 'icon-scroll-down' %}</span>
+              </button>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if section.blocks.size == 0 %}
+    <div class="slideshow__slide">
+      <div class="text-center vertical-align">{{ 'home_page.onboarding.no_content' | t }}</div>
+      <div class="image-overlay" style="--bg: #000; opacity:0.15;"></div>
+    </div>
+  {% endif %}
+
+</div>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": false
+    },
+    {
+      "type":    "range",
+      "id":      "autoplay_speed",
+      "min":     1,
+      "max":     15,
+      "step":    1,
+      "unit":    "sec",
+      "label":   "Change slides every",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "default": "use_screen_two_thirds",
+      "options": [
+        { "value": "use_screen_full", "label": "Full screen height"},
+        { "value": "use_screen_three_quarters", "label": "Three quarters of screen height"},
+        { "value": "use_screen_two_thirds", "label": "Two thirds of screen height"},
+        { "value": "use_screen_one_half", "label": "One half of screen height"},
+        { "value": "use_screen_one_third", "label": "One third of screen height"},
+        { "value": "use_screen_one_fifth", "label": "One fifth of screen height"},
+        { "value": "use_pixels_800", "label": "800px" },
+        { "value": "use_pixels_650", "label": "650px" },
+        { "value": "use_pixels_500", "label": "500px" },
+        { "value": "use_image", "label": "Image height"}
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Match size to other slides"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image"
+        },
+        {
+          "type": "select",
+          "id": "bg_position",
+          "label": "Position",
+          "default": "center-center",
+          "options": [
+            { "label": "Top", "value": "center-top" },
+            { "label": "Right", "value": "right-center" },
+            { "label": "Center", "value": "center-center" },
+            { "label": "Left", "value": "left-center" },
+            { "label": "Bottom", "value": "center-bottom" }
+          ]
+        },
+        {
+          "type":    "range",
+          "id":      "overlay_opacity",
+          "min":     0,
+          "max":     100,
+          "step":    5,
+          "label":   "Image overlay opacity",
+          "info":    "Increase contrast for legible text.",
+          "default": 15
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Overlay color",
+          "default": "#000"
+        },
+        {
+          "type": "header",
+          "content": "Text"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Introducing"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Image slideshow"
+        },
+        {
+          "type": "richtext",
+          "id": "richtext",
+          "label": "Text",
+          "default": "<p>Tell your brand's story through images.</p>"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Alignment",
+          "default": "align--middle-center",
+          "options": [
+            { "value": "align--top-left", "label": "Top left"},
+            { "value": "align--top-center", "label": "Top center"},
+            { "value": "align--top-right", "label": "Top right"},
+            { "value": "align--middle-left", "label": "Middle left"},
+            { "value": "align--middle-center", "label": "Absolute center"},
+            { "value": "align--middle-right", "label": "Middle right"},
+            { "value": "align--bottom-left", "label": "Bottom left"},
+            { "value": "align--bottom-center", "label": "Bottom center"},
+            { "value": "align--bottom-right", "label": "Bottom right"}
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "text--white",
+          "options": [
+            { "value": "text--neutral", "label": "Normal text"},
+            { "value": "text--white", "label": "White"},
+            { "value": "text--primary", "label": "Primary accent"},
+            { "value": "text--secondary", "label": "Secondary accent"},
+            { "value": "text--black", "label": "Black"},
+            { "value": "text--invert--primary", "label": "Primary dark accent"},
+            { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+            { "value": "text--invert", "label": "Inverted text color"}
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Text",
+          "default": "View products",
+          "info": "Leave blank to link entire image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "button_color",
+          "label": "Color",
+          "default": "btn--white",
+          "options": [
+            { "value": "btn--primary", "label": "Bright accent" },
+            { "value": "btn--secondary", "label": "Secondary accent" },
+            { "value": "btn--neutral", "label": "Text color" },
+            { "value": "btn--black", "label": "Black" },
+            { "value": "btn--white", "label": "White" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "btn",
+          "options": [
+            { "value": "btn", "label": "Solid button"},
+            { "value": "btn--soft", "label": "Soft button"},
+            { "value": "btn--outline", "label": "Outlined button"}
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Slideshow",
+    "category": "Image",
+    "settings": {
+      "height": "use_screen_two_thirds"
+    },
+    "blocks": [
+      {
+        "type": "image"
+      },
+      {
+        "type": "image"
+      }
+    ]
+  }]
+}
+{% endschema %}

@@ -1,0 +1,88 @@
+{%- assign collection = collections[section.settings.collection] -%}
+{%- assign product_limit = section.settings.grid | times: section.settings.rows -%}
+
+<div class="homepage-collection {{ section.settings.bg }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection-row">
+  <div class="wrapper">
+    {% if section.settings.title != blank %}
+      <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+    <div class="js-grid" data-grid-large="{{ section.settings.grid }}" data-grid-small="2">
+      <!-- /snippets/product-grid-item.liquid -->
+      {% for product in collection.products limit: product_limit %}
+        {% render 'product-grid-item', product: product %}
+      {% else %}
+        {% render 'onboarding-product-grid-item', limit: product_limit %}
+      {% endfor %}
+    </div>
+    {% if section.settings.show_view_all %}
+      <div class="text-center">
+        <a href="{{ collection.url }}" class="btn--outline uppercase">
+          {{ 'collections.general.view_all' | t }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "Collection"
+    },
+    {
+      "type":    "range",
+      "id":      "grid",
+      "min":     1,
+      "max":     6,
+      "step":    1,
+      "label":   "Products per row",
+      "default": 3
+    },
+    {
+      "type":    "range",
+      "id":      "rows",
+      "min":     1,
+      "max":     8,
+      "step":    1,
+      "label":   "Number of rows",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

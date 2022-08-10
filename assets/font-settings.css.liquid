@@ -1,0 +1,87 @@
+
+
+{% comment %}
+  Must match css-variables.liquid
+{% endcomment %}
+{%- liquid 
+
+  assign base_font = settings.type_base_font
+  assign base_font_bold = base_font | font_modify: 'weight', 'bolder'
+
+  assign heading_font = settings.type_heading_font
+  assign heading_font_bold = heading_font | font_modify: 'weight', 'bolder'
+
+  assign accent_font = settings.type_accent_font
+  assign accent_font_bold = accent_font | font_modify: 'weight', 'bolder'
+
+  assign base_font_100 = base_font | font_modify: 'weight', '+100'
+  assign base_font_200 = base_font | font_modify: 'weight', '+200'
+  assign base_font_300 = base_font | font_modify: 'weight', '+300'
+  assign base_font_400 = base_font | font_modify: 'weight', '+400'  
+  if base_font_100 and base_font_100.weight > base_font.weight
+    assign base_font_bold = base_font_100
+  elsif base_font_200 and base_font_200.weight > base_font.weight
+    assign base_font_bold = base_font_200
+  elsif base_font_300 and base_font_300.weight > base_font.weight
+    assign base_font_bold = base_font_300
+  elsif base_font_400 and base_font_400.weight > base_font.weight
+    assign base_font_bold = base_font_400
+  endif
+
+  assign heading_font_100 = heading_font | font_modify: 'weight', '+100'
+  assign heading_font_200 = heading_font | font_modify: 'weight', '+200'
+  assign heading_font_300 = heading_font | font_modify: 'weight', '+300'
+  assign heading_font_400 = heading_font | font_modify: 'weight', '+400'  
+  if heading_font_100 and heading_font_100.weight > heading_font.weight
+    assign heading_font_bold = heading_font_100
+  elsif heading_font_200 and heading_font_200.weight > heading_font.weight
+    assign heading_font_bold = heading_font_200
+  elsif heading_font_300 and heading_font_300.weight > heading_font.weight
+    assign heading_font_bold = heading_font_300
+  elsif heading_font_400 and heading_font_400.weight > heading_font.weight
+    assign heading_font_bold = heading_font_400
+  endif
+
+  assign accent_font_100 = accent_font | font_modify: 'weight', '+100'
+  assign accent_font_200 = accent_font | font_modify: 'weight', '+200'
+  assign accent_font_300 = accent_font | font_modify: 'weight', '+300'
+  assign accent_font_400 = accent_font | font_modify: 'weight', '+400'  
+  if accent_font_100 and accent_font_100.weight > accent_font.weight
+    assign accent_font_bold = accent_font_100
+  elsif accent_font_200 and accent_font_200.weight > accent_font.weight
+    assign accent_font_bold = accent_font_200
+  elsif accent_font_300 and accent_font_300.weight > accent_font.weight
+    assign accent_font_bold = accent_font_300
+  elsif accent_font_400 and accent_font_400.weight > accent_font.weight
+    assign accent_font_bold = accent_font_400
+  endif
+-%}
+
+{{ heading_font | font_face: font_display: 'swap' }}
+{{ base_font | font_face: font_display: 'swap' }}
+{{ accent_font | font_face: font_display: 'swap' }}
+
+{% if heading_font_bold %}
+  {{ heading_font_bold | font_face: font_display: 'swap' }}
+{% endif %}
+
+{% if accent_font_bold %}
+  {{ accent_font_bold | font_face: font_display: 'swap' }}
+{% endif %}
+
+{% if base_font_bold %}
+  {{ base_font_bold | font_face: font_display: 'swap' }}
+{% endif %}
+
+{% comment %}
+  Below differs from css-variables.liquid
+  because these are not needed in vars
+{% endcomment %}
+{% assign base_font_italic = base_font | font_modify: 'style', 'italic' %}
+{% assign base_font_bold_italic = base_font_bold | font_modify: 'style', 'italic' %}
+{% if base_font_italic %}
+  {{ base_font_italic | font_face: font_display: 'swap' }}
+{% endif %}
+{% if base_font_bold_italic %}
+  {{ base_font_bold_italic | font_face: font_display: 'swap' }}
+{% endif %}

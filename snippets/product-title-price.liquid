@@ -1,0 +1,86 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+{% if block.settings.product_show_vendor and product.vendor %}
+  <div class="product__subheading">
+    <p><a href="{{ product.vendor | url_for_vendor }}" class="border-bottom-link uppercase">{{ product.vendor }}</a></p>
+  </div>
+{% endif %}
+
+<div class="product__headline" {{ block.shopify_attributes }}>
+
+  <div class="product__title__wrapper">
+    <h1 class="product__title">{{ product.title }}</h1>
+
+    {%- if block.settings.show_rating and product.metafields.reviews.rating.value != blank -%}
+      <div class="rating__wrapper__title">
+        {% render 'product-rating', product: product, show_rating_count: block.settings.show_rating_count %}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if product.metafields.theme.cutline != blank and product.metafields.theme.cutline.type == 'single_line_text_field' -%}
+    <p class="product__page__cutline">{{ product.metafields.theme.cutline.value }}</p>
+  {%- endif -%}
+
+  {% unless call_in == true %}
+  <div class="product__price__wrap">
+    <div class="product__price__main" data-price-wrapper>
+      <span class="product__price">
+        <span data-product-price {% if current_variant.compare_at_price > current_variant.price %} class="product__price--sale"{% endif %}>
+          {% unless product.tags contains 'variant-bundle' %}
+            {{ current_variant.price | money }}
+          {% else %}
+            {% render 'bundle-price', product: product %}
+          {% endunless %}
+        </span>
+      </span>
+
+      <span data-price-off class="product__price--off hide">
+        <span data-price-off-type>{{ 'products.product.sale' | t }}</span>
+        <em>•</em>
+        {{ 'products.product.save' | t }}
+        <span data-price-off-amount></span>
+      </span>
+
+      {% liquid
+        assign units = product.variants | map: 'unit_price'
+        if units[0]
+          assign has_units = true
+        else
+          assign has_units = false
+        endif 
+      %}
+      {% if has_units %}
+        {% capture show_units %}
+          {%- unless current_variant.unit_price -%}style="display: none;"{%- endunless -%}
+        {% endcapture %}
+        {% capture unit_price_separator %}
+          <span aria-hidden="true">/</span><span class="visually-hidden">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+        {% endcapture %}
+        {% capture unit_price_base_unit %}
+          <span>
+            {% if current_variant.unit_price_measurement %}
+              {% if current_variant.unit_price_measurement.reference_value != 1 %}
+                {{ current_variant.unit_price_measurement.reference_value }}
+              {%- endif -%}
+              {{ current_variant.unit_price_measurement.reference_unit }}
+            {% endif %}
+          </span>
+        {% endcapture %}
+        <div class="product__price--unit">
+          <span data-product-unit {{ show_units }}>
+            <span class="visually-hidden visually-hidden--inline">{{ 'products.product.unit_price_label' | t }}</span>
+            <span data-product-unit-price id="unit-price-{{ block.id }}">{{ current_variant.unit_price | money }}</span>
+            {{ unit_price_separator }}
+            <span data-product-base id="unit-price-base-{{ block.id }}">{{ unit_price_base_unit }}</span>
+          </span>
+          <span data-price-each class="hide">
+            {{ 'products.product.each' | t }}
+            <span data-price-each-amount></span>
+          </span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endunless %}
+</div>

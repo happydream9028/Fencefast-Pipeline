@@ -1,0 +1,26 @@
+<!-- snippets/onboarding-product-grid-item.liquid -->
+{% comment %}
+  Passes in limit because for else syntax is cleaner that way
+
+  {% render 'onboarding-product-grid-item', limit: limit, wrap: false %}
+{% endcomment %}
+
+{%- assign limit = limit | default: 1 -%} 
+{%- for i in (1..limit) -%}
+  {%- if wrap and wrap != '' -%}<div class="{{ wrap }}">{%- endif -%}
+    <div class="product-grid-item helper-content" data-grid-item {% if block %}{{ block.shopify_attributes }}{% endif %}>
+      <div>
+        <div data-grid-slide>
+          {% capture imgCount %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+          {% capture svg_name %}product-{{ imgCount }}{% endcapture %}
+          {{ svg_name | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+        <div class="product__grid__info product__grid__info--{{ settings.product_grid_style }} {{ settings.collection_text_alignment | default: 'text-center' }}">
+          <p class="product__grid__title"><span>{{ 'home_page.onboarding.product_title' | t }}</span></p>
+          <p class="product__grid__price"><span class="price">$19.99</span></p>
+        </div>
+      </div>
+    </div>  
+  {%- if wrap and wrap != '' -%}</div>{%- endif -%}
+{%- endfor -%}
+

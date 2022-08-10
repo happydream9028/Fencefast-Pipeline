@@ -1,0 +1,24 @@
+{% comment %}
+  Required params:
+    product_limit {int} Upper limit for num of products
+    grid {int} The js grid strings
+
+  Example:
+      {% render 'collection-row', collection: collection, product_limit: product_limit, grid: section.settings.grid %}
+{% endcomment %}
+{%- assign product_limit = product_limit | default: 4 -%}
+{%- assign grid = grid | default: 4 -%}
+
+{% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+  <div class="collection-list-item">
+    <div class="collection-list__heading__text">
+      <a href="{{ collection.url }}" class="text-link uppercase" title="{{ 'collections.general.link_title' | t: title: collection_title }}">{{ collection_title }}</a>
+      <a href="{{ collection.url }}" class="text-link uppercase" title="{{ 'collections.general.link_title' | t: title: collection_title }}">{{ 'collections.general.view_all' | t }} &rsaquo;</a>
+    </div>
+    <hr class="hr--small" />
+  <div class="js-grid" data-grid-large="{{ grid }}" data-grid-small="2">
+    {% for product in collection.products limit: product_limit %}
+      {% render 'product-grid-item', product: product %}
+    {% endfor %}
+  </div>
+</div>

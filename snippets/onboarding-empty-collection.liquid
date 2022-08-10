@@ -1,0 +1,14 @@
+<!-- snippets/onboarding-empty-collection.liquid -->
+<div class="grid__item">
+  <div class="helper-section">
+    <div class="helper-note bg--black text--white">
+      <span class="helper-icon"></span>
+      <h3>{{ 'collections.onboarding.modal_title' | t }}</h3>
+      <p>{{ 'collections.onboarding.no_products_html' | t }}</p>
+      <p><a href="/admin/products/new" class="btn--outline uppercase btn--primary">{{ 'collections.onboarding.add_product' | t }}</a></p>
+    </div>
+    <div class="js-grid helper-content" data-grid-large="4" data-grid-small="2">
+      {% render 'onboarding-product-grid-item', limit: 8 %}
+    </div>
+  </div>
+</div>

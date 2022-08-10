@@ -1,0 +1,35 @@
+{%- if section.settings.product_reviews_enable -%}
+  <section data-section-id="{{ section.id }}" data-section-type="product-reviews" class="product-reviews {{ section.settings.bg }}">
+    <div class="wrapper">
+      <div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
+    </div>
+  </section>
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "Product reviews",
+  "settings": [
+    {
+      "id": "product_reviews_enable",
+      "type": "checkbox",
+      "label": "Enable reviews",
+      "info": "Requires the [Shopify Product Reviews app](https://apps.shopify.com/product-reviews)."
+
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--accent",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    }
+  ]
+}
+{% endschema %}

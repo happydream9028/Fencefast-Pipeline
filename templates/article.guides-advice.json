@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "article",
+      "settings": {
+        "blog_show_meta": true,
+        "tags": false,
+        "social": false,
+        "image_height": "use_screen_one_third",
+        "bg_position": "center-center",
+        "sidebar_tags": false,
+        "recent": false,
+        "menu": "guides-advice"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

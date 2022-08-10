@@ -1,0 +1,29 @@
+{%- assign wrapper_class = wrapper_class | default: '' -%}
+
+<div class="{{ wrapper_class }}">
+  <h2 class="visually-hidden" id="lang-heading-{{ unique }}">
+    {{ 'layout.footer.language' | t }}
+  </h2>
+
+  <popout-select>
+    <div class="popout" data-popout>
+      <button type="button" class="popout__toggle" aria-expanded="false" aria-controls="lang-list-{{ unique }}" aria-describedby="lang-heading-{{ unique }}" data-popout-toggle>
+        {{ localization.language.endonym_name }}
+
+        {%- render 'icon-arrow-down' -%}
+      </button>
+
+      <ul id="lang-list-{{ unique }}" class="popout-list" data-popout-list>
+        {% for language in localization.available_languages %}
+          <li class="popout-list__item {% if language == localization.language %}popout-list__item--current{% endif %}">
+            <a class="popout-list__option" href="#" lang="{{ locale.iso_code }}" {% if language == localization.language %}aria-current="true"{% endif %} data-value="{{ language.iso_code }}" data-popout-option>
+              <span>{{ language.endonym_name }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <input type="hidden" name="language_code" id="LocaleSelector-{{ unique }}" value="{{ form.current_locale.iso_code }}" data-popout-input/>
+    </div>
+  </popout-select>
+</div>

@@ -1,0 +1,285 @@
+<!-- /sections/search.liquid -->
+
+
+{%- liquid
+  assign has_filters = false
+  if search.filters != empty and section.settings.show_filters
+    assign has_filters = true
+  endif
+
+  assign wrapper_class = 'wrapper--narrow'
+  if has_filters
+    assign wrapper_class = 'wrapper'
+  endif
+
+  assign types = search.types | join: ',' | url_encode
+  assign types = 'type=' | append: types
+-%}
+
+<section class="{{ wrapper_class }} pt2 pb4" {{ canonical_url }} data-search-page data-section-type="search-page" data-section-id="{{ section.id }}">
+  <div class="search__page__heading">
+    {% render 'search-bar' %}
+
+    {%- if search.terms.size > 0 -%}
+      <div class="note">
+        <p>
+          {%- if search.results_count > 0 -%}
+            {{ 'general.search.results_for' | t }} <span class="strong">{{ search.terms | escape }}</span>
+          {%- else -%}
+            {{ 'general.search.no_results_for' | t }} <span class="strong">{{ search.terms | escape }}</span>
+          {%- endif -%}
+        </p>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {% if search.performed %}
+
+    {%- if has_filters -%}
+      {%- assign filter_count = 0 -%}
+      {%- capture filter_clears -%}
+        {%- for filter in search.filters -%}
+          {% if filter.type == "price_range" %}
+            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+              {%- assign filter_count = filter_count | plus: 1 -%}
+              <a class="active__filters__remove" href="{{ filter.url_to_remove }}" data-filter-update-url>
+                {%- assign min_value = filter.min_value.value | default: 0 -%}
+                {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+                {{ min_value | money_without_trailing_zeros }} - {{ max_value | money_without_trailing_zeros }} X
+              </a>
+            {%- endif -%}
+          {% else %}
+            {%- for filter_value in filter.active_values -%}
+              {%- assign filter_count = filter_count | plus: 1 -%}
+              <a class="active__filters__remove" href="{{ filter_value.url_to_remove }}" data-filter-update-url>
+                {{ filter_value.label }} <span class="filter__x">X</span>
+              </a>
+            {%- endfor -%}
+          {% endif %}
+        {%- endfor -%}
+      {%- endcapture -%}
+
+      <nav class="collection__nav" data-collection-tools>
+        <div class="collection__nav__buttons">
+          {% if filter_count > 0 %}  
+            {% capture current_filters_count %}
+              <div class="badge">{{ filter_count }}</div>            
+            {% endcapture %}
+          {% endif %}
+
+          <button class="collection__filters__toggle filters--default-visible drawer--visible" data-filters-toggle="filters">
+            <span class="hide-filters">{{ 'collections.sidebar.hide_filters' | t }}</span>
+            <span class="show-filters">{{ 'collections.sidebar.filter' | t }}</span>
+            <span data-active-filters-count>{{ current_filters_count }}</span>
+            {% render 'icon-filter' %}
+          </button>
+        </div>
+      </nav>
+    {%- endif -%}
+
+    <div class="collection__active__filters {% unless filter_count > 0 %}is-hidden{% endunless %}" data-active-filters>
+      {%- if filter_count > 1 -%}
+      <a href="{{ routes.search_url }}?{{ types }}&q={{ search.terms | url_encode }}" class="active__filters__clear" data-filter-update-url>{{ 'collections.sidebar.all_tags' | t }}</a>
+      {%- endif -%}
+      {{ filter_clears }}
+    </div>
+
+    <div class="collection__content">
+      {%- if has_filters -%}
+        <div class="collection__filters__wrapper filters--default-visible" data-collection-sidebar data-filters="filters" data-default-hide="false">
+          <div class="collection__filters__outer">
+            <div class="drawer__top">
+              <div class="drawer__top__left">
+                <p class="cart__drawer__title">{{ 'collections.sidebar.filter' | t }}</p>
+              </div>
+
+              <button class="drawer__button drawer__close"
+                data-filters-toggle="filters"
+                aria-label="{{ 'general.accessibility.close' | t }}">
+                {% render 'icon-close' %}
+              </button>
+            </div>
+
+            <div class="collection__filters__inner">
+              <form data-sidebar-filter-form>
+                <input type="hidden" name="q" value="{{ search.terms }}">
+
+                {%- for filter in search.filters -%}
+                  {% render 'filters', filter: filter %}
+                {%- endfor -%}
+              </form>
+            </div>
+          </div>
+
+          <span class="drawer__underlay" data-filters-underlay>
+            <span class="drawer__underlay__fill"></span>
+            <span class="drawer__underlay__blur"></span>
+          </span>
+        </div> 
+        
+      {%- endif -%}
+
+      <div class="collection__products" data-products-grid>    
+        <div class="loading-icon text-center">
+          <div class="loadingio-spinner-disk-anqif2fxt5c"><div class="ldio-ne74iu2pwce">
+            <div><div></div><div></div></div>
+            </div></div>
+            <style type="text/css">
+            @keyframes ldio-ne74iu2pwce {
+              0% { transform: rotate(0deg) }
+              100% { transform: rotate(360deg) }
+            }
+            .ldio-ne74iu2pwce > div > div {
+              position: absolute;
+              border-radius: 50%;
+            }
+            .ldio-ne74iu2pwce > div > div:nth-child(1) {
+              top: 15px;
+              left: 15px;
+              width: 70px;
+              height: 70px;
+              background: #ef7d27;
+            }
+            .ldio-ne74iu2pwce > div > div:nth-child(2) {
+              top: 19.900000000000002px;
+              left: 39.5px;
+              width: 21px;
+              height: 21px;
+              background: #ffffff;
+              animation: ldio-ne74iu2pwce 1s linear infinite;
+              transform-origin: 10.5px 30.099999999999998px;
+            }
+            .loadingio-spinner-disk-anqif2fxt5c {
+              width: 50px;
+              height: 50px;
+              display: inline-block;
+              overflow: hidden;
+              background: #ffffff;
+            }
+            .ldio-ne74iu2pwce {
+              width: 100%;
+              height: 100%;
+              position: relative;
+              transform: translateZ(0) scale(0.5);
+              backface-visibility: hidden;
+              transform-origin: 0 0; /* see note above */
+            }
+            .ldio-ne74iu2pwce div { box-sizing: content-box; }
+            /* generated by https://loading.io/ */
+            </style>
+        </div>
+        {% paginate search.results by 10 %}    
+            {% for item in search.results %}
+              <div class="grid">
+                {% if item.featured_media.preview_image %}
+                  {% comment %}
+                    We have a featured_media, so it's likely a product
+                  {% endcomment %}
+                  <div class="grid__item one-sixth">
+                    <a href="{{ item.url }}" title="{{ item.title | escape }}">
+                      {{ item.featured_media.preview_image | img_url: 'medium' | img_tag: item.featured_media.alt }}
+                    </a>
+                  </div>
+
+                  <div class="grid__item five-sixths">
+                {% elsif item.object_type == 'article' and item.image %}
+                  <div class="grid__item one-sixth">
+                    <a href="{{ item.url }}" title="{{ item.title | escape }}">
+                      {{ item | img_url: 'medium' | img_tag: item.title }}
+                    </a>
+                  </div>
+
+                  <div class="grid__item five-sixths">
+                {% else %}
+                  <div class="grid__item small-up--five-sixths small-up--push-one-sixth">
+                {% endif %}
+                  <p class="h6--body product__inline__title">
+                    {{ item.title | link_to: item.url }}
+                  </p>
+                
+                  {% if item.object_type == 'product' %}
+                    <p class="product__inline__price">
+                      {%- assign product = item -%}
+                      {%- assign on_sale = false -%}
+                      {%- assign sold_out = true -%}
+                      {%- assign current_variant = product.first_available_variant -%}
+
+                      {%- if product.compare_at_price > item.price -%}
+                        {%- assign on_sale = true -%}
+                      {%- endif -%}
+                      
+                      {%- if product.available -%}
+                        {%- assign sold_out = false -%}
+                      {%- endif -%}
+
+                      <span class="price{% if on_sale %} on-sale{% endif %}">
+                        {% if product.price_varies %}{{ 'products.general.from' | t }} {% endif %}
+                        {{ product.price | money }}
+                      </span>
+
+                      {% if on_sale %}
+                        <span class="compare-at">
+                          {{ product.compare_at_price | money }}
+                        </span>
+                      {% endif %}
+
+                      {% if current_variant.unit_price %}
+                        {% capture unit_price_separator %}
+                          <span aria-hidden="true">/</span><span class="visually-hidden">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+                        {% endcapture %}
+
+                        {% capture unit_price_base_unit %}
+                          {% if current_variant.unit_price_measurement.reference_value != 1 %}
+                            {{ current_variant.unit_price_measurement.reference_value }}
+                          {% endif %}
+                          {{ current_variant.unit_price_measurement.reference_unit }}
+                        {% endcapture %}
+
+                          <br />
+                          <span class="visually-hidden">{{ 'products.product.unit_price_label' | t }}</span>
+                          <span class="price-per-unit">{{ current_variant.unit_price | money }}{{ unit_price_separator }}{{ unit_price_base_unit }}</span>
+                      {% endif %}
+
+                      {% if sold_out %}
+                        <br /><em>{{ 'products.product.sold_out' | t }}</em>
+                      {% endif %}
+                    </p>               
+                    {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
+                      <div class="rating__wrapper__search">
+                        {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
+                      </div>
+                    {%- endif -%}
+                  {% endif %}
+                  </div>
+                </div>
+              {% unless forloop.last %}<hr>{% endunless %}
+            {% endfor %}
+          </div>
+        </div>
+        {% if paginate.pages > 1 %}
+          <div class="text-center pt2">
+            {% render 'pagination-custom', paginate: paginate %}
+          </div>
+        {% endif %}
+      {% endpaginate %}
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Search",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "default": true,
+      "label": "Show product filters"
+    }
+  ]
+}
+{% endschema %}

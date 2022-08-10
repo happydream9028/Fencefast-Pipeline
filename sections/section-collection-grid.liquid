@@ -1,0 +1,235 @@
+{%- assign grid_item_width = 'medium-up--one-half' -%}
+
+{% case section.settings.grid %}
+  {% when 1 %}
+    {%- assign grid_item_width = 'one-whole' -%}
+  {% when 2 %}
+    {%- assign grid_item_width = 'medium-up--one-half' -%}
+  {% when 3 %}
+    {%- assign grid_item_width = 'medium-up--one-third' -%}
+  {% when 4 %}
+    {%- assign grid_item_width = 'medium-up--one-quarter' -%}
+{% endcase %}
+
+<div class="homepage-collection-grid {{ section.settings.bg }} section-{{ section.id }}">
+  <div class="wrapper">
+    {% if section.settings.title != blank %}
+      <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    <div class="grid grid--uniform">
+      {% for block in section.blocks limit: section.blocks.size %}
+        {%- assign collection = collections[block.settings.collection] -%}
+        {% if block.settings.image != blank %}
+        {%- assign img_object = block.settings.image -%}
+        {% elsif collection.image %}
+            {%- assign img_object = collection.image -%}
+        {%- elsif collection.products.first -%}
+          {%- assign img_object = collection.products.first.featured_media.preview_image -%}
+        {%- endif -%}
+        <div class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }} >
+          <div class="collection-grid-item section--image {{ section.settings.text_color }}">
+            {%- assign item_link = collection.url | default: '#' -%}
+            {%- if block.settings.button_link != blank -%}
+              {% assign item_link = block.settings.button_link -%}
+            {%- endif -%}
+            <a href="{{ item_link }}" class="link-over-image" aria-label="{{ collection.title | default: block.settings.title | strip_html | escape }}">
+              <div class="hero__content__wrapper align--middle-center">
+                <div>
+                  {% unless block.settings.title == '' %}
+                    <h2 class="hero__title h4">
+                      {{ block.settings.title | escape }}
+                    </h2>
+                  {% endunless %}
+                  {% unless block.settings.link_text == '' %}
+                    <div class="{{ section.settings.button_style }} {{ section.settings.button_color }} hero__btn btn--small uppercase">
+                      {{ block.settings.link_text | escape }}
+                    </div>
+                  {% endunless %}
+                </div>
+              </div>
+            </a>
+            <div class="image-overlay" style="--bg:{{ section.settings.overlay_color }}; opacity:{{ section.settings.overlay_opacity | times: 0.01 }};"></div>
+            {%- render 'image-fill', img_object: img_object, aspect_ratio: section.settings.aspect_ratio, bg_position: block.settings.bg_position -%}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    <div class="text-center">{{ 'home_page.onboarding.no_content' | t }}</div>
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Collection list",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Collection list"
+      },
+      {
+        "type":    "range",
+        "id":      "grid",
+        "min":     1,
+        "max":     4,
+        "step":    1,
+        "label":   "Collections per row",
+        "default": 2
+      },
+      {
+        "type": "select",
+        "id": "bg",
+        "label": "Background color",
+        "default": "palette--light bg--neutral",
+        "options": [
+          { "value": "palette--light bg--neutral", "label": "Default"},
+          { "value": "palette--light bg--accent", "label": "Light"},
+          { "value": "palette--dark bg--invert", "label": "Dark"},
+          { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+        ]
+      },
+      {
+        "type": "select",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "text--white",
+        "options": [
+          { "value": "text--neutral", "label": "Normal text"},
+          { "value": "text--white", "label": "White"},
+          { "value": "text--primary", "label": "Primary accent"},
+          { "value": "text--secondary", "label": "Secondary accent"},
+          { "value": "text--black", "label": "Black"},
+          { "value": "text--invert--primary", "label": "Primary dark accent"},
+          { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+          { "value": "text--invert", "label": "Inverted text color"}
+        ]
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button style",
+        "default": "btn--outline",
+        "options": [
+          { "value": "btn", "label": "Solid button"},
+          { "value": "btn--soft", "label": "Soft button"},
+          { "value": "btn--outline", "label": "Outlined button"}
+        ]
+      },
+      {
+        "type": "select",
+        "id": "button_color",
+        "label": "Color",
+        "default": "btn--white",
+        "options": [
+          { "value": "btn--primary", "label": "Bright accent" },
+          { "value": "btn--secondary", "label": "Secondary accent" },
+          { "value": "btn--neutral", "label": "Text color" },
+          { "value": "btn--black", "label": "Black" },
+          { "value": "btn--white", "label": "White" }
+        ]
+      },
+      {
+        "type":    "range",
+        "id":      "overlay_opacity",
+        "unit":    "%",
+        "min":     0,
+        "max":     100,
+        "step":    5,
+        "label":   "Image overlay opacity",
+        "info":    "Increase contrast for legible text.",
+        "default": 15
+      },
+      {
+        "type": "color",
+        "id": "overlay_color",
+        "label": "Overlay color",
+        "default": "#000"
+      },
+      {
+        "type": "range",
+        "id": "aspect_ratio",
+        "min": 0.5,
+        "max": 1.5,
+        "step": 0.1,
+        "unit": ":1",
+        "label": "Image scaling ratio",
+        "info": "Wide to tall",
+        "default": 0.7
+      }
+    ],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Featured collection"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Button text",
+            "default": "View products"
+          },
+          {
+            "type": "header",
+            "content": "Override defaults"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "bg_position",
+            "label": "Position",
+            "default": "center-center",
+            "options": [
+              { "label": "Top", "value": "center-top" },
+              { "label": "Right", "value": "right-center" },
+              { "label": "Center", "value": "center-center" },
+              { "label": "Left", "value": "left-center" },
+              { "label": "Bottom", "value": "center-bottom" }
+            ]
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection list",
+        "category": "Collection",
+        "settings": {
+          "grid": 2
+        },
+        "blocks": [
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

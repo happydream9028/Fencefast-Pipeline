@@ -1,0 +1,37 @@
+{% form 'contact' %}
+
+  {% comment %}
+  Successful message
+  {% endcomment %}
+  {% if form.posted_successfully? %}
+  <div data-form-success></div>
+  {% endif %}
+  
+  {{ form.errors | default_errors }}
+  
+  <input type="hidden" id="ContactPurpose" name="contact[Form]" value="Email For Price Quote Form">
+  <input type="hidden" id="ContactFormUrl" name="contact[Contacted from]" placeholder="" value="https://fencefast.ca{{ product.url }}">
+  
+  {% assign name_attr = 'contact.form.name' | t | handle %}
+  <label for="ContactFormName">{{ 'contact.form.name' | t }}</label>
+  <input type="text" id="ContactFormName" name="contact[{{ name_attr }}]" placeholder="" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+  
+  <label for="ContactFormEmail">{{ 'contact.form.email' | t }}</label>
+  <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+  
+  {% assign name_attr = 'contact.form.phone' | t | handle %}
+  <label for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
+  <input type="tel" required id="ContactFormPhone" name="contact[{{ name_attr }}]" placeholder="" pattern="[0-9\-]*" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+  
+  <label for="ContactFormZip">Zip/Postal Code</label>
+  <input type="text" id="ContactFormZip" name="contact[Zip/Postal Code]" placeholder="" required>
+  
+  <label for="ContactFormSubject">Subject</label>
+  <input type="text" id="ContactFormSubject" name="contact[Subject]" placeholder="" value="{{ product.title }}">
+  
+  <label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
+  <textarea rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+  
+  <p><input type="submit" class="btn right uppercase" value="{{ 'contact.form.send' | t }}"></p>
+
+{% endform %}

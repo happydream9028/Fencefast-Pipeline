@@ -1,0 +1,85 @@
+<!-- /snippets/cart-shipping.liquid -->
+<div class="drawer__bottom__shipping drawer__accordion">
+  <button class="accordion__title"
+    data-accordion-trigger="accordion-cart-shipping"
+    aria-controls="accordion-{{ key }}"
+    aria-haspopup="true" 
+    aria-expanded="false">
+    {{ 'cart.shipping.estimate_shipping' | t }}
+  </button>
+  <div class="accordion__body drawer__accordion__body" 
+    data-accordion-body
+    id="accordion-cart-shipping">
+    <div class="shipping-calculator">
+      <div data-shipping-estimate-form>
+
+        <div class="display-none">
+          {%- comment -%}Required for Shopify address handlers{%- endcomment -%}
+          <input type="text" name="address[first_name]" value="{{ form.first_name }}">
+          <input type="text" name="address[last_name]" value="{{ form.last_name }}">
+          <input type="text" name="address[company]" value="{{ form.company }}">
+          <input type="text" name="address[address1]" value="{{ form.address1 }}">
+          <input type="text" name="address[address2]" value="{{ form.address2 }}">
+          <input type="text" name="address[city]" value="{{ form.city }}">
+          <input type="tel" name="address[phone]" value="{{ form.phone }}">
+        </div>
+
+        <div class="p">
+          <label class="small" for="estimate_address_country">{{ 'customer.addresses.country' | t }}</label>
+          <select id="estimate_address_country" 
+            name="address[country]" 
+            {% if shop.customer_accounts_enabled and customer %}
+              data-default="{{ customer.default_address.country_code }}" 
+              data-default-fullname="{{ customer.default_address.country }}"
+            {% elsif default_country != '' %}
+              data-default="{{ default_country.iso_code }}" 
+              data-default-fullname="{{ default_country }}"
+            {% endif %}></select>
+        </div>
+        <div class="p">
+          <label class="small" for="estimate_address_province">{{ 'customer.addresses.province' | t }}</label>
+          <select id="estimate_address_province" 
+            name="address[province]" 
+            {% if shop.customer_accounts_enabled and customer and customer.default_address.province != '' %}
+              data-default="{{ customer.default_address.province_code }}" 
+              data-default-fullname="{{ customer.default_address.province }}"
+            {% endif %}></select>
+        </div>
+        <div class="p">
+          <label class="small" for="estimate_address_zip">{{ 'customer.addresses.zip' | t }}</label>
+          <input id="estimate_address_zip" 
+            type="text" 
+            name="address[zip]"
+            {% if shop.customer_accounts_enabled and customer %} 
+              value="{{ customer.default_address.zip }}"
+            {% endif %} />
+        </div>
+      </div>
+      
+      <div data-response-wrapper aria-live="assertive"></div>
+
+      <input type="button" data-submit-shipping class="btn btn--primary btn--outline btn--full uppercase shipping__rates__button" value="{{ 'cart.shipping.estimate_shipping' | t }}" />
+    </div>
+</div>
+</div>
+
+<script data-response-template type="text/template">
+  {% raw %}
+    <ul class="shipping__rates {{it.class}}">
+      {{@each(it.items) => item}}
+        <li>
+          <p>
+            {{@if(item.title)}}
+              <span class="uppercase strong">{{ item.title | safe }}:</span> 
+            {{/if}}
+            {{@if(item.value)}}
+              <span class="uppercase">{{ item.value | safe }}</span>
+            {{/if}}
+          </p>
+        </li>
+      {{/each}}
+    </ul>
+  {% endraw %}
+</script>
+
+

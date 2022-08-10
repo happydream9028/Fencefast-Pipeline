@@ -1,0 +1,18 @@
+{%- if settings.swatches_enable and settings.swatches_collection_enable -%}
+  <script data-swatch-template type="text/x-template">
+    {% raw %}
+      <radio-swatch class="swatch__button" data-swatch-button>
+        <input type="radio"
+          name="grouped"
+          value="{{ it.color }}" 
+          id="{{ it.uniq }}">
+        <label for="{{ it.uniq }}" 
+          data-swatch="{{ it.color }}" 
+          data-swatch-variant="{{ it.variant }}" 
+          data-swatch-image="{{ it.image }}">
+          <span class="visually-hidden">{{ it.color }}</span>
+        </label>
+      </radio-swatch>
+    {% endraw %}
+  </script>
+{%- endif -%}

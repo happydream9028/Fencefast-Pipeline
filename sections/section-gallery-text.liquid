@@ -1,0 +1,95 @@
+<!-- /sections/section-custom-text.liquid-->
+
+<div class="frame frame-blocks-{{ section.blocks.size }} {{ section.settings.bg }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="gallery-text">
+  <div class="has-padding">
+    <div class="wrapper slides-mobile-outer">
+      <div class="gallery slides-mobile-inner">
+        {% for block in section.blocks %}
+          <div class="gallery__item" {{ block.shopify_attributes }}>
+            <div class="gallery__text border--line {{ block.settings.text_align }} {{ block.settings.border_position }}">
+              {% if block.settings.title != '' %}
+                <h2 class="custom__title">
+                  {{ block.settings.title | escape }}
+                </h2>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <div class="custom__text rte">
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Gallery text",
+  "settings": [
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Custom Text"
+        },
+        {
+          "id": "text",
+          "type": "richtext",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "type": "select",
+          "id": "text_align",
+          "label": "Alignment",
+          "default": "text-left",
+          "options": [
+            { "value": "text-left", "label": "Left"},
+            { "value": "text-center", "label": "Center"},
+            { "value": "text-right", "label": "Right"}
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gallery text",
+      "category": "Image",
+      "blocks": [
+        {
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

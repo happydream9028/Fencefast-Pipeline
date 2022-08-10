@@ -1,0 +1,59 @@
+<!-- /snippets/collection-sorting.liquid -->
+
+{% comment %}
+    Renders a sorting dropdown for a collection
+
+    Accepts:
+    - collection: {Object} currenct collection
+
+    Usage:
+    {%- render 'collection-sorting' collection: collection -%}
+{% endcomment %}
+
+<div class="popout--navbar">
+  <h2 class="visually-hidden" id="sort-heading">
+    {{ 'collections.general.sort' | t }}
+  </h2>
+
+  {%- capture sort_options -%}
+    {%- assign current_sort_name = '' -%}
+    {%- for option in collection.sort_options -%}
+      {%- assign active = false -%}
+      {%- assign collection_current_sort = collection.sort_by | default: collection.default_sort_by -%}
+      
+      {%- if collection_current_sort == option.value -%}
+        {%- assign current_sort_name = option.name -%}
+        {%- assign active = true -%}  
+      {%- endif -%}
+      
+      <li class="popout-list__item {% if active %}popout-list__item--current{% endif %}">
+        <a class="popout-list__option"
+          data-value="{{ option.value }}"
+          href="#"
+          {% if active %}aria-current="true"{% endif %}
+          data-sort-link>
+          <span>{{ option.name }}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  <popout-select>
+    <div class="popout" data-sort-enabled="{{ collection.sort_by | default: collection.default_sort_by }}" data-popout>
+      <button type="button"
+        class="popout__toggle"
+        aria-expanded="false"
+        aria-controls="sort-list"
+        aria-describedby="sort-heading"
+        aria-label="{{ 'collections.general.sort' | t }}"
+        data-popout-toggle>
+        <span data-sort-button-text class="small-down--hide">{{ current_sort_name }}</span>
+        <span class="medium-up--hide">{{ 'collections.general.sort' | t }}</span>
+        {%- render 'icon-sort' -%}    
+      </button>
+      <ul id="sort-list" class="popout-list" data-popout-list>
+        {{ sort_options }}
+      </ul>
+    </div>
+  </popout-select>
+</div>

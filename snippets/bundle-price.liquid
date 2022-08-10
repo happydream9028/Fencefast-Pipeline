@@ -1,0 +1,34 @@
+{% assign total = 0 %}
+{% if product.options.size <= 1 %}
+  {% for variant in product.variants %}
+	{% assign quantity = variant.metafields.bundle.quantity %}
+    {% if quantity == blank %}
+	  {% assign quantity = 1 %}
+    {% endif %}
+	{% assign quantity = quantity | plus: 0 %}
+	{% assign variant_price = variant.price | times: quantity %}  
+    {% assign total = total | plus: variant_price %}
+  {% endfor %}
+  {{ total | money }}
+  <span class="hidden" data-bundlePrice="{{ total }}"></span>
+{% else %}
+  {% for tag in product.tags %}
+    {% if tag contains 'choice--' %}
+      {% assign split = tag | split: '--' %}
+      {% assign title = split[1] %}
+      {% assign count = split[2] | plus: 0 %}
+      {% if count > 0 %}
+		{% for variant in product.variants %}
+		  {% if variant.title contains title %}
+	        {% for i in (1..count) %}
+			  {% assign total = total | plus: variant.price %}
+			{% endfor %}
+			{% break %}
+		  {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {{ total | money }}
+  <span class="hidden" data-bundlePrice="{{ total }}"></span>
+{% endif %}

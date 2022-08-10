@@ -1,0 +1,14 @@
+<div class="cart__empty align--middle-center">
+  <div class="wrapper">
+    <p class="h4--body m0">{{ 'cart.general.empty' | t }}</p>
+    <div class="image-overlay image-overlay-5"></div>
+  </div>
+</div>
+<a href="{{ settings.cart_continue_browsing | default: routes.all_products_collection_url }}" class="cart__circle__wrapper">
+  <div class="cart__circle">
+    {% render 'icon-cart' %}
+  </div>
+  <p class="cart__continue__link">
+    {{ 'cart.general.continue_browsing' | t }}
+  </p>
+</a>

@@ -1,0 +1,165 @@
+<section class="section-tabs {{ section.settings.color_bg }} {{ section.settings.height }}" data-section-id="{{ section.id }}" data-section-type="tabs">
+  <div class="{{ section.settings.width }}">
+    {%- assign tab_links = '' -%}
+    {%- assign tab_contents = '' -%}
+
+    {%- for block in section.blocks -%}
+      {%- assign title = block.settings.title -%}
+      {%- assign content = block.settings.text -%}
+      {%- assign raw_content = pages[block.settings.raw_content].content -%}
+      {%- assign tab_content = content | default: raw_content -%}
+
+      {%- if title != blank and title != '' and tab_content != blank and tab_content != '' -%}
+        {%- capture tab_links -%}
+          {{ tab_links }}
+
+          <button type="button" class="tab-link tab-link--alt tab-link-{{ forloop.index0 }}" data-focus-element data-tab="{{ forloop.index0 }}" data-block-id="{{ block.id }}" tabindex="0" {{ block.shopify_attributes }}>{{ title }}</>
+        {%- endcapture -%}
+
+        {%- capture tab_contents -%}
+          {{ tab_contents }}
+
+          <div class="tab-content tab-content-{{ forloop.index0 }}">
+            {{ tab_content }}
+          </div>
+        {%- endcapture -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if tab_links != '' -%}
+      <div class="tabs-wrapper">
+        <div class="tabs__holder" data-tabs-holder>
+          <div class="tabs__head tabs__head--line">
+            <div class="tabs" data-scrollbar data-scrollbar-slider>
+              {{ tab_links }}
+            </div>
+  
+            <button type="button" class="tabs__arrow tabs__arrow--alt tabs__arrow--prev is-hidden is-not-relative" data-scrollbar-arrow-prev>
+              <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+            </button>
+  
+            <button type="button" class="tabs__arrow tabs__arrow--alt tabs__arrow--next is-hidden is-not-relative" data-scrollbar-arrow-next>
+              <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+            </button>
+          </div>
+          
+          {{ tab_contents }}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Tabs",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "default": "margin--small",
+      "options": [
+        { "value": "margin--large", "label": "Large" },
+        { "value": "margin--medium", "label": "Medium" },
+        { "value": "margin--small", "label": "Small" },
+        { "value": "margin--zero", "label": "Natural" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper",
+      "options": [
+        {"value": "wrapper--narrow", "label": "Narrow"},
+        {"value": "wrapper", "label": "Wide"},
+        {"value": "wrapper--full", "label": "Full width"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "color_bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Text",
+      "type": "text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Tab heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>This content type will accept <strong>rich text</strong> to help with adding styles and links to additional pages or content. Use this to add supplementary information to help your buyers.</p>" 
+        }
+      ]
+    },
+    {
+      "name": "Page",
+      "type": "page",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Page tab",
+          "info": "Example: Size chart"
+        },
+        {
+          "type": "page",
+          "id": "raw_content",
+          "label": "Tab content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tabs",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "text",
+          "settings": {
+            "title": "Returns",
+            "text": "<p>Free returns within 30 days, no questions asked.  We believe in our products and we stand behind them.  We will return any of our items within 30 days just mail them back with your purchase receipt.</p>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Security",
+            "text": "<p>We accept all major credit cards.  All of our transactions are handled on a secure server using bank-grade encryption.  Payments can be handled through trusted third parties like Shopify Pay, Apple Pay, and PayPal.</p>"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Support",
+            "text": "<p>Let us know what you think of your items.  If you are not satisfied your purchase can be replaced at any time or returned after 30 days. All of our products come with a 30 day free return and one year manufacturers guarantee against defects.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

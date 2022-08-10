@@ -1,0 +1,12 @@
+{%- if cart.cart_level_discount_applications.size > 0 -%}
+  <p class="cart__footer__itemtotal">
+    <span class="cart__footer__label">{{ 'layout.cart.items_count.other' | t | capitalize }}:</span>
+    <span class="cart__footer__value">{{ cart.items_subtotal_price | money }}</span>
+  </p>
+  {%- for discount in cart.cart_level_discount_applications -%}
+    <p class="cart__footer__discount">
+      <span class="cart__footer__label">{{ discount.title }}:</span>
+      <span class="cart__footer__value">-{{ discount.total_allocated_amount | money }}</span>
+    </p>
+  {%- endfor -%}
+{%- endif -%}

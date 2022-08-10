@@ -1,0 +1,215 @@
+<!-- /snippets/collection-filters-sidebar.liquid -->
+{% comment %}
+  The collection sidebar containing tag filering and link-based navigation
+
+  * collection {object} - The current collection
+  * section {object} - The current section
+
+  {% render 'collection-filters-sidebar', section: section, collection: collection %}
+{% endcomment %}
+
+{%- assign collection_handle = 'all' -%}
+{%- if collection.handle -%}
+  {%- assign collection_handle = collection.handle -%}
+{%- endif -%}
+
+{%- for block in section.blocks -%}
+  {%- case block.type -%}
+
+  {%- when 'filters' -%}
+    <form data-sidebar-filter-form>
+      
+      {% if collection.current_type %}
+      	<input type="hidden" name="q" value="{{ collection.current_type }}">
+      {% endif %}
+      {% if collection.current_vendor %}
+      	<input type="hidden" name="q" value="{{ collection.current_vendor }}">
+      {% endif %}  
+
+      {%- for filter in collection.filters -%}
+        {% render 'filters', block: block, filter: filter %}
+      {%- endfor -%}
+    </form>
+    
+  {%- when 'nav_links' -%}
+    {% unless block.settings.collection_linklist == blank or block.settings.collection_linklist.empty? %}
+      {% assign custom_nav_list = block.settings.collection_linklist | handleize %}
+      <div class="sidebar__filter__group" {{ block.shopify_attributes }}>
+        <button class="sidebar__heading accordion-is-open"
+          data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-haspopup="true" 
+          aria-expanded="true"
+        >
+          <span>{{ linklists[custom_nav_list].title }}</span>
+
+          <span class="sidebar__heading-chevron">
+            {% render 'icon-arrow-medium-right' %}
+            <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+            <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+          </span>
+        </button>
+
+        <div class="sidebar__navigation__list" data-accordion-body id="accordion-{{ block.id }}-{{ forloop.index }}">
+          {% for link in linklists[custom_nav_list].links %}
+            {% if link.links == blank %}
+              <div class="sidebar__item {% if link.active %} sidebar__item--active{% endif %} {% if forloop.index > 10 %} is-hidden{% endif %}">
+                <a href="{{ link.url }}">{{ link.title }}</a>
+                {% render 'icon-box' %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if linklists[custom_nav_list].links.size > 10 %}
+          <button type="button" data-show-more>{{ 'collections.sidebar.show_more' | t }}</button>
+        {% endif %}
+      </div>
+
+      {% for link in linklists[custom_nav_list].links %}
+        {% if link.links != blank %}
+        <div class="sidebar__filter__group">
+          <button class="sidebar__heading accordion-is-open"
+            data-accordion-trigger="accordion-{{ link | handle }}-{{ forloop.index }}"
+            aria-controls="accordion-{{ link | handle }}-{{ forloop.index }}"
+            aria-haspopup="true" 
+            aria-expanded="true"
+            >
+            <span>{{ link.title }}</span>
+            
+            <span class="sidebar__heading-chevron">
+              {% render 'icon-arrow-medium-right' %}
+              <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+              <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+            </span>
+          </button>
+
+          <div class="sidebar__navigation__list" data-accordion-body id="accordion-{{ link | handle }}-{{ forloop.index }}">
+            {% for childlink in link.links %}
+              <div class="sidebar__item{% if childlink.active %} sidebar__item--active{% endif %} {% if forloop.index > 10 %} is-hidden{% endif %}">
+                <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+                {% render 'icon-box' %}
+              </div>
+            {% endfor %}
+          </div>
+
+          {% if link.links.size > 10 %}
+            <button type="button" data-show-more>{{ 'collections.sidebar.show_more' | t }}</button>
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    {% endunless %}
+
+  {%- when 'collections' -%}
+    {% if collections.size > 1 %}
+      <div class="sidebar__filter__group" {{ block.shopify_attributes }}>
+        <button class="sidebar__heading accordion-is-open"
+          data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-haspopup="true" 
+          aria-expanded="true"
+        >
+          <span>{{ block.settings.title }}</span>
+          
+          <span class="sidebar__heading-chevron">
+            {% render 'icon-arrow-medium-right' %}
+            <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+            <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+          </span>
+        </button>
+
+        <ul class="sidebar__navigation__list" data-accordion-body id="accordion-{{ block.id }}-{{ forloop.index }}">
+          {% for collection_link in collections %}
+            {% unless collection_link.handle == 'frontpage' %}
+              <li class="sidebar__item{% if collection.handle == collection_link.handle %} sidebar__item--active{% endif %} {% if forloop.index > 10 %} is-hidden{% endif %}">
+                <a href="{{ routes.collections_url }}/{{ collection_link.handle }}">{{ collection_link.title }}</a>
+                {% render 'icon-box' %}
+              </li>
+            {% endunless %}
+          {% endfor %}
+        </ul>
+
+        {% if collections.size > 10 %}
+          <button type="button" data-show-more>{{ 'collections.sidebar.show_more' | t }}</button>
+        {% endif %}
+      </div>
+    {% endif %}
+    {%- when 'group' -%}
+      <div class="sidebar__filter__group" data-tag-group {{ block.shopify_attributes }}>
+        {%- capture current_tags_url -%}
+        {%- for tag in current_tags -%}{{ tag | handleize }}+{%- endfor -%}
+        {%- endcapture -%}
+        {%- if current_tags_url == '+' -%}{%- assign current_tags_url = '' -%}{%- endif -%}
+        {% assign current_tags_compare = current_tags_url | prepend: '+' %}
+    
+        {%- capture shop_tags -%}
+        {%- for tag in collection.tags -%}{{ tag | handleize }}+{%- endfor -%}
+        {%- endcapture -%}
+        {% assign shop_tags_compare = shop_tags | prepend: '+' %}
+    
+        {%- assign settings_tag_array = block.settings.group_tags | split: ',' -%}
+        <button class="sidebar__heading accordion-is-open"
+          data-accordion-trigger="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-controls="accordion-{{ block.id }}-{{ forloop.index }}"
+          aria-haspopup="true" 
+          aria-expanded="true"
+        >
+          <span>{{ block.settings.title }}</span>
+          <span class="sidebar__heading-chevron">
+            {% render 'icon-arrow-medium-right' %}
+            <span class="a11y__show visually-hidden">{{ 'general.accessibility.expand_menu' | t }}</span>
+            <span class="a11y__hide visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
+          </span>
+        </button>
+        <ul class="sidebar__navigation__list sidebar__navigation__list--grouped" data-accordion-body id="accordion-{{ block.id }}-{{ forloop.index }}">
+          {%- for settings_tag in settings_tag_array -%}
+            {% comment %} Normalize merchant settings input {% endcomment %}
+            {%- assign settings_tag_handle = settings_tag | handleize -%}
+            {%- assign settings_tag_handle_plus = settings_tag | handleize | append: '+' | prepend: '+' -%}
+    
+            {%- assign link_style = 'link--disable' -%}
+    
+            {% comment %} If tag is currently active setup URLs to remove tag {% endcomment %}
+            {%- if current_tags_compare contains settings_tag_handle_plus -%}
+              {%- assign link_style = 'link--remove' -%}
+              {%- assign removed_tag_array = '' -%}
+              {%- for product_tag in current_tags -%}
+                {%- assign product_tag_handle = product_tag | handleize -%}
+                {%- unless settings_tag_handle == product_tag_handle -%}
+                  {%- assign removed_tag_array = removed_tag_array | append: product_tag_handle | append: '[!ヽ(´ー｀)/!]' -%}
+                {%- endunless -%}
+              {%- endfor -%}
+              {%- assign removed_tag_array = removed_tag_array | split: '[!ヽ(´ー｀)/!]' -%}
+              {%- capture removed_tag_url -%}
+                {%- for tag in removed_tag_array -%}{{ tag | handleize }}{%- unless forloop.last -%}+{%- endunless -%}{%- endfor -%}
+              {%- endcapture -%}
+    
+              <li class="sidebar__item sidebar__item--active {{ link_style }}">
+                <a href="{{ routes.collections_url }}/{{ collection_handle }}/{{ removed_tag_url }}" title="✕ {{ settings_tag }}">
+                  {{ settings_tag }}
+                </a>
+                {% render 'icon-box' %}
+                {% render 'icon-reset' %}
+              </li>
+            {%- else -%}
+              {% if shop_tags_compare contains settings_tag_handle_plus %}
+                {%- assign link_style = 'link--add' -%}
+              {%- endif -%}
+              <li class="sidebar__item {{ link_style }}">
+                <a href="{{ routes.collections_url }}/{{ collection_handle }}/{{ current_tags_url }}{{ settings_tag_handle }}" title="+ {{ settings_tag }}">
+                  {{ settings_tag }}
+                </a>
+                {% render 'icon-box' %}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+  {%- endcase -%}
+{%- endfor -%}
+
+
+
+
+

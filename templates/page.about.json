@@ -1,0 +1,175 @@
+{
+  "sections": {
+    "hero": {
+      "type": "section-hero",
+      "disabled": true,
+      "settings": {
+        "bg_position": "center-center",
+        "height": "use_screen_one_fifth",
+        "overlay_opacity": 50,
+        "overlay_color": "#000000",
+        "kicker": "",
+        "title": "About",
+        "richtext": "",
+        "text_align": "align--middle-center",
+        "text_color": "text--white",
+        "enable_search": false,
+        "link_text": "",
+        "link": "",
+        "button_color": "btn--white",
+        "button_style": "btn"
+      }
+    },
+    "1659479299a23869de": {
+      "type": "section-richtext",
+      "blocks": {
+        "d6cb1f53-16a2-4fdb-b3cb-2d18c8aecc89": {
+          "type": "kicker",
+          "settings": {
+            "kicker": "<p>THE FENCEFAST MOTO IS <em>\"LIFE IS SHORT-WORK SMART\"<\/em><\/p>",
+            "enable_caps": false,
+            "enable_line": false,
+            "text_size": 6
+          }
+        },
+        "165947929947be8b0a-1": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>OUR PASSION IS ABOUT HELPING OUR CUSTOMERS FENCE, <strong>BETTER, FASTER, SAFER.<\/strong><\/p>",
+            "text_size": 9
+          }
+        }
+      },
+      "block_order": [
+        "d6cb1f53-16a2-4fdb-b3cb-2d18c8aecc89",
+        "165947929947be8b0a-1"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-center",
+        "height": "margin--large",
+        "width": "wrapper",
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "16594794299ceef385": {
+      "type": "section-richtext",
+      "blocks": {
+        "1659479429d2fdebe6-2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>FenceFast Ltd is a Canadian Sales, Marketing and Distribution Company of Fence, Trellis, and Animal Management Product Solutions. FenceFast represents and works with many of the leading manufactures from around the globe. Our product lines are specifically chosen to represent quality products that will get a superior result in the most economical way.<\/p><p>The team at FenceFast has decades of experience in professional contract fencing so we look to field test all of the products we carry before giving them the FenceFast endorsement of approval. FenceFast looks to work with leading innovative manufactures whom strive to manufacture reliable, quality solutions that they have designed, tested and stand behind.<\/p><p>We believe we are uniquely positioned to be your source for fencing products solutions from our real hands on knowledge of over 25 years of fence design and construction experience. As an independent and specialized company, we pride ourselves in offering honest, old fashioned advice so you, our customer, can create a fence system that is second to none in quality, performance and cost effectiveness.<\/p><p>We are relentless in ensuring our products are tough enough for the extremes for use in Canada . All our products are tested by not only us but by many professional fence erectors and Agricultural users across the country to ensure these products will produce a high quality result and work in our unique Canadian weather. We want our products to help you work smarter not harder.<\/p>",
+            "text_size": 4,
+            "text_columns": 2
+          }
+        }
+      },
+      "block_order": [
+        "1659479429d2fdebe6-2"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-left",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "16594795972fb4968c": {
+      "type": "section-custom-content",
+      "blocks": {
+        "9d6bc4b4-c270-441b-8088-7a914251c44f": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Handshake_1024x1024_831e5d78-294d-40b6-9c4d-9bc64b812fb1.webp",
+            "bg_position": "left-center",
+            "overlay_opacity": 15,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        },
+        "8d3b3b80-ca29-4d8e-be43-9dab7817be8c": {
+          "type": "text",
+          "settings": {
+            "kicker": "",
+            "title": "Our Story",
+            "text": "<p>Axle Boris the founder and President of FenceFast Ltd grew up on a cattle ranch in British Columbia’s Northern Interior. After having spent several summers working for his father custom fencing as a youth years later in 1998 he started AB Custom Fencing in the BC interior. Being impressed with how electric fences consistently kept out a wide variety of animals and were a cost effective option for customers; Axle became a dealer for to Gallagher Animal Management in 2000. Since then AB Custom Fencing has become an industry leader specializing in Livestock, Wildlife, Bear and Predator Management permanent and portable fence structures.<\/p>",
+            "text_size": 1,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "",
+            "button_url": "",
+            "button_color": "btn--neutral",
+            "button_style": "caps--link",
+            "text_color": "text--neutral",
+            "bg_color": "#eeeeee"
+          }
+        }
+      },
+      "block_order": [
+        "9d6bc4b4-c270-441b-8088-7a914251c44f",
+        "8d3b3b80-ca29-4d8e-be43-9dab7817be8c"
+      ],
+      "settings": {
+        "height": "use_screen_one_half",
+        "padding": false,
+        "borders": false,
+        "wrapper": false
+      }
+    },
+    "1659479716a4a14c30": {
+      "type": "section-richtext",
+      "blocks": {
+        "1659479716a9640601-2": {
+          "type": "text",
+          "settings": {
+            "text": "<p><br\/><br\/>Now years later, countless miles of fence build and a tired shoulder from hammering thousands of staples, Axle had started searching for a faster alternative. He came upon a power fence stapler manufactured by Paslode NZ a division of ITW (Illinois Tool Works) Company, designed for batten fencing in New Zealand. These Kiwi's had a clear vision; to make fencing faster and easier. Axle knew this solution for batten fencing was innovative but the Canadian agriculture fence market demanded a more powerful tool to fire a 2” barbed staple used here. Axle worked in conjunction with the ITW Paslode team in New Zealand and in July 2012 the ST400 pneumatic fence stapler was launched to the world under the new brand of \"STOCKade\" now the the agricultural fastener brand of ITW. The ST400   remarkable revolutionized fence building and greatly increased productivity however continuously agricultural fencers asked for a cordless model to go anywhere quickly and easily.<\/p><p>Customer interest was building in the power fence staplers and the time was right to separate custom fencing from the sales and distribution of fencing products to create a new company; FenceFast Ltd, thus leaving AB Custom Fencing to return to its fence installation roots. <\/p><p>In 2016, FenceFast was pleased to assist STOCKade with the worldwide launch of the ST400i, the world’s first cordless and most powerful fence stapler. FenceFast Launched the ST400i in Canada for the first time at AG in Motion show in Saskatoon July 2016, where it was award both the first place Innovation and People's Choice Award, going on to also win the first place Innovation Award at Agri-Trade in Red Deer in November 2016. The revolution in fencing has arrived. STOCKade’s ST400i will drive a 2” barbed staple in less than a second. That allows the user to; FenceFast.<\/p>",
+            "text_size": 4,
+            "text_columns": 1
+          }
+        }
+      },
+      "block_order": [
+        "1659479716a9640601-2"
+      ],
+      "settings": {
+        "anchor": "",
+        "align_text": "text-left",
+        "height": "margin--large",
+        "width": "wrapper",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "main": {
+      "type": "page",
+      "disabled": true,
+      "settings": {
+        "kicker": "",
+        "show_title": false,
+        "show_content": true,
+        "text_size": 2,
+        "align_text": "text-left",
+        "height": "margin--small",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "1659479299a23869de",
+    "16594794299ceef385",
+    "16594795972fb4968c",
+    "1659479716a4a14c30",
+    "main"
+  ]
+}

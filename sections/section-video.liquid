@@ -1,0 +1,306 @@
+<!-- /sections/section-video.liquid -->
+
+{%- assign video_bg_show = false -%}
+{%- if section.settings.video_link_bg != blank -%}
+  {%- assign video_link_bg_downcase = section.settings.video_link_bg | downcase -%}
+  {%- if video_link_bg_downcase contains '.mp4' -%}
+    {%- assign video_bg_show = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- assign scroll_class = '' -%}
+{% if section.settings.height == 'use_screen_full' %}
+  {%- assign scroll_class = 'has-scroll-arrow' -%}
+{%- endif -%}
+
+<div class="section--image homepage-video fade-in-child js-overflow-container {{ scroll_class }} {{ section.settings.height }} {{ section.settings.text_color }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="video" 
+  {% if video_bg_show and section.settings.height == 'use_image' %}
+    style="padding-top: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"
+  {% endif %}
+  data-overlay-header>
+  <div class="hero__content__wrapper {{ section.settings.text_align }}">
+    <div class="hero__content js-overflow-content">
+      {%- assign animation_anchor = "[data-section-id='" | append: section.id | append: "']" -%}
+      {% unless section.settings.kicker == '' %}
+        <p class="hero__kicker"
+          data-aos="hero"
+          data-aos-anchor="{{ animation_anchor }}"
+          data-aos-order="1">
+          {{ section.settings.kicker | escape }}
+        </p>
+      {% endunless %}
+      {% unless section.settings.title == '' %}
+        <h1 class="hero__title h2"
+          data-aos="hero"
+          data-aos-anchor="{{ animation_anchor }}"
+          data-aos-order="2">
+          {{ section.settings.title | escape }}
+        </h1>
+      {% endunless %}
+      {% unless section.settings.richtext == '' %}
+        <div class="hero__description h5--body"
+          data-aos="hero"
+          data-aos-anchor="{{ animation_anchor }}"
+          data-aos-order="3">
+          {{ section.settings.richtext }}
+        </div>
+      {% endunless %}
+
+      {% if section.settings.video_link != ''  or section.settings.link_text != '' %}
+        <div class="hero__cta__wrapper">
+          {% unless section.settings.link_text == '' %}
+            <a class="{{ section.settings.button_style }} {{ section.settings.button_color }} hero__btn btn--long uppercase" 
+              href="{{ section.settings.link }}"
+              data-aos="hero"
+              data-aos-anchor="{{ animation_anchor }}"
+              data-aos-order="4">
+              {{ section.settings.link_text | escape }}
+            </a>
+          {% endunless %}
+          {% unless section.settings.video_link == nil %}
+            <div class="hero__btn"
+              data-aos="hero"
+              data-aos-anchor="{{ animation_anchor }}"
+              data-aos-order="5">
+              {% render 'video-popup', video: section.settings.video_link, unique: section.id, text: section.settings.popup_text %}
+            </div>
+          {% endunless %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="image-overlay" style="--bg:{{ section.settings.overlay_color }}; opacity:{{ section.settings.overlay_opacity | times: 0.01 }};"></div>
+
+  {%- if video_bg_show -%}
+    <div class="video-autoplay-wrapper">
+      <video 
+        data-video-autoplay
+        {% if section.settings.image != blank %}poster="{{ section.settings.image.src | img_url: '1x1' }}"{% endif %}
+        style="object-position: {{ section.settings.object_position | replace: '-', ' ' }};"
+        playsinline
+        autoplay
+        loop
+        muted>
+        <source src="{{ section.settings.video_link_bg }}" type="video/mp4" />
+      </video>
+    </div>
+  {%- else -%}
+    {% render 'hero', img_object: section.settings.image.src, frame_height_class: section.settings.height, bg_position: section.settings.bg_position %}
+  {% endif %}
+
+  {% if section.settings.height == 'use_screen_full' %}
+    <div class="scroll_icon_wrap">
+      <button data-scroll-down class="scroll_link bloop" aria-label="{{ 'general.accessibility.scroll' | t }}">
+        <span class="scroll_icon">{% render 'icon-scroll-down' %}</span>
+      </button>
+    </div>
+  {% endif %}
+</div>
+
+
+
+
+{% schema %}
+{
+  "name": "Video",
+  "settings": [
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "default": "use_screen_two_thirds",
+      "options": [
+        { "value": "use_screen_full", "label": "Full screen height"},
+        { "value": "use_screen_three_quarters", "label": "Three quarters of screen height"},
+        { "value": "use_screen_two_thirds", "label": "Two thirds of screen height"},
+        { "value": "use_screen_one_half", "label": "One half of screen height"},
+        { "value": "use_screen_one_third", "label": "One third of screen height"},
+        { "value": "use_screen_one_fifth", "label": "One fifth of screen height"},
+        { "value": "use_pixels_800", "label": "800px" },
+        { "value": "use_pixels_650", "label": "650px" },
+        { "value": "use_pixels_500", "label": "500px" },
+        { "value": "use_image", "label": "Image height"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Background video"
+    },
+    {
+      "type": "text",
+      "id": "video_link_bg",
+      "label": "Video background link",
+      "info": "MP4 video link from [files](/admin/settings/files)."
+    },
+    {
+      "type": "select",
+      "id": "object_position",
+      "label": "Background video position",
+      "default": "center-center",
+      "options": [
+        { "label": "Top", "value": "center-top" },
+        { "label": "Right", "value": "right-center" },
+        { "label": "Center", "value": "center-center" },
+        { "label": "Left", "value": "left-center" },
+        { "label": "Bottom", "value": "center-bottom" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Image position",
+      "default": "center-center",
+      "options": [
+        { "label": "Top", "value": "center-top" },
+        { "label": "Right", "value": "right-center" },
+        { "label": "Center", "value": "center-center" },
+        { "label": "Left", "value": "left-center" },
+        { "label": "Bottom", "value": "center-bottom" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Video popup"
+    },
+    {
+      "type": "video_url",
+      "id": "video_link",
+      "label": "Video popup link",
+      "accept": ["youtube", "vimeo"],
+      "info": "Streaming video source from YouTube or Vimeo.",
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "text",
+      "id": "popup_text",
+      "label": "Popup button text"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Introducing"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured video"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Text",
+      "default": "<p>This area is used to describe your video’s details.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Alignment",
+      "default": "align--middle-center",
+      "options": [
+        { "value": "align--top-left", "label": "Top left"},
+        { "value": "align--top-center", "label": "Top center"},
+        { "value": "align--top-right", "label": "Top right"},
+        { "value": "align--middle-left", "label": "Middle left"},
+        { "value": "align--middle-center", "label": "Absolute center"},
+        { "value": "align--middle-right", "label": "Middle right"},
+        { "value": "align--bottom-left", "label": "Bottom left"},
+        { "value": "align--bottom-center", "label": "Bottom center"},
+        { "value": "align--bottom-right", "label": "Bottom right"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "text--white",
+      "options": [
+        { "value": "text--neutral", "label": "Normal text"},
+        { "value": "text--white", "label": "White"},
+        { "value": "text--primary", "label": "Primary accent"},
+        { "value": "text--secondary", "label": "Secondary accent"},
+        { "value": "text--black", "label": "Black"},
+        { "value": "text--invert--primary", "label": "Primary dark accent"},
+        { "value": "text--invert--secondary", "label": "Secondary dark accent"},
+        { "value": "text--invert", "label": "Inverted text color"}
+      ]
+    },
+    {
+      "type":    "range",
+      "id":      "overlay_opacity",
+      "min":     0,
+      "max":     100,
+      "step":    5,
+      "label":   "Image overlay opacity",
+      "info":    "Increase contrast for legible text.",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "button_color",
+      "label": "Color",
+      "default": "btn--white",
+      "options": [
+        { "value": "btn--primary", "label": "Bright accent" },
+        { "value": "btn--secondary", "label": "Secondary accent" },
+        { "value": "btn--neutral", "label": "Text color" },
+        { "value": "btn--black", "label": "Black" },
+        { "value": "btn--white", "label": "White" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn",
+      "options": [
+        { "value": "btn", "label": "Solid button"},
+        { "value": "btn--soft", "label": "Soft button"},
+        { "value": "btn--outline", "label": "Outlined button"}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

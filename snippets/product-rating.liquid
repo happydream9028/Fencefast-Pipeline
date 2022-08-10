@@ -1,0 +1,20 @@
+{% liquid
+  assign rating_count_enable = false
+  if show_rating_count and product.metafields.reviews.rating_count != blank
+    assign rating_count_enable = true
+  endif
+  assign rating_label =  'general.accessibility.star_reviews_info' | t: rating_value: product.metafields.reviews.rating.value, rating_max: product.metafields.reviews.rating.value.scale_max
+  if rating_count_enable
+    assign count_translation = 'general.accessibility.total_reviews' | t
+    assign count_label_string = ', ' | append: product.metafields.reviews.rating_count | append: ' ' | append: count_translation
+    assign rating_label = rating_label | append: count_label_string
+  endif 
+ %}
+
+<div class="product__rating" role="img" aria-label="{{ rating_label }}">
+  <span class="product__rating__value" aria-hidden="true">{{ product.metafields.reviews.rating.value.rating | round: 1 }}</span>
+  <span aria-hidden="true" class="product__rating__star"></span>
+  {%- if rating_count_enable -%}
+    <span class="product__rating__count" aria-hidden="true">({{ product.metafields.reviews.rating_count }})</span>
+  {%- endif -%}
+</div>

@@ -1,0 +1,205 @@
+{
+  "sections": {
+    "hero": {
+      "type": "section-hero",
+      "settings": {
+        "bg_position": "center-center",
+        "height": "use_screen_one_fifth",
+        "overlay_opacity": 50,
+        "overlay_color": "#000",
+        "kicker": "",
+        "title": "Lookbook",
+        "richtext": "",
+        "text_align": "align--middle-center",
+        "text_color": "text--white",
+        "link_text": "",
+        "link": "",
+        "button_color": "btn--white",
+        "button_style": "btn"
+      }
+    },
+    "main": {
+      "type": "page",
+      "settings": {
+        "show_title": false
+      }
+    },
+    "page-lookbook-1": {
+      "type": "section-gallery",
+      "blocks": {
+        "page-lookbook-1-0": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "page-lookbook-1-1": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "page-lookbook-1-2": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "page-lookbook-1-3": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "page-lookbook-1-0",
+        "page-lookbook-1-1",
+        "page-lookbook-1-2",
+        "page-lookbook-1-3"
+      ],
+      "settings": {
+        "full_width": false,
+        "padding": true,
+        "scale_image": true,
+        "aspect_ratio": 1
+      }
+    },
+    "page-lookbook-text-1": {
+      "type": "section-gallery-text",
+      "blocks": {
+        "page-lookbook-text-1-0": {
+          "type": "text",
+          "settings": {
+            "title": "Custom Text",
+            "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>",
+            "text_align": "text-left"
+          }
+        }
+      },
+      "block_order": [
+        "page-lookbook-text-1-0"
+      ],
+      "settings": {}
+    },
+    "page-lookbook-2": {
+      "type": "section-gallery",
+      "blocks": {
+        "page-lookbook-2-0": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "page-lookbook-2-1": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "page-lookbook-2-2": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "page-lookbook-2-0",
+        "page-lookbook-2-1",
+        "page-lookbook-2-2"
+      ],
+      "settings": {
+        "full_width": false,
+        "padding": true,
+        "scale_image": true,
+        "aspect_ratio": 1
+      }
+    },
+    "page-lookbook-text-2": {
+      "type": "section-gallery-text",
+      "blocks": {
+        "page-lookbook-text-2-0": {
+          "type": "text",
+          "settings": {
+            "title": "Custom Text",
+            "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>",
+            "text_align": "text-left"
+          }
+        }
+      },
+      "block_order": [
+        "page-lookbook-text-2-0"
+      ],
+      "settings": {}
+    },
+    "page-lookbook-3": {
+      "type": "section-gallery",
+      "blocks": {
+        "page-lookbook-3-0": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "page-lookbook-3-1": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "page-lookbook-3-2": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "page-lookbook-3-3": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "page-lookbook-3-0",
+        "page-lookbook-3-1",
+        "page-lookbook-3-2",
+        "page-lookbook-3-3"
+      ],
+      "settings": {
+        "full_width": false,
+        "padding": true,
+        "scale_image": true,
+        "aspect_ratio": 1
+      }
+    },
+    "page-lookbook-text-3": {
+      "type": "section-gallery-text",
+      "blocks": {
+        "page-lookbook-text-3-0": {
+          "type": "text",
+          "settings": {
+            "title": "Custom Text",
+            "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>",
+            "text_align": "text-left"
+          }
+        }
+      },
+      "block_order": [
+        "page-lookbook-text-3-0"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "main",
+    "page-lookbook-1",
+    "page-lookbook-text-1",
+    "page-lookbook-2",
+    "page-lookbook-text-2",
+    "page-lookbook-3",
+    "page-lookbook-text-3"
+  ]
+}

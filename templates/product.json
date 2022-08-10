@@ -1,0 +1,231 @@
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "8f521090-f294-494e-9b90-676a7f81b478": {
+          "type": "shopify:\/\/apps\/judge-me-product-reviews\/blocks\/preview_badge\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "product_show_vendor": false,
+            "show_rating": false,
+            "show_rating_count": false
+          }
+        },
+        "form": {
+          "type": "form",
+          "settings": {
+            "variant_form": "auto",
+            "show_quantity": true,
+            "enable_payment_button": false,
+            "subscriptions_enable_selectors": false,
+            "show_remaining": false,
+            "show_remaining_style": "low",
+            "countdown": 23
+          }
+        },
+        "pickup": {
+          "type": "pickup",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "read_more": false,
+            "enable_description": true,
+            "icon_description": "icon-animal",
+            "style": "none",
+            "title_1": "Information",
+            "icon_name_1": "",
+            "raw_content_1": "<p>This content type will accept <strong>rich text<\/strong> to help with adding styles and links to additional pages or content. Use this to add supplementary information to help your buyers.<\/p>",
+            "title_2": "Details",
+            "icon_name_2": "",
+            "raw_content_2": "<p>You can use product metafields to assign content to this tab that is unique to an individual product.  Use tabs to highlight unique features, sizing information, or other sales information.<\/p>",
+            "title_3": "",
+            "icon_name_3": "",
+            "raw_content_3": "",
+            "title_4": "",
+            "icon_name_4": "",
+            "raw_content_4": "",
+            "title_5": "",
+            "icon_name_5": "",
+            "raw_content_5": ""
+          }
+        }
+      },
+      "block_order": [
+        "8f521090-f294-494e-9b90-676a7f81b478",
+        "title",
+        "form",
+        "pickup",
+        "description"
+      ],
+      "settings": {
+        "image_width": "half",
+        "align": "left",
+        "product_breadcrumbs": true,
+        "enable_video_looping": true,
+        "zoom_enable": true,
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "16522859720dbd5825": {
+      "type": "section-faq",
+      "blocks": {
+        "778e701d-f1aa-4e37-9361-a86690f55564": {
+          "type": "text",
+          "settings": {
+            "title": "Includes",
+            "content": "<p>{{ product.metafields.custom.includes | metafield_tag }}<\/p>"
+          }
+        },
+        "16522859727708b3cc-0": {
+          "type": "text",
+          "settings": {
+            "title": "Features",
+            "content": "<p>{{ product.metafields.global.features | metafield_tag }}<\/p>"
+          }
+        },
+        "16522859727708b3cc-1": {
+          "type": "text",
+          "settings": {
+            "title": "Specifications",
+            "content": "<p>{{ product.metafields.global.specs | metafield_tag }}<\/p>"
+          }
+        },
+        "16522859727708b3cc-2": {
+          "type": "text",
+          "settings": {
+            "title": "Documents & Instructions",
+            "content": "<p>{{ product.metafields.global.instructions | metafield_tag }}<\/p>"
+          }
+        },
+        "313b44ff-82a6-4fe4-80c3-f23e81828c76": {
+          "type": "text",
+          "settings": {
+            "title": "Videos",
+            "content": "<p>{{ product.metafields.global.videos | metafield_tag }}<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "778e701d-f1aa-4e37-9361-a86690f55564",
+        "16522859727708b3cc-0",
+        "16522859727708b3cc-1",
+        "16522859727708b3cc-2",
+        "313b44ff-82a6-4fe4-80c3-f23e81828c76"
+      ],
+      "settings": {
+        "title": "",
+        "align_text": "text-left",
+        "text_size": 1,
+        "height": "margin--medium",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "1652971382dd427230": {
+      "type": "section-custom-content",
+      "blocks": {
+        "acbe95a4-34c9-46ba-b872-15865347874a": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/pexels-cottonbro-4909808.jpg",
+            "bg_position": "center-center",
+            "overlay_opacity": 0,
+            "overlay_color": "#000000",
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn uppercase"
+          }
+        },
+        "d99cd78b-700a-4f2a-a0ec-abd9ad1dd2ed": {
+          "type": "text",
+          "settings": {
+            "kicker": "",
+            "title": "Need Help With Your Project?",
+            "text": "<p>At FenceFast we have over a decade of highly specialized experience setting up fencing and animal management systems. <\/p><p>Let us help you plan yours!<\/p>",
+            "text_size": 2,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "Learn More",
+            "button_url": "shopify:\/\/pages\/let-us-help-with-your-project",
+            "button_color": "btn--white",
+            "button_style": "btn btn--long uppercase",
+            "text_color": "text--white",
+            "bg_color": "#ef7d27"
+          }
+        }
+      },
+      "block_order": [
+        "acbe95a4-34c9-46ba-b872-15865347874a",
+        "d99cd78b-700a-4f2a-a0ec-abd9ad1dd2ed"
+      ],
+      "settings": {
+        "height": "use_screen_one_half",
+        "padding": false,
+        "borders": false,
+        "wrapper": true
+      }
+    },
+    "165247139866051732": {
+      "type": "apps",
+      "blocks": {
+        "f5f574bc-6b77-4b7c-bb37-4e5eb3f2731e": {
+          "type": "shopify:\/\/apps\/judge-me-product-reviews\/blocks\/review_widget\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "f5f574bc-6b77-4b7c-bb37-4e5eb3f2731e"
+      ],
+      "settings": {
+        "width": "wrapper",
+        "height": "margin--medium",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "reviews": {
+      "type": "reviews",
+      "disabled": true,
+      "settings": {
+        "product_reviews_enable": false,
+        "bg": "palette--light bg--accent"
+      }
+    },
+    "related": {
+      "type": "related",
+      "settings": {
+        "heading": "You might also like",
+        "bg": "palette--light bg--neutral",
+        "grid": 3,
+        "related_products_enable": true,
+        "limit": 6,
+        "product_recommendations_heading": "Related products",
+        "show_recently_viewed": true,
+        "product_recently_limit": 6,
+        "product_recently_minimum": 4,
+        "product_recently_heading": "Recently viewed"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "16522859720dbd5825",
+    "1652971382dd427230",
+    "165247139866051732",
+    "reviews",
+    "related"
+  ]
+}

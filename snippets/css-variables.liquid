@@ -1,0 +1,258 @@
+{% comment %}
+  This is where CSS Variables are set with values from your theme settings.
+  These values are created in settings_schema.json and stored in settings_data.json.
+  CSS variables are used to remove liquid code from your CSS file, allowing CSS to load faster.
+{% endcomment %}
+
+{%- liquid
+
+  assign base_font = settings.type_base_font
+  assign base_font_bold = base_font | font_modify: 'weight', 'bolder'
+
+  assign heading_font = settings.type_heading_font
+  assign heading_font_bold = heading_font | font_modify: 'weight', 'bolder'
+
+  assign accent_font = settings.type_accent_font
+  assign accent_font_bold = accent_font | font_modify: 'weight', 'bolder'
+
+  assign base_font_100 = base_font | font_modify: 'weight', '+100'
+  assign base_font_200 = base_font | font_modify: 'weight', '+200'
+  assign base_font_300 = base_font | font_modify: 'weight', '+300'
+  assign base_font_400 = base_font | font_modify: 'weight', '+400'
+  if base_font_100 and base_font_100.weight > base_font.weight
+    assign base_font_bold = base_font_100
+  elsif base_font_200 and base_font_200.weight > base_font.weight
+    assign base_font_bold = base_font_200
+  elsif base_font_300 and base_font_300.weight > base_font.weight
+    assign base_font_bold = base_font_300
+  elsif base_font_400 and base_font_400.weight > base_font.weight
+    assign base_font_bold = base_font_400
+  endif
+
+  assign heading_font_100 = heading_font | font_modify: 'weight', '+100'
+  assign heading_font_200 = heading_font | font_modify: 'weight', '+200'
+  assign heading_font_300 = heading_font | font_modify: 'weight', '+300'
+  assign heading_font_400 = heading_font | font_modify: 'weight', '+400'
+  if heading_font_100 and heading_font_100.weight > heading_font.weight
+    assign heading_font_bold = heading_font_100
+  elsif heading_font_200 and heading_font_200.weight > heading_font.weight
+    assign heading_font_bold = heading_font_200
+  elsif heading_font_300 and heading_font_300.weight > heading_font.weight
+    assign heading_font_bold = heading_font_300
+  elsif heading_font_400 and heading_font_400.weight > heading_font.weight
+    assign heading_font_bold = heading_font_400
+  endif
+
+  assign accent_font_100 = accent_font | font_modify: 'weight', '+100'
+  assign accent_font_200 = accent_font | font_modify: 'weight', '+200'
+  assign accent_font_300 = accent_font | font_modify: 'weight', '+300'
+  assign accent_font_400 = accent_font | font_modify: 'weight', '+400'
+  if accent_font_100 and accent_font_100.weight > accent_font.weight
+    assign accent_font_bold = accent_font_100
+  elsif accent_font_200 and accent_font_200.weight > accent_font.weight
+    assign accent_font_bold = accent_font_200
+  elsif accent_font_300 and accent_font_300.weight > accent_font.weight
+    assign accent_font_bold = accent_font_300
+  elsif accent_font_400 and accent_font_400.weight > accent_font.weight
+    assign accent_font_bold = accent_font_400
+  endif
+-%}
+{% style %}
+
+:root {
+/* ================ Spinner ================ */
+--SPINNER: url({{ 'spinner.gif' | asset_url }});
+
+/* ================ Product video ================ */
+{% comment %}
+  Create an appropriate poster background color
+  based on background color and brightness
+{% endcomment %}
+{%- assign color_body_bg = settings.color_body_bg -%}
+{%- assign color_body_bg_brightness = color_body_bg | color_brightness -%}
+{%- if color_body_bg_brightness <= 26 -%}
+  {%- assign background_color_poster = color_body_bg | color_lighten: 10 -%}
+{%- elsif color_body_bg_brightness <= 65 -%}
+  {%- assign background_color_poster = color_body_bg | color_lighten: 5 -%}
+{%- else -%}
+  {%- assign background_color_poster = color_body_bg | color_darken: 5 -%}
+{%- endif -%}
+
+--COLOR-VIDEO-BG: {{ background_color_poster }};
+
+
+/* ================ Color Variables ================ */
+
+/* === Backgrounds ===*/
+--COLOR-BG: {{ settings.color_body_bg }};
+--COLOR-BG-ACCENT: {{ settings.color_bg_light }};
+
+/* === Text colors ===*/
+--COLOR-TEXT-DARK: {{ settings.color_body_text | color_saturate: 10 | color_darken: 15 }};
+--COLOR-TEXT: {{ settings.color_body_text }};
+--COLOR-TEXT-LIGHT: {{ settings.color_body_text | color_mix: settings.color_body_bg, 70 }};
+
+/* === Bright color ===*/
+--COLOR-PRIMARY: {{ settings.color_primary }};
+--COLOR-PRIMARY-HOVER: {{ settings.color_primary | color_saturate: 15 | color_darken: 15 }};
+--COLOR-PRIMARY-FADE: {{ settings.color_primary | color_modify: 'alpha', 0.05 }};
+--COLOR-PRIMARY-FADE-HOVER: {{ settings.color_primary | color_modify: 'alpha', 0.1 }};
+{%- assign opposite = settings.color_primary | color_lighten: 100 -%}
+{%- assign contrast = settings.color_primary | color_contrast: opposite -%}
+{%- if contrast < 2 -%}
+  {%- assign opposite = settings.color_primary | color_darken: 95 -%}
+{%- endif -%}
+--COLOR-PRIMARY-OPPOSITE: {{ opposite }};
+
+/* === Secondary/link Color ===*/
+--COLOR-SECONDARY: {{ settings.color_secondary }};
+--COLOR-SECONDARY-HOVER: {{ settings.color_secondary | color_saturate: 15 | color_darken: 15 }};
+--COLOR-SECONDARY-FADE: {{ settings.color_secondary | color_modify: 'alpha', 0.05 }};
+--COLOR-SECONDARY-FADE-HOVER: {{ settings.color_secondary | color_modify: 'alpha', 0.1 }};
+{%- assign opposite = settings.color_secondary | color_lighten: 100 -%}
+{%- assign contrast = settings.color_secondary | color_contrast: opposite -%}
+{%- if contrast < 3.5 -%}
+  {%- assign opposite = settings.color_secondary | color_darken: 95 -%}
+{%- endif -%}
+--COLOR-SECONDARY-OPPOSITE: {{ opposite }};
+
+/* === Shades of grey ===*/
+--COLOR-A5:  {{ settings.color_body_text | color_modify: 'alpha', 0.05 }};
+--COLOR-A10: {{ settings.color_body_text | color_modify: 'alpha', 0.10 }};
+--COLOR-A20: {{ settings.color_body_text | color_modify: 'alpha', 0.20 }};
+--COLOR-A35: {{ settings.color_body_text | color_modify: 'alpha', 0.35 }};
+--COLOR-A50: {{ settings.color_body_text | color_modify: 'alpha', 0.50 }};
+--COLOR-A80: {{ settings.color_body_text | color_modify: 'alpha', 0.80 }};
+--COLOR-A90: {{ settings.color_body_text | color_modify: 'alpha', 0.90 }};
+--COLOR-A95: {{ settings.color_body_text | color_modify: 'alpha', 0.95 }};
+
+
+/* ================ Inverted Color Variables ================ */
+
+--INVERSE-BG: {{ settings.color_bg_inverse }};
+--INVERSE-BG-ACCENT: {{ settings.color_bg_accent_inverse }};
+
+/* === Text colors ===*/
+--INVERSE-TEXT-DARK: {{ settings.color_text_inverse | color_lighten: 25 }};
+--INVERSE-TEXT: {{ settings.color_text_inverse }};
+--INVERSE-TEXT-LIGHT: {{ settings.color_text_inverse | color_mix: settings.color_bg_inverse, 70 }};
+
+/* === Bright color ===*/
+--INVERSE-PRIMARY: {{ settings.color_primary_inverse }};
+--INVERSE-PRIMARY-HOVER: {{ settings.color_primary_inverse | color_saturate: 15 | color_darken: 15 }};
+--INVERSE-PRIMARY-FADE: {{ settings.color_primary_inverse | color_modify: 'alpha', 0.05 }};
+--INVERSE-PRIMARY-FADE-HOVER: {{ settings.color_primary_inverse | color_modify: 'alpha', 0.1 }};
+{%- assign opposite = settings.color_primary_inverse | color_lighten: 100 -%}
+{%- assign contrast = settings.color_primary_inverse | color_contrast: opposite -%}
+{%- if contrast < 3.5 -%}
+  {%- assign opposite = settings.color_primary_inverse | color_darken: 95 -%}
+{%- endif -%}
+--INVERSE-PRIMARY-OPPOSITE: {{ opposite }};
+
+
+/* === Second Color ===*/
+--INVERSE-SECONDARY: {{ settings.color_secondary_inverse }};
+--INVERSE-SECONDARY-HOVER: {{ settings.color_secondary_inverse | color_saturate: 15 | color_darken: 15 }};
+--INVERSE-SECONDARY-FADE: {{ settings.color_secondary_inverse | color_modify: 'alpha', 0.05 }};
+--INVERSE-SECONDARY-FADE-HOVER: {{ settings.color_secondary_inverse | color_modify: 'alpha', 0.1 }};
+{%- assign opposite = settings.color_secondary_inverse | color_lighten: 100 -%}
+{%- assign contrast = settings.color_secondary_inverse | color_contrast: opposite -%}
+{%- if contrast < 3.5 -%}
+  {%- assign opposite = settings.color_secondary_inverse | color_darken: 95 -%}
+{%- endif -%}
+--INVERSE-SECONDARY-OPPOSITE: {{ opposite }};
+
+
+/* === Shades of grey ===*/
+--INVERSE-A5:  {{ settings.color_text_inverse | color_modify: 'alpha', 0.05 }};
+--INVERSE-A10: {{ settings.color_text_inverse | color_modify: 'alpha', 0.10 }};
+--INVERSE-A20: {{ settings.color_text_inverse | color_modify: 'alpha', 0.20 }};
+--INVERSE-A35: {{ settings.color_text_inverse | color_modify: 'alpha', 0.30 }};
+--INVERSE-A80: {{ settings.color_text_inverse | color_modify: 'alpha', 0.80 }};
+--INVERSE-A90: {{ settings.color_text_inverse | color_modify: 'alpha', 0.90 }};
+--INVERSE-A95: {{ settings.color_text_inverse | color_modify: 'alpha', 0.95 }};
+
+
+/* === Account Bar ===*/
+--COLOR-ANNOUNCEMENT-BG: {{ settings.color_announcement_bg }};
+--COLOR-ANNOUNCEMENT-TEXT: {{ settings.color_announcement_text }};
+
+/* === Nav and dropdown link background ===*/
+--COLOR-NAV: {{ settings.color_header_bg }};
+--COLOR-NAV-TEXT: {{ settings.color_header_text }};
+--COLOR-NAV-BORDER: {{ settings.color_nav_border }};
+--COLOR-NAV-A10: {{ settings.color_header_text | color_modify: 'alpha', 0.10 }};
+--COLOR-NAV-A50: {{ settings.color_header_text | color_modify: 'alpha', 0.50 }};
+--COLOR-HIGHLIGHT-LINK: {{ settings.color_highlight_link }};
+
+/* === Site Footer ===*/
+--COLOR-FOOTER-BG: {{ settings.color_footer_bg }};
+--COLOR-FOOTER-TEXT: {{ settings.color_footer_text }};
+--COLOR-FOOTER-A5: {{ settings.color_footer_text | color_modify: 'alpha', 0.05 }};
+--COLOR-FOOTER-A15: {{ settings.color_footer_text | color_modify: 'alpha', 0.15 }};
+--COLOR-FOOTER-A90: {{ settings.color_footer_text | color_modify: 'alpha', 0.90 }};
+
+/* === Products ===*/
+--PRODUCT-GRID-ASPECT-RATIO: {{ settings.product_grid_aspect_ratio | times: 100 }}%;
+
+/* === Product badges ===*/
+--COLOR-BADGE: {{ settings.color_badge }};
+--COLOR-BADGE-TEXT: {{ settings.color_badge_text }};
+
+/* === disabled form colors ===*/
+--COLOR-DISABLED-BG: {{ settings.color_body_text | color_mix: settings.color_body_bg, 10 }};
+--COLOR-DISABLED-TEXT: {{ settings.color_body_text | color_mix: settings.color_body_bg, 35 }};
+
+--INVERSE-DISABLED-BG: {{ settings.color_text_inverse | color_mix: settings.color_bg_inverse, 10 }};
+--INVERSE-DISABLED-TEXT: {{ settings.color_text_inverse | color_mix: settings.color_bg_inverse, 35 }};
+
+/* === Button Radius === */
+--BUTTON-RADIUS: {{ settings.button_radius | append: 'px' }};
+
+
+/* ================ Typography ================ */
+
+--FONT-STACK-BODY: {{ base_font.family }}, {{ base_font.fallback_families }};
+--FONT-STYLE-BODY: {{ base_font.style }};
+--FONT-WEIGHT-BODY: {{ base_font.weight | default: 400 }};
+--FONT-WEIGHT-BODY-BOLD: {{ base_font_bold.weight | default: 700 }};
+--FONT-ADJUST-BODY: {{ settings.type_body_size | divided_by: 100.0 }};
+
+--FONT-STACK-HEADING: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+--FONT-STYLE-HEADING: {{ heading_font.style }};
+--FONT-WEIGHT-HEADING: {{ heading_font.weight | default: 400 }};
+--FONT-WEIGHT-HEADING-BOLD: {{ heading_font_bold.weight | default: 700 }};
+--FONT-ADJUST-HEADING: {{ settings.type_heading_size | divided_by: 100.0 }};
+{% if settings.font_title_capitalize %}
+  --FONT-HEADING-SPACE: 1px;
+  --FONT-HEADING-CAPS: uppercase;
+{%- else %}
+  --FONT-HEADING-SPACE: initial;
+  --FONT-HEADING-CAPS: initial;
+{% endif %}
+
+--FONT-STACK-ACCENT: {{ accent_font.family }}, {{ heading_font.fallback_families }};
+--FONT-STYLE-ACCENT: {{ accent_font.style }};
+--FONT-WEIGHT-ACCENT: {{ accent_font.weight | default: 400 }};
+--FONT-WEIGHT-ACCENT-BOLD: {{ accent_font_bold.weight | default: 700 }};
+--FONT-ADJUST-ACCENT: {{ settings.type_accent_size | divided_by: 100.0 }};
+
+--ICO-SELECT: url('{{ "ico-select.svg" | asset_url }}');
+
+--URL-ZOOM: url('{{ "cursor-zoom.svg" | asset_url }}');
+--URL-ZOOM-2X: url('{{ "cursor-zoom-2x.svg" | asset_url }}');
+
+/* ================ Photo correction ================ */
+{%- assign photo_correction = 100 -%}
+{% if settings.product_background_grey %}
+  {%- assign photo_correction = 98 -%}
+{% endif %}
+--PHOTO-CORRECTION: {{ photo_correction }}%;
+
+{% if settings.high_contrast %}
+  {% render 'css-variables-contrast' %}
+{% endif %}
+
+}
+
+{% endstyle %}

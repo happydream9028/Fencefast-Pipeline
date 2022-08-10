@@ -1,0 +1,452 @@
+{
+  "sections": {
+    "hero": {
+      "type": "section-hero",
+      "settings": {
+        "bg_position": "center-center",
+        "height": "use_screen_one_fifth",
+        "overlay_opacity": 50,
+        "overlay_color": "#000",
+        "kicker": "",
+        "title": "Our Team",
+        "richtext": "",
+        "text_align": "align--middle-center",
+        "text_color": "text--white",
+        "link_text": "",
+        "link": "",
+        "button_color": "btn--white",
+        "button_style": "btn"
+      }
+    },
+    "main": {
+      "type": "page",
+      "settings": {
+        "kicker": "Our Team",
+        "show_title": false,
+        "show_content": true,
+        "text_size": 2,
+        "align_text": "text-left",
+        "height": "margin--large",
+        "width": "wrapper",
+        "text_color": "text--neutral",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "team-0": {
+      "type": "section-columns",
+      "blocks": {
+        "person-0": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "title": "Denise Luffin",
+            "text": "<p>Co-Founder<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        },
+        "person-1": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "title": "Phil Toff",
+            "text": "<p>Co-Founder<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        },
+        "person-2": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "title": "Elouise Dante",
+            "text": "<p>Co-Founder<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        }
+      },
+      "block_order": [
+        "person-0",
+        "person-1",
+        "person-2"
+      ],
+      "settings": {
+        "title": "",
+        "bg": "palette--light bg--neutral",
+        "align_text": "text-center",
+        "scale_image": true,
+        "aspect_ratio": 1
+      }
+    },
+    "team-1": {
+      "type": "section-columns",
+      "disabled": true,
+      "blocks": {
+        "person-0": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "title": "Dave Orbani",
+            "text": "<p>Vice President<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        },
+        "person-1": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "title": "Ave Bizcaino",
+            "text": "<p>Vice President<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        },
+        "person-2": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "title": "Blas Rauser",
+            "text": "<p>Vice President<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        }
+      },
+      "block_order": [
+        "person-0",
+        "person-1",
+        "person-2"
+      ],
+      "settings": {
+        "title": "Vice Presidents",
+        "bg": "palette--light bg--neutral",
+        "align_text": "text-center",
+        "scale_image": true,
+        "aspect_ratio": 1
+      }
+    },
+    "team-2": {
+      "type": "section-columns",
+      "disabled": true,
+      "blocks": {
+        "person-0": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "title": "Wally Balk",
+            "text": "<p>Vice President<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        },
+        "person-1": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "title": "Ricky Fall",
+            "text": "<p>Vice President<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        },
+        "person-2": {
+          "type": "text_block",
+          "settings": {
+            "enable_image": true,
+            "title": "Joe Ryden",
+            "text": "<p>Vice President<\/p>",
+            "button_label": "",
+            "button_link": "",
+            "enable_video": false,
+            "video_link": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc"
+          }
+        }
+      },
+      "block_order": [
+        "person-0",
+        "person-1",
+        "person-2"
+      ],
+      "settings": {
+        "title": "Text columns with images",
+        "bg": "palette--light bg--neutral",
+        "align_text": "text-center",
+        "scale_image": true,
+        "aspect_ratio": 1
+      }
+    },
+    "team-3": {
+      "type": "section-richtext",
+      "settings": {
+        "align_text": "text-left",
+        "height": "margin--medium",
+        "width": "wrapper",
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "team-4": {
+      "type": "section-gallery",
+      "blocks": {
+        "team-4-0": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "team-4-1": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "team-4-2": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "team-4-0",
+        "team-4-1",
+        "team-4-2"
+      ],
+      "settings": {
+        "full_width": false,
+        "padding": true,
+        "scale_image": true,
+        "aspect_ratio": 1,
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "team-5": {
+      "type": "section-gallery-text",
+      "blocks": {
+        "team-5-0": {
+          "type": "text",
+          "settings": {
+            "title": "A peek inside the office",
+            "text": "",
+            "text_align": "text-left"
+          }
+        }
+      },
+      "block_order": [
+        "team-5-0"
+      ],
+      "settings": {
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "team-6": {
+      "type": "section-gallery",
+      "blocks": {
+        "team-6-0": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "team-6-1": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "team-6-2": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "dea72dd3-8dd8-4694-97be-00910598c32d": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "team-6-0",
+        "team-6-1",
+        "team-6-2",
+        "dea72dd3-8dd8-4694-97be-00910598c32d"
+      ],
+      "settings": {
+        "full_width": false,
+        "padding": true,
+        "scale_image": true,
+        "aspect_ratio": 1,
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "team-7": {
+      "type": "section-gallery-text",
+      "blocks": {
+        "team-7-0": {
+          "type": "text",
+          "settings": {
+            "title": "A day in the life",
+            "text": "",
+            "text_align": "text-left"
+          }
+        }
+      },
+      "block_order": [
+        "team-7-0"
+      ],
+      "settings": {
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "team-8": {
+      "type": "section-gallery",
+      "blocks": {
+        "team-8-0": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "team-8-1": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "team-8-2": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "team-8-0",
+        "team-8-1",
+        "team-8-2"
+      ],
+      "settings": {
+        "full_width": false,
+        "padding": true,
+        "scale_image": true,
+        "aspect_ratio": 1,
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "team-9": {
+      "type": "section-gallery-text",
+      "blocks": {
+        "team-9-0": {
+          "type": "text",
+          "settings": {
+            "title": "LA Popup",
+            "text": "",
+            "text_align": "text-left"
+          }
+        },
+        "1c04b93d-7134-4043-9cfc-5e8711447120": {
+          "type": "text",
+          "settings": {
+            "title": "NYC Flagship",
+            "text": "",
+            "text_align": "text-left"
+          }
+        },
+        "5dc78c03-80e9-4b0a-8764-346bce2580ea": {
+          "type": "text",
+          "settings": {
+            "title": "London Popup",
+            "text": "",
+            "text_align": "text-left"
+          }
+        }
+      },
+      "block_order": [
+        "team-9-0",
+        "1c04b93d-7134-4043-9cfc-5e8711447120",
+        "5dc78c03-80e9-4b0a-8764-346bce2580ea"
+      ],
+      "settings": {
+        "bg": "palette--light bg--neutral"
+      }
+    },
+    "team-10": {
+      "type": "section-icons",
+      "blocks": {
+        "team-10-0": {
+          "type": "icon_block",
+          "settings": {
+            "icon_name": "icon-basket-return",
+            "icon_color": "#AAAAAA",
+            "title": "Free returns",
+            "text": "<p>Returns within 30 days receive a full refund.<\/p>"
+          }
+        },
+        "team-10-1": {
+          "type": "icon_block",
+          "settings": {
+            "icon_name": "icon-shipment-world",
+            "icon_color": "#AAAAAA",
+            "title": "Worldwide shipping",
+            "text": "<p>Ship anywhere, rates available at checkout.<\/p>"
+          }
+        },
+        "team-10-2": {
+          "type": "icon_block",
+          "settings": {
+            "icon_name": "icon-phone",
+            "icon_color": "#AAAAAA",
+            "title": "24\/7 support",
+            "text": "<p>Call us anytime at 1(800) 555-1234.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "team-10-0",
+        "team-10-1",
+        "team-10-2"
+      ],
+      "settings": {
+        "title": "",
+        "bg": "palette--light bg--accent",
+        "icon_size": "icon--medium",
+        "icon_alignment": "icon--top",
+        "align_text": "text-left"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "main",
+    "team-0",
+    "team-1",
+    "team-2",
+    "team-3",
+    "team-4",
+    "team-5",
+    "team-6",
+    "team-7",
+    "team-8",
+    "team-9",
+    "team-10"
+  ]
+}

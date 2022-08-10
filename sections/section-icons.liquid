@@ -1,0 +1,259 @@
+<!-- /sections/section-icons.liquid -->
+
+<div class="homepage-icons {{ section.settings.bg }}">
+  <div class="wrapper {{ section.settings.icon_alignment }} {{ section.settings.icon_size }}">
+    {% if section.settings.title != blank %}
+      <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    <div class="grid {{ section.settings.layout }} {% unless section.blocks.size == 5 %}grid--uniform{% endunless %}">
+      {%- assign grid_item_width = 'medium-up--one-third small-down--two-thirds' -%}
+      {%- if section.settings.layout == 'grid--stacked' -%}  
+        {%- assign grid_item_width = 'medium-up--one-third small--one-third' -%}
+        {% case section.blocks.size %}
+          {% when 1 %}
+            {%- assign grid_item_width = 'medium-up--one-half small--one-half medium-up--push-one-quarter' -%}
+          {% when 2 %}
+            {%- assign grid_item_width = 'medium-up--one-half small--one-half' -%}
+          {% when 4 %}
+            {%- assign grid_item_width = 'medium-up--one-quarter small--one-half' -%}
+        {% endcase %}
+      {%- endif -%}
+
+      {% for block in section.blocks %}
+        {% if section.blocks.size == 5 and forloop.index < 3 %}
+          {%- assign column_width = 'medium-up--one-half small--one-half' -%}
+        {% else %}
+          {%- assign column_width = grid_item_width -%}
+        {% endif %}
+        {% if section.blocks.size == 5 and forloop.index == 3 %}<div class="clearfix"></div>{% endif %}
+        {%- assign delay = forloop.index | times: 100 | plus: 100 -%}
+
+        <div class="grid__item {{ column_width }} {{ section.settings.align_text }}" {{ block.shopify_attributes }}>
+          <div class="icon__column {{ section.settings.icon_alignment }} {{ section.settings.icon_size }}">
+            {%- if block.settings.icon_alt != blank -%}
+              <div 
+                class="icon__column__icon lazyload" 
+                data-aos-delay="{{ delay }}" 
+                data-aos="hero" 
+                data-bgset="{% render 'bgset', image: block.settings.icon_alt %}"
+                role="img"
+                aria-label="{{ block.settings.icon_alt.alt | strip_html | escape }}">
+              </div>
+            {%- else -%}
+              <div class="icon__column__icon" data-aos-delay="{{ delay }}" data-aos="svg-dash" style="--stroke: {{ block.settings.icon_color }}">
+                {% render 'animated-icon', filename: block.settings.icon_name %}
+              </div>
+            {%- endif -%}
+            <div class="icon__column__text">
+              {% if block.settings.title != blank %}
+                <p class="icon__column__heading">{{ block.settings.title | escape }}</p>
+              {% endif %}
+              {% if block.settings.text != blank or block.settings.link_text != blank %}
+                <div class="rte icon__column__paragraph">
+                  {{ block.settings.text }}
+
+                  {% if block.settings.link_text != blank %}
+                    <a href="{{ block.settings.link_url }}" class="rte__link">{{ block.settings.link_text }}</a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.blocks.size == 0 %}
+      <div class="text-center">{{ 'home_page.onboarding.no_content' | t }}</div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Icon columns",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "bg",
+        "label": "Background color",
+        "default": "palette--light bg--neutral",
+        "options": [
+          { "value": "palette--light bg--neutral", "label": "Default"},
+          { "value": "palette--light bg--accent", "label": "Light"},
+          { "value": "palette--dark bg--invert", "label": "Dark"},
+          { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+        ]
+      },
+      {
+        "type": "select",
+        "id": "icon_size",
+        "label": "Icon size",
+        "default": "icon--medium",
+        "options": [
+          { "value": "icon--small", "label": "Small" },
+          { "value": "icon--medium", "label": "Medium" },
+          { "value": "icon--large", "label": "Large" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "icon_alignment",
+        "label": "Icon placement",
+        "default": "icon--top",
+        "options": [
+          { "value": "icon--top", "label": "Top" },
+          { "value": "icon--left", "label": "Left" }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Mobile layout",
+        "options": [
+          {
+            "value": "grid--stacked",
+            "label": "Stacked"
+          },
+          {
+            "value": "grid--slider",
+            "label": "Slider"
+          }
+        ],
+        "default": "grid--stacked"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "text-center",
+        "options": [
+          { "value": "text-left", "label": "Left" },
+          { "value": "text-center", "label": "Centered" }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "icon_block",
+        "name": "Icon column",
+        "settings": [
+          {
+            "type": "select",
+            "id": "icon_name",
+            "label": "Icon",
+            "default": "icon-leaf",
+            "options": [
+              { "value": "icon-animal", "label": "Animal" },
+              { "value": "icon-animal-paw", "label": "Animal paw" },
+              { "value": "icon-award", "label": "Award" },
+              { "value": "icon-basket-like", "label": "Basket like" },
+              { "value": "icon-basket-return", "label": "Basket return" },
+              { "value": "icon-cart-check", "label": "Cart check" },
+              { "value": "icon-cart-message", "label": "Cart message" },
+              { "value": "icon-chat", "label": "Chat" },
+              { "value": "icon-dollar", "label": "Dollar" },
+              { "value": "icon-earth", "label": "Earth" },
+              { "value": "icon-email", "label": "Email" },
+              { "value": "icon-gluten-free", "label": "Gluten free" },
+              { "value": "icon-iron", "label": "Iron" },
+              { "value": "icon-leaf", "label": "Leaf" },
+              { "value": "icon-legal", "label": "Legal" },
+              { "value": "icon-lock-card", "label": "Lock card" },
+              { "value": "icon-lock-shield", "label": "Lock shield" },
+              { "value": "icon-lock-window", "label": "Lock window" },
+              { "value": "icon-payment", "label": "Payment" },
+              { "value": "icon-phone", "label": "Phone" },
+              { "value": "icon-rating", "label": "Rating" },
+              { "value": "icon-star-rating", "label": "Rating star" },
+              { "value": "icon-recycled", "label": "Recycled" },
+              { "value": "icon-ruler", "label": "Ruler" },
+              { "value": "icon-send", "label": "Send" },
+              { "value": "icon-sewing-machine", "label": "Sewing machine" },
+              { "value": "icon-shipment-world", "label": "Shipment world" },
+              { "value": "icon-shipment", "label": "Shipment" },
+              { "value": "icon-shoes", "label": "Shoes" },
+              { "value": "icon-store", "label": "Store" },
+              { "value": "icon-support-headphones", "label": "Support headphones" },
+              { "value": "icon-thread", "label": "Thread" },
+              { "value": "icon-truck", "label": "Truck" },
+              { "value": "icon-washer", "label": "Washer" },
+              { "value": "icon-water", "label": "Water" }
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "icon_alt",
+            "label": "Alternative icon/image"
+          },
+          {
+            "type": "color",
+            "id": "icon_color",
+            "label": "Icon color",
+            "default": "#AAAAAA"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Add a title"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Share details about your shipping policies, item returns, or customer service.</p>"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link text"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "Link URL"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Icon columns",
+        "category": "Text",
+        "blocks": [
+          {
+            "type": "icon_block",
+            "settings": {
+              "title": "Free returns",
+              "icon_name": "icon-basket-return",
+              "text": "<p>Returns within 30 days receive a full refund.</p>"
+            }
+          },
+          {
+            "type": "icon_block",
+            "settings": {
+              "title": "Worldwide shipping",
+              "icon_name": "icon-shipment-world",
+              "text": "<p>Ship anywhere, rates available at checkout.</p>"
+            }
+          },
+          {
+            "type": "icon_block",
+            "settings": {
+              "title": "24/7 support",
+              "icon_name": "icon-phone",
+              "text": "<p>Call us anytime at 1(800) 555-1234.</p>"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

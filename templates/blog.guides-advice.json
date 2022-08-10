@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "blog-guides-advice",
+      "settings": {
+        "layout": "grid",
+        "blog_show_meta": true,
+        "enable_search": true,
+        "image": "shopify:\/\/shop_images\/pexels-will-kirk-4488405.jpg",
+        "bg_position": "center-center",
+        "overlay_opacity": 30,
+        "overlay_color": "#000000",
+        "image_height": "use_screen_one_third",
+        "text_color": "text--white",
+        "menu": "guides-advice"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

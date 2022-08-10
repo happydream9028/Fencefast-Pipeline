@@ -1,0 +1,49 @@
+<div data-api-content>
+  <div class="product__popdown__outer">
+    <div class="product__popdown__textbar">
+      <span class="visually-hidden" aria-live="polite">
+        {{ 'cart.general.add_message' | t -}} "
+        {% raw %}
+          {{ product_variant.product.title | strip_html | escape }} &nbsp;
+          {{ product_variant.title }}
+        {% endraw %}" {{ 'cart.general.total_message' | t: count: cart.item_count }}
+      </span>
+
+        <span class="product__popdown__title product__popdown__title--bold">
+          {{ product_variant.product.title | strip_html | escape }}
+        </span>
+        {% unless product_variant.product.has_only_default_variant %}  
+        <span class="product__popdown__title">
+          {{ product_variant.title }} &nbsp;
+        </span>
+        {% endunless %}
+        <span class="product__popdown__title product__popdown__title--bold">
+          {{ 'products.cart_drawer.item_added' | t }}
+        </span>
+    </div>
+    <div class="wrapper">
+      <div class="product__popdown__inner">
+        <div class="product__popdown__close">
+          <div class="popdown__close__inner" data-close-popdown>
+            {% render 'icon-close-small' %}
+          </div>
+        </div>
+        <div class="product__popdown__image">
+          {%- if product_variant.featured_media -%}
+            {%- assign media = product_variant.featured_media -%}
+          {%- else -%}
+            {%- assign media = product_variant.product.featured_media -%}
+          {%- endif -%}
+          <img loading="lazy" 
+              alt="{{ media.alt | default: product_variant.product.title | strip_html | escape }}" 
+              src="{{ media.preview_image.src | img_url: '180x180', crop: 'center' }}"
+              width="90"
+              height="90">
+        </div>
+        <div class="product__popdown__cart__wrapper">
+          <a href="{{ routes.cart_url }}" class="product__popdown__cart text-link uppercase" data-drawer-toggle="drawer-cart">{{ "products.cart_drawer.view_cart" | t }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

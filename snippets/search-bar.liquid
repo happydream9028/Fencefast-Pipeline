@@ -1,0 +1,32 @@
+<!-- /snippets/search-bar.liquid -->
+{%- liquid
+  assign terms = ''
+  if settings.search_products
+    assign terms = terms | append: 'product,'
+  endif
+  if settings.search_pages
+    assign terms = terms | append: 'page,'
+  endif
+  if settings.search_articles
+    assign terms = terms | append: 'article,'
+  endif
+   assign terms = terms | split: ','
+   assign terms = terms | join: ','
+-%}
+
+<form action="{{ routes.search_url }}" method="get" class="search-bar" role="search">
+  <input type="hidden" name="type" value="{{ terms }}">
+  <div class="input-group input-group--inner-button">
+    <input class="input-group-field{% if hero_search %} text--black{% endif %} " 
+    type="search"
+    name="q" 
+    value="{{ search.terms | escape }}" 
+    placeholder="{{ 'general.search.placeholder' | t }}" 
+    aria-label="{{ 'general.search.placeholder' | t }}">
+    <span class="input-group-button">
+      <button type="submit" class="btn {% if btn_color %}{{ btn_color }}{% else %}btn--soft{% endif %} uppercase">
+        {{ 'general.search.submit' | t }}
+      </button>
+    </span>
+  </div>
+</form>

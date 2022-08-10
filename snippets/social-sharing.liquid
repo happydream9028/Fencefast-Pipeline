@@ -1,0 +1,26 @@
+<!-- /snippets/social-sharing.liquid -->
+{% comment %}
+  * outputs share links for Facebook Twitter and Pinterest
+  {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media.preview_image %}
+{% endcomment %}
+
+<div class="share">
+  {% if settings.share_enable_facebook %}
+    <a class="share__link" target="_blank" rel="noopener" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}">
+      {% render 'icon-facebook' %}
+      <span class="share__text">{{ 'general.share.facebook' | t }}</span>
+    </a>
+  {% endif %}
+  {% if settings.share_enable_twitter %}
+    <a class="share__link" target="_blank" rel="noopener" href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}">
+      {% render 'icon-twitter' %}
+      <span class="share__text">{{ 'general.share.twitter' | t }}</span>
+    </a>
+  {% endif %}
+  {% if settings.share_enable_pinterest %}
+    <a class="share__link" target="_blank" rel="noopener" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | img_url: '1024x1024' }}&amp;description={{ share_title | url_param_escape }}">
+      {% render 'icon-pinterest' %}
+      <span class="share__text">{{ 'general.share.pinterest' | t }}</span>
+    </a>
+  {% endif %}
+</div>

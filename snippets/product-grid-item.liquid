@@ -1,0 +1,276 @@
+
+{% comment %}
+  A grid item for products used in collection grid view
+
+  * product {object} - The current prodcut
+
+  {% render 'product-grid-item', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = product.first_available_variant
+
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign sold_out = true
+  if product.available
+    assign sold_out = false
+  endif
+
+  assign sellout_badge = false
+  if sold_out and settings.badge_sellout
+    assign sellout_badge = true
+  endif
+
+  assign sale_badge = false
+  if on_sale and settings.badge_sale
+    assign sale_badge = true
+    assign sale_badge_content = 'products.product.sale' | t 
+    if settings.badge_sale_discount
+      if settings.badge_sale_type == 'dollar'
+        assign sale_badge_content = product.compare_at_price | minus: product.price | money_without_trailing_zeros
+      else
+        assign difference = product.compare_at_price | minus: product.price 
+        assign percent_off = difference | times: 1.0 | divided_by: product.compare_at_price | times: 100
+        assign sale_badge_content = percent_off | floor | append: '%'
+      endif
+      assign save_word = 'products.product.save' | t | append: ' '
+      assign sale_badge_content = sale_badge_content | prepend: save_word
+    endif  
+  endif
+
+  assign custom_badge = false
+
+  if product.metafields.theme.badge != blank and product.metafields.theme.badge.type == 'single_line_text_field'
+    assign custom_badge = true
+    assign custom_badge_content = product.metafields.theme.badge.value
+  endif
+
+  if settings.badge_custom
+    for tag in product.tags
+      if tag contains "_badge_"
+        assign custom_badge = true
+        assign custom_badge_content = tag | remove: '_badge_' | replace: '_', ' '
+        break
+      endif
+    endfor
+  endif
+
+  assign setting_badge = false
+  if badge_string and badge_string != ''
+    assign setting_badge = true
+  endif
+
+  assign tagged = false
+  if sellout_badge or sale_badge or custom_badge or setting_badge
+    assign tagged = true
+  endif 
+
+  assign has_siblings = false
+  if settings.show_siblings and product.metafields.theme.siblings.value != blank and product.metafields.theme.siblings.type == 'single_line_text_field' 
+    assign has_siblings = true
+  endif  
+-%}
+{%- capture badge -%}
+  {%- if tagged %}
+    {%- if setting_badge -%}
+      <div class="product__badge product__badge--setting">{{ badge_string }}</div>
+    {%- elsif custom_badge -%}
+      <div class="product__badge product__badge--custom">{{ custom_badge_content }}</div>
+    {%- elsif sellout_badge -%}
+      <div class="product__badge product__badge--sold">{{ 'products.product.sold_out' | t }}</div>
+    {%- elsif sale_badge -%}
+      <div class="product__badge product__badge--sale">{{ sale_badge_content }}</div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+
+{%- capture swatches -%}
+  {%- if settings.swatches_enable and settings.swatches_collection_enable -%}
+    {%- capture swatch_translation -%}{{ 'general.swatches.color' | t }}{%- endcapture -%}
+    {%- assign swatch_labels = swatch_translation | append: ',' | split: ',' -%}
+    {%- for label in swatch_labels -%}
+      {%- assign sanitized_label = label | lstrip | rstrip -%}
+      {%- if product.options_by_name[sanitized_label].values.size > 0 -%}
+        <div class="grid__swatch__container">
+          <p class="grid__swatch__placeholder">{{ 'collections.general.swatches_with_count' | t: count: product.options_by_name[sanitized_label].values.size }}</p>
+          <form class="grid__swatch__hover" data-grid-swatches data-swatch-handle="{{ product.handle }}" data-swatch-label="{{ label }}" data-scrollbar data-scrollbar-slider></form>
+
+          <button type="button" class="tabs__arrow tabs__arrow--prev is-hidden" data-scrollbar-arrow-prev>
+            <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+          </button>
+    
+          <button type="button" class="tabs__arrow tabs__arrow--next is-hidden" data-scrollbar-arrow-next>
+            <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+          </button>
+        </div>
+        {% break %}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign double_img = false
+  if product.media[1].preview_image and settings.image_hover_enable
+    assign double_img = true
+  endif
+
+  assign product_img_ratio = product.featured_media.preview_image.aspect_ratio | default: 1
+  assign image_ratio = 1 | divided_by: product_img_ratio | times: 100
+  if settings.product_grid_image == 'crop'
+    assign image_ratio = settings.product_grid_aspect_ratio | times: 100
+  elsif settings.product_grid_image == 'scale'
+    assign multiplier = settings.product_grid_aspect_ratio
+    assign inverse_ratio = 1 | divided_by: product_img_ratio
+    assign top_offset =  1 | divided_by: product_img_ratio | times: 100 | divided_by: 2
+    assign top_offset_subtractor =  multiplier | times: 100 | divided_by: 2
+  endif
+-%}
+
+{%- if settings.product_grid_image == 'scale' -%}
+  {%- capture auto_height -%}
+    {%- if inverse_ratio > multiplier -%}
+      style="width:{{ product_img_ratio | times: multiplier | times: 100 }}%; margin: 0 auto;"
+    {%- else -%}
+      style="padding:{{ top_offset_subtractor | minus: top_offset }}% 0;"
+    {%- endif -%}
+  {%- endcapture -%}
+{%- endif -%}
+
+
+<div class="product-grid-item {% if on_sale %} on-sale{% endif %}{% if tagged %} tagged{% endif %}" data-grid-item>
+  <div {{ auto_height }}>
+    <a href="{{ product.url | within: collection }}" data-grid-link class="lazy-image{% if double_img %} double__image{% endif %}" aria-label="{{ product.title | strip_html | escape }}" style="padding-top:{{ image_ratio }}%; background-image:  url('{{ product.featured_media.preview_image | img_url: '1x1' }}');">
+      <div class="lazyload fade-in collection__image__top"
+        data-bgset="{% render 'bgset', image: product.featured_media.preview_image %}" 
+        role="img"
+        aria-label="{{ product.featured_media.alt | default: product.title | strip_html | escape }}"></div>
+      {% if double_img %}
+        <div class="collection__image__bottom">
+          {%- assign img_url = product.media[1].preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          <img data-src="{{ img_url }}"
+            class="lazyload img-object-cover lazypostload-desktop"
+            width="{{ product.media[1].preview_image.width }}"
+            height="{{ product.media[1].preview_image.height }}"
+            data-widths="[110, 160, 220, 320, 480, 540, 720, 900]"
+            data-sizes="auto"
+            data-aspectratio="{{ product.media[1].preview_image.aspect_ratio }}"
+            alt="{{ product.media[1].alt | strip_html | escape }}">
+        </div>
+      {% endif %}
+        <div class="product-grid-item__slide" data-grid-slide></div>
+      {{ badge }}
+    </a>
+  </div>
+  <noscript>
+    <a href="{{ product.url | within: collection }}">
+      <img class="responsive-wide-image" src="{{ product.featured_media.preview_image | img_url: '360x' }}" alt="{{ product.featured_media.alt | default: product.title | strip_html | escape }}">
+      {{ badge }}
+    </a>
+  </noscript>
+  <div class="product__grid__info product__grid__info--{{ settings.product_grid_style }} {{ text_align | default: settings.collection_text_alignment | default: 'text-center' }}" data-swapper-wrapper>
+    <a href="{{ product.url | within: collection | capitalize }}">
+      <div class="product__grid__title__wrapper">
+        <p class="product__grid__title">
+          {{ product.title }}
+        </p>
+        {%- if settings.product_grid_show_rating and product.metafields.reviews.rating.value != blank -%}
+          <div class="rating__wrapper__grid">
+            {% render 'product-rating', product: product, show_rating_count: settings.product_grid_show_rating_count %}
+          </div>
+        {%- endif -%}
+      </div>
+      {% unless product.tags contains 'call-in' %}
+      <div class="
+        {% if has_siblings %} product__grid__price--nowrap{% endif %}">
+        {%- if has_siblings -%}
+          <span class="product__grid__cutline" data-swapper-target>{{ product.metafields.theme.cutline.value }}</span>
+          <span> | </span>
+        {%- endif -%}
+        <span class="price{% if on_sale %} on-sale{% endif %}">
+          {% unless product.tags contains 'variant-bundle' %}
+            {% if product.price_varies %}{{ 'products.general.from' | t }} {% endif %}
+            {{ product.price | money }}
+          {% else %}
+            {% render 'bundle-price', product: product %}
+          {% endunless %}
+        </span>
+        {% if on_sale %}
+          <span class="compare-at">
+            {% unless product.tags contains 'variant-bundle' %}
+              {{ product.compare_at_price | money }}
+            {% else %}
+            {% render 'bundle-compare-price', product: product %}
+            {% endunless %}
+          </span>
+        {% endif %}
+      </div>
+      {% if current_variant.unit_price %}
+        {% capture unit_price_separator %}
+          <span aria-hidden="true">/</span><span class="visually-hidden">{{ 'general.accessibility.unit_price_separator' | t }}&nbsp;</span>
+        {% endcapture %}
+        {% capture unit_price_base_unit %}
+          {% if current_variant.unit_price_measurement.reference_value != 1 %}
+            {{ current_variant.unit_price_measurement.reference_value }}
+          {% endif %}
+          {{ current_variant.unit_price_measurement.reference_unit }}
+        {% endcapture %}
+        <p class="product__grid__price__unit">
+          <span class="visually-hidden">{{ 'products.product.unit_price_label' | t }}</span>
+          <span class="price-per-unit">{{ current_variant.unit_price | money }}{{ unit_price_separator }}{{ unit_price_base_unit }}</span>
+        </p>
+      {% endif %}
+      {% if sold_out %}
+        <p class="product__grid__price__sold">
+          <em>{{ 'products.product.sold_out' | t }}</em>
+        </p>
+      {% endif %}
+    {% endunless %}
+    </a>
+
+    {%- if has_siblings -%}
+      {%- assign sibs_collection = collections[product.metafields.theme.siblings.value] -%}
+      {% if sibs_collection != blank %}
+        <div class="product__grid__sibs">
+          <div class="grid__swatch__container">
+            <p class="grid__swatch__placeholder">{{ 'collections.general.swatches_with_count' | t: count: sibs_collection.products.size }}</p>
+            <div class="grid__swatch__hover">
+              <div class="sibs__slider">
+                <div class="sibs__inner" data-sibling-inner data-scrollbar data-scrollbar-slider>
+                  {%- for sib_product in sibs_collection.products limit: 50 -%}
+                    {%- assign current_class = '' -%}
+                    {%- if sib_product.handle == product.handle -%}
+                      {%- assign current_class = 'siblings__link--current' -%}
+                    {%- endif -%}
+                    {%- assign title_safe = sib_product.title | strip_html | escape -%}
+                    {%- assign color_name = sib_product.metafields.theme.cutline.value | default: title_safe -%}
+                    <div class="siblings__link__holder">
+                      <a href="{{ sib_product.url }}" class="siblings__link {{ current_class }}" data-swapper-hover="{{ color_name }}">
+                        <div class="siblings__swatch">
+                          <div class="sibling__image">{%- render 'image-fill', img_object: sib_product.featured_media.preview_image, aspect_ratio: 1.0 -%}</div>
+                        </div>
+                      </a>
+                    </div>
+                  {%- endfor -%}
+                </div>
+                <button type="button" class="tabs__arrow tabs__arrow--prev is-hidden" data-scrollbar-arrow-prev>
+                  <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+                </button>
+                <button type="button" class="tabs__arrow tabs__arrow--next is-hidden" data-scrollbar-arrow-next>
+                  <span class="visually-hidden">{{ 'general.accessibility.see_all' | t }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {%- else -%}
+      {{ swatches }}
+    {%- endif -%}
+  </div>
+</div>

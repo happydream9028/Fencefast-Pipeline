@@ -1,0 +1,67 @@
+<!-- /snippets/newsletter-form.liquid -->
+{% comment %}
+  {% render 'newsletter-form', unique: unique, text: block.settings.button_text, style: block.settings.button_style, color: block.settings.button_color %}
+{% endcomment %}
+{%- liquid 
+  assign style = style | default: 'btn'
+  assign color = color | default: 'btn--secondary'
+  assign translation = 'general.newsletter_form.submit' | t 
+  assign text = text | default: translation
+  assign class = 'newsletter--default-messages'
+
+  if success_text != blank
+    assign class = ''
+  endif  
+-%}
+
+{%- if unique -%}
+  {% form 'customer', id: unique, data-newsletter-form: '', class: class %}
+    {% if content != blank %}
+      {{ content }}
+    {% endif %}
+
+    {% if success_text != blank %}
+      <p class="newsletter__message newsletter__message--success">{{ success_text | newline_to_br }}</p>
+
+      <p class="newsletter__message newsletter__message--error"><em>{{ 'general.newsletter_form.error_message' | t }}</em></p>
+    {% else %}
+      {% if form.posted_successfully? %}
+        <p><em>{{ 'general.newsletter_form.subscribed' | t }}</em></p>
+      {% elsif form.errors %}
+        {% for field in form.errors %}
+          <p><em>{{ field }} - {{ form.errors.messages[field] }}</em></p>
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+    
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    <input type="hidden" name="contact[accepts_marketing]" value="true">
+    <div class="input-group input-group--inner-button float__wrapper">
+      <label for="mail-{{ unique }}">{{ 'general.newsletter_form.email' | t }}</label>
+      <input class="input-group-field" 
+        type="email" 
+        placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}" 
+        id="mail-{{ unique }}" 
+        aria-label="{{ 'general.newsletter_form.newsletter_email' | t }}" 
+        autocorrect="off" 
+        autocapitalize="off" 
+        name="contact[email]"
+        data-newsletter-field />
+      <span class="input-group-button">
+        <button 
+          type="submit" {% unless show_icon %}class="{{ style }} {{ color }} uppercase"{% endunless %} 
+          aria-label="{{ text }}"
+          name="subscribe" 
+          id="subscribe-{{ unique }}">
+          {%- if show_icon -%}
+            {%- render 'icon-arrow-right-long' -%}
+            {%- render 'icon-check-slim' -%}
+          {%- else -%}  
+            {{ text }}
+          {%- endif -%}
+        </button>
+      </span>
+    </div>
+  {% endform %}
+{%- endif -%}
+

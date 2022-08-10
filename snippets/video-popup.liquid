@@ -1,0 +1,94 @@
+{% comment %}
+
+  Required params:
+  video - video object or a string containing a youtube or vimeo link
+          Youtube link can be youtube.com or youtu.be
+          If the link is youtube.com/watchv=[ID] then v=[ID] must be the first param
+
+  Example:
+  {% render 'video-popup', video: section.settings.video, unique: section.id, text: section.settings.popup_text %}
+
+{% endcomment %}
+
+{%- assign video_type = video.type -%}
+{%- assign video_id = video.id -%}
+
+{% comment %}
+  If video is a string, not an object, set type and id manually
+{% endcomment %}
+{%- unless video_id -%}
+  {% comment %}
+    Infer video_type from url text
+  {% endcomment %}
+  {%- assign video_type = "null" -%}
+  {%- if video contains "vimeo.com" -%}
+    {%- assign video_type = "vimeo" -%}
+  {%- elsif video contains "youtube.com" -%}
+    {%- assign video_type = "youtube" -%}
+  {%- elsif video contains "youtu.be" -%}
+    {%- assign video_type = "youtube" -%}
+    {%- assign youtubeShortlink = true -%}
+  {%- endif -%}
+  {% comment %}
+    Extract video ID from link url
+  {% endcomment %}
+  {%- assign link_array = video | split: '/' -%}
+  {%- assign id_with_params = link_array | last -%}
+  {%- if video_type == "vimeo" or youtubeShortlink -%}
+    {% comment %}
+      https://vimeo.com/[ID]?foo=bar&baz=boo
+      https://youtu.be/[ID]?foo=bar&baz=boo
+    {% endcomment %}
+    {%- assign starts_with_id = id_with_params | split: '?' -%}
+    {%- assign video_id = starts_with_id | first -%}
+  {%- elsif video_type == "youtube"  -%}
+    {% comment %}
+      https://youtube.com/watch?v=[ID]?foo=bar&baz=boo
+    {% endcomment %}
+    {%- assign first_param = id_with_params | split: '&' | first -%}
+    {%- assign watch_then_id = first_param | split: '?' -%}
+    {%- assign equals_id = watch_then_id[1] -%}
+    {%- assign ends_with_id = equals_id | split: '=' -%}
+    {%- assign video_id = ends_with_id | last -%}
+  {%- endif -%}
+{%- endunless -%}
+
+{%- assign button_class = "play__button" -%}
+{% if text and text != '' %}
+  {%- assign button_class = "play__button--text" -%}
+{% endif %}
+
+<button class="{{ button_class }}"
+  data-video-popup
+  data-trigger-{{ video_id }}-{{ unique }}="{{ video_id }}-{{ unique }}"
+  data-unique="{{ unique }}"
+  data-video-type="{{ video_type }}"
+  data-video-id="{{ video_id }}"
+  {% if pause != 'null' %}
+    data-pause="{{ pause }}"
+  {% endif %}
+  aria-label="{{ 'general.accessibility.play' | t }}">
+  {% render 'icon-play' %}
+  {% if text and text != '' %}
+    {{ text }}
+  {%- else -%}
+    <span class="visually-hidden">{{ 'general.accessibility.play' | t }}</span>
+  {%- endif -%}
+</button>
+<div class="modal micromodal-slide" id="{{ video_id }}-{{ unique }}" data-modal aria-hidden="true">
+  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+    <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
+    <div class="modal__container modal__container--video"
+      data-modal-content
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ 'general.accessibility.play' | t }}">
+      <div class="rte__video-wrapper">
+        <div data-player="{{ video_id }}-{{ unique }}">
+          <div data-video-id="{{ video_id }}"></div>
+          <div data-replace></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

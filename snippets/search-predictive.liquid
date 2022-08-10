@@ -1,0 +1,149 @@
+{% comment %}
+  * Returns a popdown object, requires version key
+
+  -  version {string} - Sets the popdown ID and wrapper class
+{% endcomment %}
+
+{%- liquid
+  assign terms = ''
+  if settings.search_products
+    assign terms = terms | append: 'product,'
+  endif
+  if settings.search_pages
+    assign terms = terms | append: 'page,'
+  endif
+  if settings.search_articles
+    assign terms = terms | append: 'article,'
+  endif
+   assign terms = terms | split: ','
+   assign terms = terms | join: ','
+-%}
+
+<div data-search-popdown-wrap>
+  <div id="{{ version }}" class="{{ version }} search__predictive" data-popdown-outer>
+    <div class="item--loadbar" data-loading-indicator style="display: none;"></div>
+    <div class="search__predictive__outer">
+      <div class="wrapper">
+        <div class="search__predictive__main">
+          <form class="search__predictive__form"
+              action="{{ routes.search_url }}"
+              method="get"
+              role="search">
+            <button class="search__predictive__form__button" type="submit">
+              <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
+              {% render 'icon-search' %}
+            </button>
+            <input type="hidden" name="type" value="{{ terms }}">
+            <input type="search"
+            data-predictive-search-input
+            name="q" 
+            value="" 
+            placeholder="{{ 'general.search.placeholder_short' | t }}" 
+            aria-label="{{ 'general.search.placeholder' | t }}">
+          </form>
+          <div class="search__predictive__close">
+            <button class="search__predictive__close__inner" data-close-popdown aria-label="{{ 'general.accessibility.close' | t }}">
+              {% render 'icon-close-small' %}
+            </button>
+          </div>
+
+          <div class="search__predictive__clear">
+            <button class="search__predictive__close__inner" data-clear-input aria-label="{{ 'general.accessibility.close' | t }}">
+              {% render 'icon-close' %}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header__search__results" data-predictive-search-results>
+      <div class="wrapper">
+        <div class="search__results__empty" data-predictive-search-aria></div>
+        <div class="search__results__outer">
+
+          <div class="search__results__products">
+            <div class="search__results__products__title" data-product-title-wrap></div>
+            <div class="search__results__products__list" data-product-wrap>
+              {% comment %} data-search-product-template results append here {% endcomment %}
+            </div>
+          </div>
+          <div class="search__results__other">
+            <div class="search__results__other__list" data-collection-wrap></div>
+            <div class="search__results__other__list" data-article-wrap></div>
+            <div class="search__results__other__list" data-page-wrap></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if version == 'search-popdown' %}  
+    <span class="drawer__underlay" data-search-underlay></span>
+  {% endif %}
+
+  <script data-predictive-search-aria-template type="text/x-template">
+    <div aria-live="polite">
+      <p>
+        {% raw %}
+          {{@if(it.count)}}
+            <span class="badge">{{ it.count }}</span>
+          {{/if}}
+          {{ it.title }} <em>{{ it.query }}</em>
+        {% endraw %}
+      </p>
+    </div>
+  </script>
+
+  <script data-predictive-search-title-template type="text/x-template">
+    <div class="search__results__heading">
+      {% raw %}
+        <p>
+          <span class="search__results__title">{{ it.title }}</span>
+          <span class="badge">{{ it.count }}</span>
+        </p>
+      {% endraw %}
+    </div>
+  </script>
+
+  <script data-search-other-template type="text/x-template">
+    {% raw %}
+      {{@each(it) => object, index}}
+        <div class="other__inline animates" style="animation-delay: {{ index | animationDelay }}ms;">
+          <p class="other__inline__title">
+            <a href="{{ object.url }}">{{ object.title | safe }}</a>
+          </p>
+        </div>
+      {{/each}}
+    {% endraw %}
+  </script>
+
+  <script data-search-product-template type="text/x-template">
+    {% raw %}
+      {{@each(it) => object, index}}
+        <a href="{{ object.url }}" class="product__inline animates" style="animation-delay: {{ index | animationDelay }}ms;">
+          <div class="product__inline__image">
+            <img class="img-aspect-ratio" width="{{object.featured_image.width}}" height="{{ object.featured_image.height }}" alt="{{ object.featured_image.alt }}" src="{{ object.thumb }}">
+          </div>
+          <div>
+            <p class="product__inline__title">
+              {{ object.title | safe }}
+            </p>
+            <p class="product__inline__price">
+              <span class="price {{ object.classes }}">
+                {{ object.price | safe }}
+              </span>
+              {{@if(object.sold_out)}}
+                <br /><em>{{ object.sold_out_translation }}</em>
+              {{/if}}
+              {{@if(object.on_sale)}}
+                <span class="compare-at">
+                  {{ object.compare_at_price | safe }}
+                </span>
+              {{/if}}
+            </p>
+          </div>
+        </a>
+      {{/each}}
+    {% endraw %}
+  </script>
+
+</div>

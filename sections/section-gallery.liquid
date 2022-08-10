@@ -1,0 +1,172 @@
+{% assign wrapper_class = 'wrapper' %}
+{%- if section.settings.full_width -%}
+  {% assign wrapper_class = 'clearfix' %}
+{%- endif -%}
+
+{% assign has_padding_class = '' %}
+{%- if section.settings.padding -%}
+  {% assign has_padding_class = 'has-padding' %}
+{%- endif -%}
+
+<div class="frame frame-blocks-{{ section.blocks.size }} {{ section.settings.bg }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="gallery">
+  <div class="{{ has_padding_class }}">
+    <div class="{{ wrapper_class }} slides-mobile-outer">
+      <div class="gallery slides-mobile-inner">
+        {% for block in section.blocks %}
+          {% assign has_link = false %}
+          {% if block.settings.link != blank %}
+            {% assign has_link = true %}
+          {% endif %}
+          {% assign has_video = false %}
+          
+          {% if block.settings.link contains 'youtu' or block.settings.link contains 'vimeo.com' %}
+            {% assign has_video = true %}
+          {% endif %}
+
+          <div class="gallery__item" {{ block.shopify_attributes }}>
+
+            {% if block.settings.image != blank %}
+              <div class="lazy-image has-zoom-animation">
+                {%- if section.settings.scale_image -%}
+                  {%- render 'image-fill', img_object: block.settings.image, aspect_ratio: section.settings.aspect_ratio, bg_position: block.settings.bg_position -%}
+                {%- else -%}
+                  {%- render 'image-fill', img_object: block.settings.image -%}
+                {%- endif -%}
+
+                {% if has_video %}
+                  {% if has_video %}<span class="gallery__icon">{% render 'icon-play-thumb' %}</span>{% endif %}
+                  <div class="gallery__video">
+                    {% render 'video-popup', video: block.settings.link, unique: block.id %}
+                  </div>
+                {% elsif has_link %}
+                  <a class="link-over-image" href="{{ block.settings.link }}" aria-label="{{ block.settings.image.alt | strip_html | escape }}"></a>
+                {% else %}
+                  <div class="gallery__zoom">
+                    {% render 'image-zoom', image: block.settings.image, unique: block.id %}
+                  </div>
+                {% endif %}
+              </div>
+              <noscript>
+                <img src="{{ block.settings.image | img_url: '540x' }}"
+                     alt="{{ block.settings.image.alt | strip_html | escape }}"/>
+              </noscript>
+            {% else %}
+              {%- render 'image-fill', img_object: '', aspect_ratio: section.settings.aspect_ratio -%}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if section.blocks.size == 0 %}
+        <div class="text-center">{{ 'home_page.onboarding.no_content' | t }}</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Gallery",
+    "max_blocks": 6,
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Full width",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "padding",
+        "label": "Has padding",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "type": "checkbox",
+        "id": "scale_image",
+        "label": "Scale images",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "aspect_ratio",
+        "min": 0.5,
+        "max": 1.5,
+        "step": 0.1,
+        "unit": ":1",
+        "label": "Image scaling ratio",
+        "info": "Wide to tall",
+        "default": 1
+      },
+      {
+        "type": "select",
+        "id": "bg",
+        "label": "Background color",
+        "default": "palette--light bg--neutral",
+        "options": [
+          { "value": "palette--light bg--neutral", "label": "Default"},
+          { "value": "palette--light bg--accent", "label": "Light"},
+          { "value": "palette--dark bg--invert", "label": "Dark"},
+          { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "bg_position",
+            "label": "Position",
+            "default": "center-center",
+            "options": [
+              { "label": "Top", "value": "center-top" },
+              { "label": "Right", "value": "right-center" },
+              { "label": "Center", "value": "center-center" },
+              { "label": "Left", "value": "left-center" },
+              { "label": "Bottom", "value": "center-bottom" }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "link",
+            "label": "Link",
+            "info": "YouTube and Vimeo links will use a popup.  Blank links will zoom image."
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Gallery",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,29 @@
+{% comment %}
+    Renders a social icon 
+    {% render 'social', handle: social_handle %}
+{% endcomment %}
+
+{%- case handle -%}
+  {%- when 'twitter' -%}
+    {%- render 'icon-twitter' -%}
+  {%- when 'facebook' -%}
+    {%- render 'icon-facebook' -%}
+  {%- when 'tiktok' -%}
+    {%- render 'icon-tiktok' -%}
+  {%- when 'pinterest' -%}
+    {%- render 'icon-pinterest' -%}
+  {%- when 'instagram' -%}
+    {%- render 'icon-instagram' -%}
+  {%- when 'snapchat' -%}
+    {%- render 'icon-snapchat' -%}
+  {%- when 'tumblr' -%}
+    {%- render 'icon-tumblr' -%}
+  {%- when 'linkedin' -%}
+    {%- render 'icon-linkedin' -%}
+  {%- when 'youtube' -%}
+    {%- render 'icon-youtube' -%}
+  {%- when 'vimeo' -%}
+    {%- render 'icon-vimeo' -%}
+  {%- when 'medium' -%}
+    {%- render 'icon-medium' -%}
+{%- endcase -%}

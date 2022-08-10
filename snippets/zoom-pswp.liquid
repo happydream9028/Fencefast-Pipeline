@@ -1,0 +1,39 @@
+
+<!-- Boilerplate root element of PhotoSwipe Zoom. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true" data-zoom-wrapper>
+  <div class="pswp__bg"></div>
+  <div class="pswp__scroll-wrap">
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__close--container">
+        <button class="pswp__button pswp__button--close" title="Close (Esc)">
+          {% render 'icon-close' %}
+        </button>
+      </div>
+
+      <div class="pswp__top-bar">
+        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+          {% render 'icon-arrow-circle-left' %}
+        </button>
+        <div class="pswp__counter"></div>
+        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+          {% render 'icon-arrow-circle-right' %}
+        </button>
+
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+          </div>
+        </div>
+      </div>
+
+      <div class="pswp__caption">
+        <div class="pswp__caption__center"></div>
+      </div>
+    </div>
+  </div>
+</div>

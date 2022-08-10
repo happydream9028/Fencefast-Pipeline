@@ -1,0 +1,11 @@
+<!-- /snippets/products-recently-viewed.liquid -->
+{% comment %}
+    Renders list of recently viewed products in grid layout
+{% endcomment %}
+
+{%- assign limit = limit | default: 4 -%}
+
+<div class="recent__wrapper" id="RecentlyViewed-{{ section.id }}" data-recent-wrapper data-limit="{{ limit | at_least: product_recently_minimum }}" data-minimum="{{ product_recently_minimum }}">
+  <div class="recent__content product-grid flickity-grid" id="recently-viewed-products-{{ section.id }}" style="display:none" data-slider data-grid-large="{{ number_slides | default: 4 }}" data-recently-viewed-products>
+  </div>
+</div>

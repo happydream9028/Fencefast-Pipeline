@@ -1,0 +1,911 @@
+{% assign product = all_products[section.settings.home_product] %}
+
+{%- if product.empty? -%}
+  {%- if request.design_mode -%}
+    <div class="homepage-product product-section {{ section.settings.bg }}">
+      {% unless section.settings.title == '' %}
+        <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+      {% endunless %}
+        {% render 'onboarding-product' %}
+    </div>
+  {%- endif -%}
+{%- else -%}
+  {%- liquid
+    assign thumbs_align = section.settings.align
+    assign ratio = product.media[0].preview_image.aspect_ratio
+    if ratio < 1  
+      assign thumbs_align = 'center'
+    endif
+  -%}
+  <div class="homepage-product product-section {{ section.settings.bg }}" 
+    data-enable-video-looping="{{ section.settings.enable_video_looping }}" 
+    data-enable-history-state="false"
+    data-section-id="{{ section.id }}" 
+    data-thumbs-align="{{ thumbs_align }}" 
+    data-section-type="product">
+    {% unless section.settings.title == '' %}
+      <h2 class="home__subtitle">{{ section.settings.title | escape }}</h2>
+    {% endunless %}
+    
+{%- case section.settings.image_width -%}
+  {%- when 'full' -%}
+    {%- assign product_image_width = 'one-whole' -%}
+    {%- assign product_description_width = 'one-whole' -%}
+  {%- when 'narrow' -%}
+    {%- assign product_image_width = 'medium-up--three-eighths' -%}
+    {%- assign product_description_width = 'medium-up--five-eighths' -%}
+  {%- when 'half' -%}
+    {%- assign product_image_width = 'medium-up--one-half' -%}
+    {%- assign product_description_width = 'medium-up--one-half' -%}
+  {%- else -%}
+    {%- assign product_image_width = 'medium-up--five-eighths' -%}
+    {%- assign product_description_width = 'medium-up--three-eighths' -%}
+{%- endcase -%}
+
+<div class="product-page">
+  <div class="wrapper product__align-{{ section.settings.align }}">
+
+    {% if section.settings.product_breadcrumbs %}
+      <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+        <a href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+        {% if collection.handle %}
+          <span aria-hidden="true">&rsaquo;</span>
+          {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+          {{ collection.title | link_to: url }}
+        {% endif %}
+        <span aria-hidden="true">&rsaquo;</span>
+        <span>{{ product.title }}</span>
+      </nav>
+    {% endif %}
+
+    <div class="grid product-single">
+      <div class="grid__item product__media__wrapper {{ product_image_width }}">
+
+        {% if product.media.size > 0 %}
+          {% if product.media.size > 1 %}
+            <div data-product-slideshow="{{ product.handle }}"
+              class="product__slides flickity-lock-height" 
+              style="--default-ratio: {{ 1 | divided_by: product.media[0].aspect_ratio | times: 100 | at_most: 100 }}%">
+          {% else %}
+            <div class="product__slides">
+          {% endif %}
+            {% for media in product.media %}
+              {% render 'media', media: media, section: section %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="product__image__placeholder"></div>
+        {% endif %}
+
+        {% assign first_3d_model = product.media | where: "media_type", "model" | first %}
+        {% if first_3d_model %}
+          <button
+            class="btn--outline btn--ar uppercase"
+            data-shopify-xr
+            data-shopify-model3d-id="{{ first_3d_model.id }}"
+            data-shopify-title="{{ product.title | strip_html | escape }}"
+            data-shopify-xr-hidden>
+            {% render 'icon-media-model' %}
+            <span>{{ 'products.product.view_in_space' | t }}</span>
+          </button>
+        {% endif %}
+
+        <noscript>
+          {% for image in product.media %}
+            <img src="{{ image.preview_image | img_url: '900x' }}" alt="{{ image.alt | default: product.title | strip_html | escape }}">
+          {% endfor %}
+        </noscript>
+        {% if product.media.size > 1 %}
+          <div data-product-thumbs data-custom-scrollbar-items class="media__thumb__wrapper flickity-disabled-mobile">
+            {% for media in product.media %}
+              <div class="media__thumb{% if forloop.first %} is-activated{% endif %}" 
+                data-slideshow-thumbnail 
+                data-media-select="{{ media.id }}">
+                <img alt="{{ media.alt | strip_html | escape }}" src="{{ media.preview_image.src | img_url: '200x200', crop: 'center' }}">
+                {%- if media.media_type == 'model' -%}
+                  {% render 'icon-media-model' %}
+                {%- elsif media.media_type contains 'video' -%}
+                  {% render 'icon-media-video' %}
+                {%- endif -%}
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="custom-scrollbar small-down--show" data-custom-scrollbar>
+            <div class="custom-scrollbar__track" data-custom-scrollbar-track></div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="grid__item {{ product_description_width }}">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {%- when '@app' -%}
+              {% render block %}    
+            {% when 'title' %}
+              {% render 'product-title-price', product: product, block: block, section: section %}
+            {% when 'form' %}
+              <div class="product__details">
+                {% render 'product-form', product: product, block: block, section: section %}
+              </div>
+            {% when 'description' %}
+              <div class="product-description rte rte--column" {{ block.shopify_attributes }}>
+                {%- assign product_description_content = product.description | strip -%}
+                {%- assign truncate_string = 'products.general.read_more' | t -%}
+                {%- assign truncate_html = '<button type="button" class="p underline" data-truncated-button>' | append: truncate_string | append: '</button>' -%}
+
+                {%- if block.settings.style == 'none' -%}
+                  {% if block.settings.read_more %}
+                    <div class="product-description__holder product-description__holder--truncate" data-truncated-holder>
+                      <div class="product-description__inner">
+                        <div class="product-description__content" data-truncated-content="product-description__content--truncate">
+                          {{ product_description_content }}
+                        </div>
+                      </div>
+                      
+                      <div class="product-description__actions">
+                        {{ truncate_html }}
+                      </div>
+                    </div>
+                  {% else %}           
+                    {{ product.description }}
+                  {% endif %}
+                {% else %}
+                  <div class="tabs-wrapper">
+                    {% render 'product-tabs', section: section, block: block, product: product, product_description_content: product_description_content, truncate_html: truncate_html %}
+                  </div>
+                {%- endif -%}
+              </div>
+            {% when 'sharing' %}
+              <div {{ block.shopify_attributes }}>
+                {% render 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media.preview_image %}
+              </div> 
+            {% when 'pickup' %}
+              <div class="product__pickup" data-store-availability-container="{{ product.selected_or_first_available_variant.id }}" {{ block.shopify_attributes }}></div>
+            {% when 'text' %} 
+              {% if block.settings.title != '' %}
+                <div class="product__subheading" {{ block.shopify_attributes }}>
+                  {{ block.settings.title }}
+                </div>
+              {% endif %}
+            {% when 'liquid' %} 
+              {{ block.settings.custom_liquid }}
+            {% when 'upsell' %}
+              {%- assign upsell_product = all_products[block.settings.product] -%}
+              {% render 'upsell-product' upsell_product: upsell_product %}
+            {% when 'icon' %}
+              <div class="product__text-with-icon" {{ block.shopify_attributes }}>
+                <div class="icon-holder" style="--stroke: {{ block.settings.icon_color }};">
+                  {%- render 'icons', filename: block.settings.icon_name -%}
+                </div>
+
+                <p>{{ block.settings.text | remove: '<p>' | remove: '</p>' }}</p>
+              </div>  
+            {% when 'image' %}
+              <div class="product__image {{ block.settings.alignment }}" {{ block.shopify_attributes }}>
+                <div class="product__image__inner" style="max-width: {{ block.settings.image_max_limit | append: 'px' }};">
+                  {%- if block.settings.image != blank -%}
+                    {%- render 'image-fit' img_object: block.settings.image -%}
+                  {%- else -%}
+                    {%- render 'image-fill' img_object: '', aspect_ratio: 1 -%}
+                  {%- endif -%}
+                </div>
+              </div>
+          {% endcase %}
+        {% endfor %}     
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% render 'product-info', product: product %}
+
+{% if section.settings.zoom_enable %}
+  {% render 'zoom-pswp' %}
+{% endif %}
+
+<script type="application/json" id="ModelJson-{{ section.id }}">
+  {{ product.media | where: 'media_type', 'model' | json }}
+</script>
+
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product form",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured product"
+    },
+    {
+      "type": "product",
+      "id": "home_product",
+      "label": "Product"
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background color",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Default"},
+        { "value": "palette--light bg--accent", "label": "Light"},
+        { "value": "palette--dark bg--invert", "label": "Dark"},
+        { "value": "palette--dark bg--invert--accent", "label": "Dark accent"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "label": "Image width",
+      "default": "wide",
+      "options": [
+         { "value": "full", "label": "Full width image"},
+         { "value": "wide", "label": "Wide image"},
+         { "value": "half", "label": "Balanced"},
+         { "value": "narrow", "label": "Narrow image"}
+      ]
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+         { "value": "center", "label": "Center"},
+         { "value": "left", "label": "Left"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Media",
+      "info": "Learn more about [media types](https://help.shopify.com/manual/products/product-media)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_looping",
+      "label": "Enable video looping",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "zoom_enable",
+      "label": "Enable image zoom",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "form",
+      "name": "Form",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "variant_form",
+          "label": "Variant option style",
+          "options": [
+             { "value": "button", "label": "Buttons"},
+             { "value": "dropdown", "label": "Dropdown"}
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_quantity",
+          "label": "Show quantity selection",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_payment_button",
+          "label": "Show dynamic checkout button",
+          "info": "Lets customers check out directly using a familiar payment method. [Learn More](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Subscriptions",
+          "info": "Learn more about [subscriptions](https://help.shopify.com/en/manual/products/subscriptions)"
+        },
+        {
+          "type": "checkbox",
+          "id": "subscriptions_enable_selectors",
+          "label": "Enable subscription selectors",
+          "info": "Shown on products with subscription options",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Inventory message"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_remaining",
+          "label": "Show inventory message",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "show_remaining_style",
+          "label": "Style",
+          "default": "low",
+          "options": [
+            { "value": "low", "label": "Show when low"},
+            { "value": "always", "label": "Show always" }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "countdown",
+          "label": "Inventory countdown",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "default": 10
+        },
+        {
+          "type": "header",
+          "content": "Size popup"
+        },
+        {
+          "id": "info_page",
+          "type": "page",
+          "label": "Select page",
+          "info": "This popup will show on every product."
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Product description",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "read_more",
+          "label": "Enable read more",
+          "default": true,
+          "info": "Show the first few lines of the product description with an option to read more"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_description",
+          "label": "Enable description",
+          "default": true,
+          "info": "Enable description to be added to the accordions or tabs"
+        },
+        {
+          "type": "select",
+          "id": "icon_description",
+          "label": "Icon description",
+          "default": "",
+          "options": [
+            { "value": "", "label": "No icon" },
+            { "value": "icon-animal", "label": "Animal" },
+            { "value": "icon-animal-paw", "label": "Animal paw" },
+            { "value": "icon-award", "label": "Award" },
+            { "value": "icon-basket-like", "label": "Basket like" },
+            { "value": "icon-basket-return", "label": "Basket return" },
+            { "value": "icon-cart-check", "label": "Cart check" },
+            { "value": "icon-cart-message", "label": "Cart message" },
+            { "value": "icon-chat", "label": "Chat" },
+            { "value": "icon-dollar", "label": "Dollar" },
+            { "value": "icon-earth", "label": "Earth" },
+            { "value": "icon-email", "label": "Email" },
+            { "value": "icon-gluten-free", "label": "Gluten free" },
+            { "value": "icon-iron", "label": "Iron" },
+            { "value": "icon-leaf", "label": "Leaf" },
+            { "value": "icon-legal", "label": "Legal" },
+            { "value": "icon-lock-card", "label": "Lock card" },
+            { "value": "icon-lock-shield", "label": "Lock shield" },
+            { "value": "icon-lock-window", "label": "Lock window" },
+            { "value": "icon-payment", "label": "Payment" },
+            { "value": "icon-phone", "label": "Phone" },
+            { "value": "icon-rating", "label": "Rating" },
+            { "value": "icon-star-rating", "label": "Rating star" },
+            { "value": "icon-recycled", "label": "Recycled" },
+            { "value": "icon-ruler", "label": "Ruler" },
+            { "value": "icon-send", "label": "Send" },
+            { "value": "icon-sewing-machine", "label": "Sewing machine" },
+            { "value": "icon-shipment-world", "label": "Shipment world" },
+            { "value": "icon-shipment", "label": "Shipment" },
+            { "value": "icon-shoes", "label": "Shoes" },
+            { "value": "icon-store", "label": "Store" },
+            { "value": "icon-support-headphones", "label": "Support headphones" },
+            { "value": "icon-thread", "label": "Thread" },
+            { "value": "icon-truck", "label": "Truck" },
+            { "value": "icon-washer", "label": "Washer" },
+            { "value": "icon-water", "label": "Water" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Tab style",
+          "default": "tabs",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "tabs", "label": "Tabs" },
+            { "value": "accordions", "label": "Accordions" }
+          ],
+          "info": "Add tab content below. Lean more about [product tabs](https://groupthought.com/link/pipeline/docs/tabs)"
+        },
+        {
+          "type": "text",
+          "id": "title_1",
+          "label": "Tab heading",
+          "default": "Tab"
+        },
+        {
+          "type": "select",
+          "id": "icon_name_1",
+          "label": "Icon",
+          "default": "",
+          "options": [
+            { "value": "", "label": "No icon" },
+            { "value": "icon-animal", "label": "Animal" },
+            { "value": "icon-animal-paw", "label": "Animal paw" },
+            { "value": "icon-award", "label": "Award" },
+            { "value": "icon-basket-like", "label": "Basket like" },
+            { "value": "icon-basket-return", "label": "Basket return" },
+            { "value": "icon-cart-check", "label": "Cart check" },
+            { "value": "icon-cart-message", "label": "Cart message" },
+            { "value": "icon-chat", "label": "Chat" },
+            { "value": "icon-dollar", "label": "Dollar" },
+            { "value": "icon-earth", "label": "Earth" },
+            { "value": "icon-email", "label": "Email" },
+            { "value": "icon-gluten-free", "label": "Gluten free" },
+            { "value": "icon-iron", "label": "Iron" },
+            { "value": "icon-leaf", "label": "Leaf" },
+            { "value": "icon-legal", "label": "Legal" },
+            { "value": "icon-lock-card", "label": "Lock card" },
+            { "value": "icon-lock-shield", "label": "Lock shield" },
+            { "value": "icon-lock-window", "label": "Lock window" },
+            { "value": "icon-payment", "label": "Payment" },
+            { "value": "icon-phone", "label": "Phone" },
+            { "value": "icon-rating", "label": "Rating" },
+            { "value": "icon-star-rating", "label": "Rating star" },
+            { "value": "icon-recycled", "label": "Recycled" },
+            { "value": "icon-ruler", "label": "Ruler" },
+            { "value": "icon-send", "label": "Send" },
+            { "value": "icon-sewing-machine", "label": "Sewing machine" },
+            { "value": "icon-shipment-world", "label": "Shipment world" },
+            { "value": "icon-shipment", "label": "Shipment" },
+            { "value": "icon-shoes", "label": "Shoes" },
+            { "value": "icon-store", "label": "Store" },
+            { "value": "icon-support-headphones", "label": "Support headphones" },
+            { "value": "icon-thread", "label": "Thread" },
+            { "value": "icon-truck", "label": "Truck" },
+            { "value": "icon-washer", "label": "Washer" },
+            { "value": "icon-water", "label": "Water" }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "raw_content_1",
+          "label": "Tab text",
+          "default": "<p>This content type will accept <strong>rich text</strong> to help with adding styles and links to additional pages or content. Use this to add supplementary information to help your buyers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "title_2",
+          "label": "Tab heading",
+          "default": "Info"
+        },
+        {
+          "type": "select",
+          "id": "icon_name_2",
+          "label": "Icon",
+          "default": "",
+          "options": [
+            { "value": "", "label": "No icon" },
+            { "value": "icon-animal", "label": "Animal" },
+            { "value": "icon-animal-paw", "label": "Animal paw" },
+            { "value": "icon-award", "label": "Award" },
+            { "value": "icon-basket-like", "label": "Basket like" },
+            { "value": "icon-basket-return", "label": "Basket return" },
+            { "value": "icon-cart-check", "label": "Cart check" },
+            { "value": "icon-cart-message", "label": "Cart message" },
+            { "value": "icon-chat", "label": "Chat" },
+            { "value": "icon-dollar", "label": "Dollar" },
+            { "value": "icon-earth", "label": "Earth" },
+            { "value": "icon-email", "label": "Email" },
+            { "value": "icon-gluten-free", "label": "Gluten free" },
+            { "value": "icon-iron", "label": "Iron" },
+            { "value": "icon-leaf", "label": "Leaf" },
+            { "value": "icon-legal", "label": "Legal" },
+            { "value": "icon-lock-card", "label": "Lock card" },
+            { "value": "icon-lock-shield", "label": "Lock shield" },
+            { "value": "icon-lock-window", "label": "Lock window" },
+            { "value": "icon-payment", "label": "Payment" },
+            { "value": "icon-phone", "label": "Phone" },
+            { "value": "icon-rating", "label": "Rating" },
+            { "value": "icon-star-rating", "label": "Rating star" },
+            { "value": "icon-recycled", "label": "Recycled" },
+            { "value": "icon-ruler", "label": "Ruler" },
+            { "value": "icon-send", "label": "Send" },
+            { "value": "icon-sewing-machine", "label": "Sewing machine" },
+            { "value": "icon-shipment-world", "label": "Shipment world" },
+            { "value": "icon-shipment", "label": "Shipment" },
+            { "value": "icon-shoes", "label": "Shoes" },
+            { "value": "icon-store", "label": "Store" },
+            { "value": "icon-support-headphones", "label": "Support headphones" },
+            { "value": "icon-thread", "label": "Thread" },
+            { "value": "icon-truck", "label": "Truck" },
+            { "value": "icon-washer", "label": "Washer" },
+            { "value": "icon-water", "label": "Water" }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "raw_content_2",
+          "label": "Tab text",
+          "default": "<p>You can use product metafields to assign content to this tab that is unique to an individual product.  Use tabs to highlight unique features, sizing information, or other sales information.</p>"
+        },
+        {
+          "type": "text",
+          "id": "title_3",
+          "label": "Tab heading"
+        },
+        {
+          "type": "select",
+          "id": "icon_name_3",
+          "label": "Icon",
+          "default": "",
+          "options": [
+            { "value": "", "label": "No icon" },
+            { "value": "icon-animal", "label": "Animal" },
+            { "value": "icon-animal-paw", "label": "Animal paw" },
+            { "value": "icon-award", "label": "Award" },
+            { "value": "icon-basket-like", "label": "Basket like" },
+            { "value": "icon-basket-return", "label": "Basket return" },
+            { "value": "icon-cart-check", "label": "Cart check" },
+            { "value": "icon-cart-message", "label": "Cart message" },
+            { "value": "icon-chat", "label": "Chat" },
+            { "value": "icon-dollar", "label": "Dollar" },
+            { "value": "icon-earth", "label": "Earth" },
+            { "value": "icon-email", "label": "Email" },
+            { "value": "icon-gluten-free", "label": "Gluten free" },
+            { "value": "icon-iron", "label": "Iron" },
+            { "value": "icon-leaf", "label": "Leaf" },
+            { "value": "icon-legal", "label": "Legal" },
+            { "value": "icon-lock-card", "label": "Lock card" },
+            { "value": "icon-lock-shield", "label": "Lock shield" },
+            { "value": "icon-lock-window", "label": "Lock window" },
+            { "value": "icon-payment", "label": "Payment" },
+            { "value": "icon-phone", "label": "Phone" },
+            { "value": "icon-rating", "label": "Rating" },
+            { "value": "icon-star-rating", "label": "Rating star" },
+            { "value": "icon-recycled", "label": "Recycled" },
+            { "value": "icon-ruler", "label": "Ruler" },
+            { "value": "icon-send", "label": "Send" },
+            { "value": "icon-sewing-machine", "label": "Sewing machine" },
+            { "value": "icon-shipment-world", "label": "Shipment world" },
+            { "value": "icon-shipment", "label": "Shipment" },
+            { "value": "icon-shoes", "label": "Shoes" },
+            { "value": "icon-store", "label": "Store" },
+            { "value": "icon-support-headphones", "label": "Support headphones" },
+            { "value": "icon-thread", "label": "Thread" },
+            { "value": "icon-truck", "label": "Truck" },
+            { "value": "icon-washer", "label": "Washer" },
+            { "value": "icon-water", "label": "Water" }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "raw_content_3",
+          "label": "Tab text"
+        },
+        {
+          "type": "text",
+          "id": "title_4",
+          "label": "Tab heading"
+        },
+        {
+          "type": "select",
+          "id": "icon_name_4",
+          "label": "Icon",
+          "default": "",
+          "options": [
+            { "value": "", "label": "No icon" },
+            { "value": "icon-animal", "label": "Animal" },
+            { "value": "icon-animal-paw", "label": "Animal paw" },
+            { "value": "icon-award", "label": "Award" },
+            { "value": "icon-basket-like", "label": "Basket like" },
+            { "value": "icon-basket-return", "label": "Basket return" },
+            { "value": "icon-cart-check", "label": "Cart check" },
+            { "value": "icon-cart-message", "label": "Cart message" },
+            { "value": "icon-chat", "label": "Chat" },
+            { "value": "icon-dollar", "label": "Dollar" },
+            { "value": "icon-earth", "label": "Earth" },
+            { "value": "icon-email", "label": "Email" },
+            { "value": "icon-gluten-free", "label": "Gluten free" },
+            { "value": "icon-iron", "label": "Iron" },
+            { "value": "icon-leaf", "label": "Leaf" },
+            { "value": "icon-legal", "label": "Legal" },
+            { "value": "icon-lock-card", "label": "Lock card" },
+            { "value": "icon-lock-shield", "label": "Lock shield" },
+            { "value": "icon-lock-window", "label": "Lock window" },
+            { "value": "icon-payment", "label": "Payment" },
+            { "value": "icon-phone", "label": "Phone" },
+            { "value": "icon-rating", "label": "Rating" },
+            { "value": "icon-star-rating", "label": "Rating star" },
+            { "value": "icon-recycled", "label": "Recycled" },
+            { "value": "icon-ruler", "label": "Ruler" },
+            { "value": "icon-send", "label": "Send" },
+            { "value": "icon-sewing-machine", "label": "Sewing machine" },
+            { "value": "icon-shipment-world", "label": "Shipment world" },
+            { "value": "icon-shipment", "label": "Shipment" },
+            { "value": "icon-shoes", "label": "Shoes" },
+            { "value": "icon-store", "label": "Store" },
+            { "value": "icon-support-headphones", "label": "Support headphones" },
+            { "value": "icon-thread", "label": "Thread" },
+            { "value": "icon-truck", "label": "Truck" },
+            { "value": "icon-washer", "label": "Washer" },
+            { "value": "icon-water", "label": "Water" }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "raw_content_4",
+          "label": "Tab text"
+        },
+        {
+          "type": "text",
+          "id": "title_5",
+          "label": "Tab heading"
+        },
+        {
+          "type": "select",
+          "id": "icon_name_5",
+          "label": "Icon",
+          "default": "",
+          "options": [
+            { "value": "", "label": "No icon" },
+            { "value": "icon-animal", "label": "Animal" },
+            { "value": "icon-animal-paw", "label": "Animal paw" },
+            { "value": "icon-award", "label": "Award" },
+            { "value": "icon-basket-like", "label": "Basket like" },
+            { "value": "icon-basket-return", "label": "Basket return" },
+            { "value": "icon-cart-check", "label": "Cart check" },
+            { "value": "icon-cart-message", "label": "Cart message" },
+            { "value": "icon-chat", "label": "Chat" },
+            { "value": "icon-dollar", "label": "Dollar" },
+            { "value": "icon-earth", "label": "Earth" },
+            { "value": "icon-email", "label": "Email" },
+            { "value": "icon-gluten-free", "label": "Gluten free" },
+            { "value": "icon-iron", "label": "Iron" },
+            { "value": "icon-leaf", "label": "Leaf" },
+            { "value": "icon-legal", "label": "Legal" },
+            { "value": "icon-lock-card", "label": "Lock card" },
+            { "value": "icon-lock-shield", "label": "Lock shield" },
+            { "value": "icon-lock-window", "label": "Lock window" },
+            { "value": "icon-payment", "label": "Payment" },
+            { "value": "icon-phone", "label": "Phone" },
+            { "value": "icon-rating", "label": "Rating" },
+            { "value": "icon-star-rating", "label": "Rating star" },
+            { "value": "icon-recycled", "label": "Recycled" },
+            { "value": "icon-ruler", "label": "Ruler" },
+            { "value": "icon-send", "label": "Send" },
+            { "value": "icon-sewing-machine", "label": "Sewing machine" },
+            { "value": "icon-shipment-world", "label": "Shipment world" },
+            { "value": "icon-shipment", "label": "Shipment" },
+            { "value": "icon-shoes", "label": "Shoes" },
+            { "value": "icon-store", "label": "Store" },
+            { "value": "icon-support-headphones", "label": "Support headphones" },
+            { "value": "icon-thread", "label": "Thread" },
+            { "value": "icon-truck", "label": "Truck" },
+            { "value": "icon-washer", "label": "Washer" },
+            { "value": "icon-water", "label": "Water" }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "raw_content_5",
+          "label": "Tab text"
+        }
+      ]
+    },
+    {
+      "type": "sharing",
+      "name": "Sharing",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "social_enable",
+          "label": "Show social sharing buttons",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Title and price",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "product_show_vendor",
+          "label": "Show vendor",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "liquid",
+      "name": "Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid",
+          "info": "Add app snippets or other Liquid code to create advanced customizations."
+        }
+      ]
+    },
+    {
+      "type": "upsell",
+      "name": "Upsell",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "paragraph",
+          "content": "Upsell is best as a one-click add to cart, so upsell products should have no variants.  Upsell products with variants will open a quick-view window. [Learn more](https://groupthought.com/link/pipeline/docs/upsell/variant)"
+        },
+        {
+          "type": "header",
+          "content": "Upsell in cart"
+        },
+        {
+          "type": "paragraph",
+          "content": "Use a dynamic source with the metafield name 'theme.upsell' to allow product upsells to follow users into the cart. Use any other name to limit this feature to the product page. [Learn more](https://groupthought.com/link/pipeline/docs/upsell/cart)"
+        }
+      ]
+    },
+    {
+      "type": "icon",
+      "name": "Icon",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_name",
+          "label": "Icon",
+          "default": "icon-award",
+          "options": [
+            { "value": "icon-animal", "label": "Animal" },
+            { "value": "icon-animal-paw", "label": "Animal paw" },
+            { "value": "icon-award", "label": "Award" },
+            { "value": "icon-basket-like", "label": "Basket like" },
+            { "value": "icon-basket-return", "label": "Basket return" },
+            { "value": "icon-cart-check", "label": "Cart check" },
+            { "value": "icon-cart-message", "label": "Cart message" },
+            { "value": "icon-chat", "label": "Chat" },
+            { "value": "icon-dollar", "label": "Dollar" },
+            { "value": "icon-earth", "label": "Earth" },
+            { "value": "icon-email", "label": "Email" },
+            { "value": "icon-gluten-free", "label": "Gluten free" },
+            { "value": "icon-iron", "label": "Iron" },
+            { "value": "icon-leaf", "label": "Leaf" },
+            { "value": "icon-legal", "label": "Legal" },
+            { "value": "icon-lock-card", "label": "Lock card" },
+            { "value": "icon-lock-shield", "label": "Lock shield" },
+            { "value": "icon-lock-window", "label": "Lock window" },
+            { "value": "icon-payment", "label": "Payment" },
+            { "value": "icon-phone", "label": "Phone" },
+            { "value": "icon-rating", "label": "Rating" },
+            { "value": "icon-star-rating", "label": "Rating star" },
+            { "value": "icon-recycled", "label": "Recycled" },
+            { "value": "icon-ruler", "label": "Ruler" },
+            { "value": "icon-send", "label": "Send" },
+            { "value": "icon-sewing-machine", "label": "Sewing machine" },
+            { "value": "icon-shipment-world", "label": "Shipment world" },
+            { "value": "icon-shipment", "label": "Shipment" },
+            { "value": "icon-shoes", "label": "Shoes" },
+            { "value": "icon-store", "label": "Store" },
+            { "value": "icon-support-headphones", "label": "Support headphones" },
+            { "value": "icon-thread", "label": "Thread" },
+            { "value": "icon-truck", "label": "Truck" },
+            { "value": "icon-washer", "label": "Washer" },
+            { "value": "icon-water", "label": "Water" }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color",
+          "default": "#4B4B4B"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Icon text</p>"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type":    "range",
+          "id":      "image_max_limit",
+          "min":     5,
+          "max":     500,
+          "step":    5,
+          "unit":    "px",
+          "label":   "Width",
+          "default": 120
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            { "value": "product__image--left", "label": "Left" },
+            { "value": "product__image--center", "label": "Center" },
+            { "value": "product__image--right", "label": "Right" }
+          ],
+          "default": "product__image--left"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured product",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "form"
+        },
+        {
+          "type": "description"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

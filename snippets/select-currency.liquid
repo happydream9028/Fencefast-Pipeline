@@ -1,0 +1,50 @@
+{%- assign select_type = select_type | default: 'currency' -%}
+{%- assign wrapper_class = wrapper_class | default: '' -%}
+
+<div class="{{ wrapper_class }}">
+  <h2 class="visually-hidden" id="currency-heading-{{ unique }}">
+    {{ 'layout.footer.currency' | t }}
+  </h2>
+
+  <popout-select>
+    <div class="popout" data-popout>
+      {% if select_type == 'currency' %}  
+        <button type="button" class="popout__toggle" aria-expanded="false" aria-controls="currency-list-{{ unique }}" aria-describedby="currency-heading-{{ unique }}" data-popout-toggle>
+          {{ form.current_currency.iso_code }} {%- if form.current_currency.symbol -%}{{ form.current_currency.symbol }}{%- endif -%}
+
+          {%- render 'icon-arrow-down' -%}
+        </button>
+
+        <ul id="currency-list-{{ unique }}" class="popout-list" data-popout-list>
+          {% for currency in form.available_currencies %}
+            <li class="popout-list__item {% if currency.iso_code == form.current_currency.iso_code %}popout-list__item--current{% endif %}">
+              <a class="popout-list__option" href="#" {% if currency.iso_code == form.current_currency.iso_code %}aria-current="true"{% endif %} data-value="{{ currency.iso_code }}" data-popout-option>
+                <span>{{ currency.iso_code }} {%- if currency.symbol -%}{{ currency.symbol }}{%- endif -%}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+        
+        <input type="hidden" name="currency_code" id="CurrencySelector-{{ unique }}" value="{{ form.current_currency.iso_code }}" data-popout-input/>
+      {% else %}
+        <button type="button" class="popout__toggle" aria-expanded="false" aria-controls="currency-list-{{ unique }}" aria-describedby="currency-heading-{{ unique }}" data-popout-toggle>
+          {{ localization.country }} ({{ localization.country.iso_code }} {{ localization.country.currency.symbol }})
+
+          {%- render 'icon-arrow-down' -%}
+        </button>
+
+        <ul id="currency-list-{{ unique }}" class="popout-list" data-popout-list>
+          {% for country in localization.available_countries %}
+            <li class="popout-list__item {% if country == localization.country %}popout-list__item--current{% endif %}">
+              <a class="popout-list__option" href="#" {% if country == localization.country %}aria-current="true"{% endif %} data-value="{{ country.iso_code }}" data-popout-option>
+                <span>{{ country.name }} ({{ country.iso_code }} {{ country.currency.symbol }})</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+
+        <input type="hidden" name="country_code" id="CurrencySelector-{{ unique }}" value="{{ localization.country.iso_code }}" data-popout-input/>
+      {% endif %}
+    </div>
+  </popout-select>
+</div>

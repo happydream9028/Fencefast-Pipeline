@@ -1,0 +1,253 @@
+<!-- /sections/collection.liquid -->
+
+{% capture default_show_filters %}{%- unless section.settings.hide_sidebar -%}filters--default-visible{%- endunless -%}{% endcapture %}
+
+<div data-section-id="{{ section.id }}"
+  data-section-type="collection"
+  data-sort="{{ section.settings.collection_sorting }}">
+
+  <div class="collection" data-sidebar-toggle>
+    <div class="wrapper">
+      {%- assign collection_sidebar = false -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- assign collection_sidebar = true -%}
+      {%- endif -%}
+
+      {% if collection_sidebar or section.settings.collection_sorting or section.settings.enable_layout_toggle %}
+        <nav class="collection__nav" data-collection-tools>
+          <div class="collection__nav__buttons">
+            {% if collection_sidebar %}
+              {% capture current_filters_count %}
+                {%- assign filter_count = 0 -%}
+                {%- for filter in collection.filters -%}
+                  {%- assign filter_count = filter_count | plus: filter.active_values.size -%}
+                {%- endfor -%}
+                {%- if filter_count > 0 -%}
+                  <div class="badge">{{ filter_count }}</div>
+                {%- endif -%}
+              {% endcapture %}
+              <button class="collection__filters__toggle {{ default_show_filters }}" data-filters-toggle="filters">
+                <span class="hide-filters">{{ 'collections.sidebar.hide_filters' | t }}</span>
+                <span class="show-filters">{{ 'collections.sidebar.filter' | t }}</span>
+                <span data-active-filters-count>{{ current_filters_count }}</span>
+                {% render 'icon-filter' %}
+              </button>
+            {% endif %}
+            {% if section.settings.collection_sorting %}
+              <div class="collection__sort">
+                {% render 'collection-sorting', collection: collection %}
+              </div>
+            {% endif %}
+          </div>
+          {% if section.settings.enable_layout_toggle %}
+            <div class="collection__layout">
+              <button data-focus-element aria-label="{{ 'general.accessibility.toggle_with_count' | t: count: 1 }}" data-toggle-grid="1">{% render 'icon-grid-1' %}</button>
+              <button data-focus-element aria-label="{{ 'general.accessibility.toggle_with_count' | t: count: 2 }}" data-toggle-grid="2">{% render 'icon-grid-2' %}</button>
+              <button data-focus-element aria-label="{{ 'general.accessibility.toggle_with_count' | t: count: 3 }}" data-toggle-grid="3">{% render 'icon-grid-3' %}</button>
+              <button data-focus-element aria-label="{{ 'general.accessibility.toggle_with_count' | t: count: 4 }}" data-toggle-grid="4">{% render 'icon-grid-4' %}</button>
+            </div>
+          {% endif %}
+        </nav>
+      {% endif %}
+
+      {% render 'filters-active' collection: collection %}
+
+      <div class="collection__content">
+        {% if collection_sidebar %}
+        <aside class="collection__filters__wrapper {{ default_show_filters }}" data-collection-sidebar data-filters="filters" data-default-hide="{{ section.settings.hide_sidebar }}">
+          <div class="collection__filters__outer">
+            <div class="drawer__top">
+
+              <div class="drawer__top__left">
+                <p class="cart__drawer__title">{{ 'collections.sidebar.filter' | t }}</p>
+              </div>
+
+              <button class="drawer__button drawer__close"
+                data-filters-toggle="filters"
+                aria-label="{{ 'general.accessibility.close' | t }}">
+                {% render 'icon-close' %}
+              </button>
+            </div>
+            <div class="collection__filters__inner">
+              {% render 'collection-filters-sidebar', section: section, collection: collection %}
+            </div>
+          </div>
+          <span class="drawer__underlay" data-filters-underlay>
+            <span class="drawer__underlay__fill"></span>
+            <span class="drawer__underlay__blur"></span>
+          </span>
+        </aside>
+        {% endif %}
+
+        {%- paginate collection.products by section.settings.product_limit -%}
+          <div class="collection__products" data-products-grid>
+            <div class="js-grid" data-grid-large="{{ section.settings.grid_setting_large }}" data-grid-small="{{ section.settings.grid_setting_small }}">
+              <!-- /snippets/product-grid-item.liquid -->
+
+              {% for product in collection.products %}
+              <div>
+                {% render 'product-grid-item', product: product %}
+                </div>
+              {% else %}
+                {% if collection.handle == 'all' and collection.current_tags == '' %}
+                  {% render 'onboarding-empty-collection' %}
+                {% else %}
+                <div class="js-grid__full-row">
+                  <p>{{ 'collections.general.no_matches' | t }}</p>
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% if paginate.pages > 1 %}
+              <div class="text-center">
+                {% render 'pagination-custom', paginate: paginate, enable_ajax: true %}
+              </div>
+            {% endif %}
+          </div>
+        {% endpaginate %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection product grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type":    "range",
+      "id":      "product_limit",
+      "min":     1,
+      "max":     50,
+      "step":    1,
+      "label":   "Products per page",
+      "default": 36
+    },
+    {
+      "type":    "range",
+      "id":      "grid_setting_large",
+      "min":     1,
+      "max":     4,
+      "step":    1,
+      "label":   "Desktop: products per row",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "grid_setting_small",
+      "label": "Mobile: products per row",
+      "options": [
+        {
+          "value": "1",
+          "label": "One"
+        },
+        {
+          "value": "2",
+          "label": "Two"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_layout_toggle",
+      "label": "Show product layout buttons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Collection sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "collection_sorting",
+      "label": "Show collection sorting",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Collection filter sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_sidebar",
+      "label": "Hide filter sidebar by default",
+      "info": "Customers will have the option to show them"
+    }
+    ],
+    "blocks": [
+    {
+      "type": "filters",
+      "name": "Filters",
+      "limit": 1,
+      "settings": [      
+        {
+          "type": "paragraph",
+          "content": "Create filters in the [navigation](/admin/menus) section of your online store setings."
+        }
+      ]
+    },
+    {
+      "type": "collections",
+      "name": "All Collections",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Show a list of all the collections in your store."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "All collections"
+        }
+      ]
+    },
+    {
+      "type": "nav_links",
+      "name": "Navigation links",
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "collection_linklist",
+          "label": "Sidebar navigation",
+          "info": "Create a list of [navigation links](/admin/menus) to show specific collections in the sidebar."
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "Legacy: Tag group",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Legacy feature: tag grouping"
+        },
+        {
+          "type": "paragraph",
+          "content": "This is a legacy feature that is intended to help merchants with large catalogs transition to OS2.0. Filtering by tag will be removed from Pipeline when 0S2.0 filters can fully replace their functionality. This method of tag-based product filtering cannot be combined with [OS2.0 filters](/admin/menus)."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Group name",
+          "default": "Filter by size"
+        },
+        {
+          "type": "text",
+          "id": "group_tags",
+          "label": "Tag list",
+          "default": "Small, Medium, Large",
+          "info": "Comma separated group of tags"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

@@ -1,0 +1,49 @@
+<!-- /templates/customers/register.liquid -->
+<div class="full__page__form__wrapper">
+  <div class="wrapper">
+    <div class="grid">
+      <div class="grid__item medium-up--one-half medium-up--push-one-quarter text-center">
+        <div class="full__page__form">
+          <h1 class="account__form__title">{{ 'customer.register.title' | t }}</h1>
+          {% form 'create_customer' %}
+
+            {{ form.errors | default_errors }}
+
+            <div class="float__wrapper">
+              <label for="FirstName">{{ 'customer.register.first_name' | t }}</label>
+              <input type="text" name="customer[first_name]" id="FirstName" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autofocus>
+            </div>
+
+            <div class="float__wrapper">
+              <label for="LastName">{{ 'customer.register.last_name' | t }}</label>
+              <input type="text" name="customer[last_name]" id="LastName" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+            </div>
+
+            <div class="float__wrapper">
+              <label for="Email">{{ 'customer.register.email' | t }}</label>
+              <input type="email" name="customer[email]" id="Email" placeholder="{{ 'customer.register.email' | t }}" {% if form.errors contains "email" %} class="error"{% elsif form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+            </div>
+
+            <div class="float__wrapper">
+              <label for="CreatePassword">{{ 'customer.register.password' | t }}</label>
+              <input type="password" name="customer[password]" id="CreatePassword" placeholder="{{ 'customer.register.password' | t }}" {% if form.errors contains "password" %} class="error"{% endif %}>
+            </div>
+
+            <button type="submit" class="btn--outline uppercase btn--full">
+              {{ 'customer.register.submit' | t }}
+            </button>
+            <div class="form--additional">
+              <a class="text-link uppercase" href="{{ routes.account_login_url }}">
+                {{ 'layout.customer.log_in' | t }}
+              </a>
+            </div>
+            <hr>
+            <div class="form__legal">
+              {{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}
+            </div> 
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
