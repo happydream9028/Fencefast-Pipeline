@@ -11,6 +11,7 @@
   {%- assign buybutton_class = 'product__form--buybutton' -%}
 {%- endif -%}
 
+{% if call_in == false %}
 <product-form>
   <div class="product__form__outer {{ buybutton_class }}" data-product-form-outer {{ block.shopify_attributes }}>
     {%- assign product_form_id = 'product-form-' | append: section.id | append: '-' | append: product.id -%}
@@ -250,6 +251,28 @@
             </div>
         {%- endif -%}
 
+        {%- if product.vendor == 'Defense Aerosols'-%}
+          <div class="terms_checkbox">
+            <label class="container">I have read the
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label>
+            <span class="underline" data-popup-custom="termsModal">terms and conditions for this product</span>
+          </div>
+          <div class="modal micromodal-slide" data-modal id="termsModal" aria-hidden="true">
+            <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+              <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>
+              <div class="modal__container modal__container--inline"
+                data-modal-content
+                role="dialog"
+                aria-modal="true"
+                aria-label="Terms and conditions">
+                {{ pages['bear-spray-terms-conditions'].content }}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
         {%- if block.settings.show_remaining or size_chart_index == -1 -%}
           {%- assign packed_class = '' -%}
           {%- if block.settings.show_remaining and size_chart_index == -1 -%}
@@ -303,7 +326,6 @@
           </div>
         {%- endif -%}
 
-        {% if call_in == false %}
         <div class="product__submit" data-buttons-wrapper data-add-action-wrapper>
           <div data-add-action-errors class="add-action-errors"></div>
 
@@ -322,7 +344,8 @@
               name="add"
               class="btn btn--full uppercase btn--add-to-cart"
               data-add-to-cart
-              {% unless current_variant.available %} disabled="disabled" {% endunless %}>
+              {% unless current_variant.available %} disabled="disabled" {% endunless %}
+              {% if product.vendor == 'Defense Aerosols' %} data-disable="true" {% endif %}>
               <span class="btn-state-ready">
                 <span data-add-to-cart-text>
                   {{ button_text }}
@@ -354,7 +377,6 @@
             {%- endif -%}
           </div>
         </div>
-        {% endif %}
 
         <script data-product-json type="application/json">
           {{ product | json }}
@@ -364,9 +386,9 @@
   </div>
 </product-form>
 
-{% if call_in == true %}
+{% else %}
   <div class="form-success hidden">Thank for contacting us. We'll get back to you as soon as possible</div>
-  <button class="btn btn--full uppercase" data-popup-price__form="priceForm">Email For Pricing</button>
+  <button class="btn btn--full uppercase" data-popup-custom="priceForm">Email For Pricing</button>
   <div class="modal micromodal-slide" data-modal id="priceForm" aria-hidden="true">
     <div class="modal__overlay" tabindex="-1" data-micromodal-close>
       <button data-micromodal-close class="modal__close" aria-label="{{ 'general.accessibility.close' | t }}"></button>

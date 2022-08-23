@@ -71,23 +71,52 @@
     }
 
     // Price Form
-    if (document.querySelector('[data-popup-price__form]')) {
-      document.querySelector('[data-popup-price__form]').addEventListener('click', function() {
-        document.getElementById(this.dataset.popupPrice__form).ariaHidden = 'false';
-        document.getElementById(this.dataset.popupPrice__form).classList.add('is-open');
-      });
-    }
-
-    if (document.querySelector('#priceForm .modal__close')) {
-      document.querySelector('#priceForm .modal__close').addEventListener('click', function() {
-        document.getElementById('priceForm').ariaHidden = 'true';
-        document.getElementById('priceForm').classList.remove('is-open');
+    if (document.querySelector('[data-popup-custom]')) {
+      document.querySelectorAll('[data-popup-custom]').forEach((el) => {
+        el.addEventListener('click', function() {
+          document.getElementById(this.dataset.popupCustom).ariaHidden = 'false';
+          document.getElementById(this.dataset.popupCustom).classList.add('is-open');
+        });
       });
     }
 
     if(document.querySelector('[data-form-success]')) {
       document.querySelector('.form-success').classList.remove('hidden');
     }
+
+    // Terms modal
+    if (document.querySelector('[data-popup-terms]')) {
+      document.querySelector('[data-popup-terms]').addEventListener('click', function() {
+        document.getElementById(this.dataset.popupTerms).ariaHidden = 'false';
+        document.getElementById(this.dataset.popupTerms).classList.add('is-open');
+      });
+    }
+
+    // Disable add to cart button
+    const addButton = document.querySelector('[data-add-to-cart]');
+    if (addButton && addButton.dataset.disable == 'true') {
+      addButton.disabled = true;
+    }
+
+    if (document.querySelector('.terms_checkbox input')) {
+      document.querySelector('.terms_checkbox input').addEventListener('change', (e) => {
+        if (e.target.checked == true) {
+          addButton.disabled = false;
+        }
+        else {
+          addButton.disabled = true;
+        }
+      });
+    }
+
+    document.addEventListener('click', function(event) {
+      document.querySelectorAll('[data-modal-content]').forEach((el) => {
+        if (!el.contains(event.target) && !event.target.dataset.popupCustom) {
+          el.parentElement.parentElement.ariaHidden = 'true';
+          el.parentElement.parentElement.classList.remove('is-open');
+        }
+      });
+    });
   }
 
   if (!document.querySelector('[data-search-page]')) {

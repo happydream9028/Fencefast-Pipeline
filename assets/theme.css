@@ -23982,3 +23982,75 @@ body[style*="overflow: hidden"] .upsell__modal {
   margin-left: 1rem;
   margin-right: 1rem;
 }
+
+.terms_checkbox span.underline {
+  padding: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.terms_checkbox .container {
+  display: inline-block;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.terms_checkbox .container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.terms_checkbox .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.terms_checkbox .container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.terms_checkbox .container input:checked ~ .checkmark {
+  background-color: #ef7d27;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.terms_checkbox .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.terms_checkbox .container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.terms_checkbox .container .checkmark:after {
+  left: 7px;
+  top: 4px;
+  width: 6px;
+  height: 11px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
